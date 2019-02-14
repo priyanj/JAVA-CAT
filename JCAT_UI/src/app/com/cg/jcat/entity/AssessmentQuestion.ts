@@ -1,7 +1,7 @@
 import { QuestionOption } from "./QuestionOption";
 export class AssessmentQuestions{
     questionId : number;
-    questionText : string;
+    questionTextEN : string;
     questionTextLang2 : string;
     questionDescriptionEN : string;
     questionDescriptionLang2 : string;

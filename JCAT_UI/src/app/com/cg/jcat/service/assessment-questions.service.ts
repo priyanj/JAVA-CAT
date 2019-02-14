@@ -15,6 +15,10 @@ export class AssessmentQuestionsService {
     return  this.http.get(this.myStorage.getdomainURL()+`/assessmentQuestion/getAll`);
   }
 
+  getQuestionType(){
+    return this.http.get(this.myStorage.getdomainURL()+`/assessmentQuestion/getQuestionType`);
+  }
+
   getQuestionById(questionId: number) {
     return  this.http.get(this.myStorage.getdomainURL()+`/assessmentQuestion/get/question/`+questionId);
   }

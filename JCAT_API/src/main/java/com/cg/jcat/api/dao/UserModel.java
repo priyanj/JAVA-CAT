@@ -10,6 +10,8 @@ public class UserModel {
 	private String company;
 	private String userEmail;
 	private boolean isAdmin;
+	private String createdBy;
+	private String modifiedBy;
 
 	public int getUserId() {
 		return userId;
@@ -74,12 +76,28 @@ public class UserModel {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 
 	@Override
 	public String toString() {
 		return "UserModel [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
 				+ username + ", password=" + password + ", company=" + company + ", userEmail=" + userEmail
-				+ ", isAdmin=" + isAdmin + "]";
+				+ ", isAdmin=" + isAdmin + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + "]";
 	}
 
 }

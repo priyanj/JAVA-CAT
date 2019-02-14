@@ -11,6 +11,7 @@ import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.entity.AssessmentQuestion;
 import com.cg.jcat.api.repository.IAssessmentQuestionRepository;
 import com.cg.jcat.api.service.IAssessmentQuestionService;
+import com.cg.jcat.api.utility.QuestionTypeEnum;
 
 @Component
 public class AssessmentQuestionController implements IAssessmentQuestionController {
@@ -32,6 +33,12 @@ public class AssessmentQuestionController implements IAssessmentQuestionControll
 		}
 		return repository.findAll();
 	}
+	
+	@Override
+	public List<QuestionTypeEnum> getQuestionType() {
+		
+		return assessmentQuestionService.getQuestionType();
+	} 
 
 	@Override
 	public void saveQuestions(AssessmentQuestionModel assessmentQuestionModel) {

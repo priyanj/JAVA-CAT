@@ -91,6 +91,7 @@ public class TestUserDao {
 		userModel.setCompany("goldman");
 		userModel.setAdmin(true);
 		userModel.setPassword("asd@123");
+		userModel.setCreatedBy("Admin");
 		return userModel;
 	}
 

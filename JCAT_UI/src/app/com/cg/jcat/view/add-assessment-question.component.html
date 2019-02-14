@@ -1,0 +1,110 @@
+<h3>Assessment Questions</h3>
+<h1>
+  <hr width="100%" size="80">
+</h1>
+<div [hidden]="submitted" style="width: 300px;">
+  <form role="form" #add="ngForm" style="width: 100%" (ngSubmit)="onSubmit(add.value)">
+    <div class="form-content">
+      <div class="form-group">
+        <br>
+        <label for="questionType">
+          <b>Assessment Type</b>
+        </label>
+        <br>
+        <input type="checkbox" [(ngModel)]="question.assessmentTypeForMigration" name="assessmentTypeForMigration">&ngsp;
+        <label>Migration</label>
+        <br>
+        <input type="checkbox" [(ngModel)]="question.assessmentTypeForCloudProvider" name="assessmentTypeForCloudProvider">&ngsp;
+        <label>cloud provider</label>
+        <br>
+        <input type="checkbox" [(ngModel)]="question.assessmentTypeForCloudable" name="assessmentTypeForCloudable">&ngsp;
+        <label>Cloudable</label>
+        <br/>
+      </div>
+      <div class="form-group">
+        <label for="questionType">Question Type</label>
+        <select [(ngModel)]="question.questionType" class="form-control" #questionType="ngModel" required name="questionType">
+            <option hidden>select question type</option>
+            <option *ngFor="let size of questionTypeEnum" >{{size}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="questionDisplayOrder">Question Display Order</label>
+        <input type="text" class="form-control" style="width: 100%" id="questionDisplayOrder" required #displayOrder="ngModel" [(ngModel)]="question.displayOrder"
+          name="questionDisplayOrder">
+        <div *ngIf="displayOrder?.touched">
+          <div *ngIf="displayOrder.errors?.required" class="color">*Question Display Order can't be empty</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <span>number of option</span>&ngsp;
+        <select (change)="selectChangeHandler($event)" required #option="ngModel" [(ngModel)]="question.numberOfOptions" name="numberOfOptions">
+          <option class='option' *ngFor='let option of optionsValues'>{{option}}</option>
+        </select>
+        <div *ngIf="option?.touched">
+          <div *ngIf="option.errors?.required" class="color">*number of option can't be empty</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="questionText">Question</label>
+        <input type="text" class="form-control" id="questionText" required #questionTest="ngModel" [(ngModel)]="question.questionTextEN"
+          name="questionText">
+        <div *ngIf="questionTest?.touched">
+          <div *ngIf="questionTest.errors?.required" class="color">*Question can't be empty</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <label for="questionText">Question Text German</label>
+          <input type="text" class="form-control" id="questionText" required #questionTest="ngModel" [(ngModel)]="question.questionTextLang2"
+            name="questionText">
+          <div *ngIf="questionTest?.touched">
+            <div *ngIf="questionTest.errors?.required" class="color">*Question can't be empty</div>
+          </div>
+        </div>
+
+      <div class="form-group">
+        <label for="questionDescription">Question Description</label>
+        <input type="text" class="form-control" id="questionDescription" required #description="ngModel" [(ngModel)]="question.questionDescriptionEN"
+          name="questionDescription">
+        <div *ngIf="description?.touched">
+          <div *ngIf="description.errors?.required" class="color">*Question Description can't be empty</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+          <label for="questionDescription">Question Description German</label>
+          <input type="text" class="form-control" id="questionDescription" required #description="ngModel" [(ngModel)]="question.questionDescriptionLang2"
+            name="questionDescription">
+          <div *ngIf="description?.touched">
+            <div *ngIf="description.errors?.required" class="color">*Question Description can't be empty</div>
+          </div>
+        </div>
+
+      <div class="form-group" *ngIf="question.numberOfOptions">
+        <div *ngFor="let size of Options;let first  = first;let i = index">
+          <div *ngIf="first ; else notfirst">
+          </div>
+          <ng-template #notfirst>
+            <label for="answers">Answer Text English{{size}}</label>
+            <br>
+            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="optionText[i-1]" required #answer="ngModel" />
+            <br>
+            <div *ngIf="answer?.touched">
+              <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
+            </div>
+            <label for="answers">Answer Text German{{size}}</label>
+            <br>
+            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="optionTextl2[i-1]" required #answer="ngModel" />
+            <div *ngIf="answer?.touched">
+              <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <!-- <button type="submit" class="btn btn-success" [disabled]="add.invalid">Submit</button> -->
+    <button type="submit" class="btn btn-success" >Submit</button>
+  </form>
+</div>

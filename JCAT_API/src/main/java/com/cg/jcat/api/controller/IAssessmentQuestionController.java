@@ -2,6 +2,7 @@ package com.cg.jcat.api.controller;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.entity.AssessmentQuestion;
+import com.cg.jcat.api.utility.QuestionTypeEnum;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -25,6 +27,9 @@ public interface IAssessmentQuestionController {
 
 	@GetMapping("/get/question/{questionId}")
 	public AssessmentQuestionModel getQuestionById(@PathVariable int questionId);
+	
+	@GetMapping(value = "/getQuestionType",produces = {MediaType.APPLICATION_JSON_VALUE})
+	public List<QuestionTypeEnum> getQuestionType(); 
 
 	@PostMapping("/createQuestion")
 	public void saveQuestions(@RequestBody AssessmentQuestionModel question);

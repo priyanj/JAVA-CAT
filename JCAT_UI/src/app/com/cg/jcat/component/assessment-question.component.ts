@@ -48,7 +48,7 @@ class DataTablesResponse {
          this.router.navigate(['/assessment-questions/import-question']);
          }
   
-    addQuestions() {
+    addAssessmentQuestions() {
           this.router.navigate(['/assessment-questions/add-assessment-question']);
           }
   

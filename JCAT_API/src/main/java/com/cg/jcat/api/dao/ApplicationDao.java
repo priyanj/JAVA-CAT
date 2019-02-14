@@ -117,7 +117,6 @@ public class ApplicationDao {
 		application.setReMigrationPattern(applicationModel.getReMigrationPattern());
 		application.setCreatedBy(applicationModel.getCreatedBy());
 		application.setModifiedBy(applicationModel.getModifiedBy());
-		System.out.println(application);
 		return application;
 	}
 
@@ -152,7 +151,6 @@ public class ApplicationDao {
 		try {
 			application.setDeleted(true);
 			application.setModifiedBy("Admin");
-			//application.setModifiedTime(date);
 			Application saveApplication = applicationRepository.save(application);
 			if (saveApplication != null) {
 				deleteApplication = true;
@@ -168,13 +166,9 @@ public class ApplicationDao {
 	public boolean deactivateApplicationById(int aid) throws ApplicationIdNotFoundException, SystemExceptions {
 		Application application = findApplicationById(aid);
 		boolean deactivateApplication = false;
-		// ApplicationsHistory applicationsHistory = new ApplicationsHistory();
 		try {
 			application.setActivate(false);
 			application.setModifiedBy("Admin");
-			//application.setModifiedTime(date);
-			// applicationsHistory =
-			// applicationHistoryRepository.save(toApplicationHistory(application));
 			Application saveApplication = applicationRepository.save(application);
 			if (saveApplication != null) {
 				deactivateApplication = true;
@@ -195,8 +189,6 @@ public class ApplicationDao {
 		try {
 			application.setAid(applicationModel.getAid());
 			application.setApplicationId(applicationModel.getApplicationId());
-			application.setModifiedBy("Admin");
-			//application.setModifiedTime(date);
 			applicationsHistory = applicationHistoryRepository.save(toApplicationHistory(application));
 			Application saveApplication = applicationRepository.saveAndFlush(application);
 			if (saveApplication != null && applicationsHistory != null) {
@@ -298,7 +290,6 @@ public class ApplicationDao {
 		application.setPriority(applications.getPriority());
 		application.setApplicationUser(user.getUserId());
 		application.setCreatedBy("Admin");
-		//application.setCreatedTime(date);
 		return application;
 	}
 }

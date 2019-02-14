@@ -45,6 +45,8 @@ public class UserDao {
 			userDao.setUserEmail(user.getUserEmail());
 			userDao.setCompany(user.getCompany());
 			userDao.setAdmin(user.isAdmin());
+			userDao.setCreatedBy(user.getCreatedBy());
+			userDao.setModifiedBy(user.getModifiedBy());
 		}
 		return userDao;
 	}
@@ -100,14 +102,15 @@ public class UserDao {
 	}
 
 	private User toUsers(UserModel userModel) {
-		User users = null;
+		User users = userRepository.findByUserId(userModel.getUserId());
 		if (userModel != null) {
 			users = new User();
+			users.setUserId(userModel.getUserId());
 			users.setUsername(userModel.getUsername());
 			users.setUserId(userModel.getUserId());
 			users.setCompany(userModel.getCompany());
-			users.setCreatedBy("Admin");
-			users.setModifiedBy("Admin");
+			users.setCreatedBy(userModel.getCreatedBy());
+			users.setModifiedBy(userModel.getModifiedBy());
 			users.setFirstName(userModel.getFirstName());
 			users.setLastName(userModel.getLastName());
 			users.setPassword(userModel.getPassword());
@@ -140,6 +143,7 @@ public class UserDao {
 		userFromDB.setModifiedBy(modifiedBy);
 		userFromDB.setPassword(user.getPassword());
 		userFromDB.setUserEmail(user.getUserEmail());
+		userFromDB.setCreatedBy(user.getCreatedBy());
 		return userFromDB;
 	}
 

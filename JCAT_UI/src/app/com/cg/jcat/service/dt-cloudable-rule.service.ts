@@ -20,6 +20,10 @@ export class DTCloudableRuleService {
     return this.http.get(this.myStorage.getdomainURL() + `/dtcloudableRule/getAll`);
   }
 
+  getAllCloudableQuestions(){
+    return this.http.get(this.myStorage.getdomainURL()+`dtcloudableRule/getCloudableQuestion`);
+  }
+
   saveCloudableRule(dTCloudableRuleModelList: any): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');

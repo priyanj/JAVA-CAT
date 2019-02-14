@@ -1,0 +1,94 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
+    <div class="list-group">
+    <div *ngIf="adminActive; else notShow">
+        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'Dashboard' | translate}}</span>
+        </a>
+
+        <a routerLink="/user" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{"Users" | translate}}</span>
+        </a>
+
+        <a routerLink="/assessment-questions" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'AssessmentQuestions' | translate}}</span>
+        </a>
+
+        <div class="nested-menu">
+            <div *ngIf="col==true">
+                <a class="list-group-item" (click)="addExpandClass('pages')">
+                    <i class="fa fa-plus"></i>&nbsp;
+                    <span>{{'DecisionTree' | translate}}</span>
+                </a>
+            </div>
+            <div *ngIf="col==false">
+                    <a class="list-group-item" (click)="addExpandClass('pages')">
+                        <i class="fa fa-minus"></i>&nbsp;
+                        <span>{{'DecisionTree' | translate}}</span>
+                    </a>
+                </div>
+            <li class="nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/for-cloudable" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <span>{{'ForCloudable' | translate}}</span>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a routerLink="/for-migration-pattern" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <span>{{'ForMigrationPattern' | translate}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/for-cloud-provider" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <span>{{'ForCloudProvider' | translate}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/reassessment" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <span>{{'Reassessment' | translate}}</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+        </div>
+
+        <a routerLink="/application" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'Applications' | translate}}</span>
+        </a>
+
+        <a routerLink="/report" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'Report' | translate}}</span>
+        </a>
+        <a routerLink="/feedback" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'FeedBack' | translate}}</span>
+        </a>
+        <a routerLink="/faq" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'FAQ' | translate}}</span>
+        </a>
+    </div>
+    <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">
+            <i class="fa fa-fw fa-angle-double-left"></i>&nbsp;
+            <span>{{'CollapseSidebar' | translate}}</span>
+        </div>
+
+    </div>
+</nav>
+<ng-template #notShow>
+        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'Dashboard' | translate}}</span>
+        </a>
+        <a routerLink="/user/user-role" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;
+            <span>{{'Applications' | translate}}</span>
+        </a>
+</ng-template>

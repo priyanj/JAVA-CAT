@@ -1,0 +1,66 @@
+<div>
+    <div>
+      <h2 class="text-muted">Application
+        <small>List of applications</small>&nbsp;
+        <button style="background:white" type="button" class="btn btn-default" (click)="toggle()"  id="bt" title="This page shows all applications.On the top of table there are four buttons. Add Application button is to add new application. Import Application button is to import one or more applications for specified user. To import application you have to choose CSV file with required data. If you don't have csv file format you can download it by clicking on Export Dummy Template. Third button is Export Application. It will download a CSV file of all application. In Action column of table there are six buttons. First button is to deactivate application. Second button shows detail information of application. Third button is to assest application.Forth button is to edit application. Fifth button is to delete application and sixth button is to reset application.">
+          <i class="fa fa-info-circle fa-lg" style="color:blue;" aria-hidden="true"></i>
+        </button>
+      </h2>
+    </div>
+    <br>
+    <div>
+      <nav>
+        <input type="button" class="btn  btn-info" title="Add new application " value="Add Application" (click)="form()">&nbsp;
+        <input type="button" class="btn btn-info" title="Import one or more applications" value="Import Application" (click)="myFunction()">&nbsp;
+        <input type="button"  class="btn btn-info"  title="Download applicaion template"  value="Application Template"  (click)="exportTemplate()"> &nbsp;
+        <input type="button" class="btn btn-info" title="Export all applications" value="Export Application" (click)="exportCsv()">
+      </nav>
+  
+    </div>
+    <br>
+    <div>
+      <table width="100%" datatable="bootstrap" id="user-list" [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"  class="table table-striped table-hover table-sm ">
+  
+        <thead bgcolor="#E0E0E0">
+          <tr>
+            <th width="15%" style="vertical-align:text-top">Application Name</th>
+            <th width="15%" style="vertical-align:text-top">Application Description</th>
+            <th width="10%" style="vertical-align:text-top">Cloudable</th>
+            <th width="10%" style="vertical-align:text-top">Migration Method</th>
+            <th width="10%" style="vertical-align:text-top">Cloud Provider</th>
+            <th width="24%" style="vertical-align:text-top">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor =  "let app of applicationList">
+            <td>{{app.applicationName }}{{app.isDeactivate}}</td>
+            <td>{{app.applicationDescription}}</td>
+            <td>{{app.isCloudable}}</td>
+            <td>{{app.migrationPattern}}</td>
+            <td>{{app.cloudProvider}}</td>
+            <td width="24%">
+              <!-- <button (click)="deactivate(app.applicationId)" title="Deactivate" style="size:16px" class="button button">
+                <i style="color:black;size:16px " class="fa fa-lock" aria-hidden="true"></i>
+              </button>&nbsp; -->
+              <button (click)="ViewApplication(app)" title="Details" style="size:16px" class="button button">
+                <i style="color:black;size:16px " class="fa fa-info-circle"></i>
+              </button>&nbsp;
+              <button (click)="assessApplication(app)" title="Assest" style="size:16px" class="button button">
+                <i style="color:black" class="fa fa-hourglass-start"></i>
+              </button>&nbsp;
+              <button (click)="editApplication(app)" title="Edit" style="size:16px" class="button button">
+                <i style="color:black" class="fa fa-edit"></i>
+              </button>&nbsp;
+              <button (click)="deleteApplication(app.applicationId)" title="Delete" style="size:16px" class="button button">
+                <i style="color:black" class="fa fa-trash"></i>
+              </button>&nbsp;
+              <button (click)="resetApplication(app.applicationId)" title="Reset" style="size:16px" class="button button">
+                <i style="color:black" class="fa fa-refresh" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+  </div>

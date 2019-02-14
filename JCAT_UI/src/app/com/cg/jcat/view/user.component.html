@@ -1,0 +1,51 @@
+<div>
+  <div>
+    <h2 class="text-muted">Users <small>list of users</small></h2>
+  </div>
+  <br>
+  <div>
+    <button type="button" class="btn btn-info" title="Add New user" style="margin-right: 5px" (click)="addUser()">Add User</button>
+    <button type="button" class="btn btn-info btn-md" title="Upload Users Information" (click)="uploadUserInfo()">Import User</button>&nbsp;
+    <button type="button" class="btn btn-info btn-md" title="Export Sample User Template" (click)="exportCsvTemplate()">User Template</button>&nbsp;
+    <button type="button" class="btn btn-info btn-md" title="Export All User Details" (click)="exportCsv()">Export Users</button>&nbsp;
+    <button type="button" class="btn btn-info btn-md fa fa-hand-o-right sidenav" id="mybtn" title="You can find some videos here" (click)="help()"> Issue Report </button>
+  
+    
+  </div>
+  <br>
+  <div>
+      <table datatable="bootstrap" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped table-hover ">
+          <thead bgcolor="#E0E0E0" >
+            <tr>
+              <th style="vertical-align:text-top">User Name</th>
+              <th style="vertical-align:text-top">Company</th>
+              <th style="vertical-align:text-top">Created By</th>
+              <th style="vertical-align:text-top">User Type</th>
+              <th style="vertical-align:text-top">Last Modify</th>
+              <th style="vertical-align:text-top">Last Login</th>
+              <th style="vertical-align:text-top">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+  
+              <tr *ngFor = "let users of userData"> 
+                  <td width="13%">{{users.username}}</td>
+                  <td width="13%">{{users.company}}</td>
+                  <td width="13%">{{users.createdBy}}</td>
+                  <td width="13%" *ngIf="users.isAdmin==0;else user">Admin</td>
+                  <ng-template #user><td>User</td></ng-template>
+                  <td width="13%">{{users.modifiedBy}}</td>
+                  <td width="10%">{{users.lastLogin}}</td>
+                  <td width="7%">
+                  <!-- <button (click)="deactivate(users.userId)" title="Deactivate" style="font-size:16px" class="button button"> <i style="color:black" class="fa fa-key"></i></button>&nbsp; -->
+                  <button (click)="updateUser(users)" title=" Update" style="font-size:16px"  class="button button"><i style="color:black" class="fa fa-edit"></i></button>&nbsp;
+                  <button (click)="deleteUser(users.userId)" title="Delete" type="button" class="button button"><i style="color:black" class="fa fa-trash"></i></button>
+  
+                  </td>
+                </tr> 
+          </tbody>
+        </table>
+  </div>
+  <div>
+    <button type="button" class="btn btn-info" title="back to home" style="margin-right: 5px" (click)="back()">Back</button>
+  </div>

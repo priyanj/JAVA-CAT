@@ -1,0 +1,47 @@
+<div>
+    <form role="form" #addAssessmentQuestionsForm="ngForm" (ngSubmit)="addQuestions()">
+      <input type="submit" class="btn btn-info" value="Add Questions" (click)="addQuestions()">&ngsp;&ngsp;
+     
+      <input type="button" class="btn btn-info" value="Export Questions" (click)="exportCsv()">
+      <br>
+      <br>
+      <table width="100%" datatable="bootstrap" id="user-list" [dtTrigger]="dtTrigger" [dtOptions]="dtOptions"  class="table table-striped table-hover table-sm ">
+        <thead bgcolor="#E0E0E0">
+          <tr>
+            <th>
+              <font color="black">Questions</font>
+            </th>
+            <th>
+              <font color="black">Question Description</font>
+            </th>
+            <th>
+              <font color="black">Question Type</font>
+            </th>
+            <th>
+              <font color="black">Display Order</font>
+            </th>
+            <th>
+              <font color="black">Action</font>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor =  "let questions of assessmentQuestionData">
+            <td width="20%">{{questions.questionTextEN}}</td>
+            <td width="20%">{{questions.questionDescriptionEN}}</td>
+            <td width="15%">{{questions.questionType}}</td>
+            <td width="10%">{{questions.questionDisplayOrder}}</td>
+            <td width="9%">
+              
+              <button title="Edit question" (click)="updateQuestions(questions)" style="font-size:16px" class="button button">
+                <i class="fa fa-edit"></i>
+              </button>&nbsp;
+              <button title="delete question" (click)="deleteQuestions(questions.questionId)" style="font-size:16px" class="button button">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>

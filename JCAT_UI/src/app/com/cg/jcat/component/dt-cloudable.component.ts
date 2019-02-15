@@ -8,19 +8,26 @@ import { DTCloudableRuleService } from '../service/dt-cloudable-rule.service';
 import { LocalStorageService } from '../utility/localStorage.service';
 
 @Component({
-    selector: 'app-for-cloudable',
-    templateUrl: './for-cloudable.component.html',
-    styleUrls: ['./for-cloudable.component.scss']
+    selector: 'app-dt-cloudable',
+    templateUrl: '../view/dt-cloudable.html'
+    // styleUrls: ['./for-cloudable.component.scss']
   })
-  export class ForCloudableComponent implements OnInit {
+  export class DtCloudableComponent implements OnInit {
+    cloudableQuestions:any = [];
+    index:number=0;
+    dtCloudableQuestionsRule:any=[];
+    idvalue:boolean=false;
+    id:number;
     dtOptions: DataTables.Settings = {};
     dtTrigger:  Subject<any>  =  new  Subject();
     AllData: any;
     rules: any = [];
+    value:boolean= false;
     options: any = [];
     optionValues: any = [];
     questions: any = [];
     ops: string;
+    
     message = '';
     user_data: any;
     executionOrders: Array<number> = [];
@@ -38,7 +45,32 @@ import { LocalStorageService } from '../utility/localStorage.service';
     }
   
     ngOnInit() {
-    //   this.dtOptions  =  {
+      
+        this.dtCloudableRuleService.getAllCloudableQuestions().subscribe(result=>{this.cloudableQuestions=result,console.log(this.cloudableQuestions)});
+        
+      }
+
+      onClickAddrule(event:any,event1:number)
+  {
+    // console.log(event);
+    // console.log(event1);
+    this.value=true;
+    this.dtCloudableQuestionsRule[this.index]=event;
+    // console.log(this.dtCloudableQuestionsRule);
+    this.cloudableQuestions.splice(event1,1);
+    this.index++;
+
+  }
+
+  onClickRule(event:any)
+  {
+    this.idvalue = true;
+    this.id=event;
+    console.log("event");
+    console.log(event);
+  }
+
+      //   this.dtOptions  =  {
     //     pagingType:  'full_numbers',
     //     pageLength:  10,
     //     responsive:  true,
@@ -63,10 +95,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
     //     this.options = result;
     //   })
   
-        this.dtCloudableRuleService.getAllCloudableQuestions().subscribe();
-
-        
-    }
+    
     // someClickHandler(info: any): void {
     //   this.message = info.id + ' - ' + info.firstName;
     // }

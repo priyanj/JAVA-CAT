@@ -21,7 +21,7 @@ export class DTCloudableRuleService {
   }
 
   getAllCloudableQuestions(){
-    return this.http.get(this.myStorage.getdomainURL()+`dtcloudableRule/getCloudableQuestion`);
+    return this.http.get(this.myStorage.getdomainURL()+`/dtcloudableRule/getCloudableQuestion`);
   }
 
   saveCloudableRule(dTCloudableRuleModelList: any): Observable<any> {

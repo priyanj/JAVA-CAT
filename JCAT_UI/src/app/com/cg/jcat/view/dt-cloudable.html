@@ -1,0 +1,75 @@
+<div>
+    <h2 class="text-muted">Cloudability Decision
+      <button style="background-color: white; border: aliceblue"  title="Page shows all questions which decide cloudability so here we can set rules for cloudability"
+         class="btn btn-light"  >
+        <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
+      </button>
+    </h2>
+  </div>
+
+  <form #productForm="ngForm" (ngSubmit)="submit()">
+    <div class="form-group">
+      <div class="container">
+        <div class="row">
+
+            <div class="col-sm-5" style="float: left">
+                <table style="display: inline-block" class="table-striped table-bordered">
+                  <thead></thead>
+                  <tbody>
+                    <tr *ngFor="let cloudableQuestion of cloudableQuestions;let i = index" (click)="onClickAddrule(cloudableQuestion,i)">
+                      <td >
+                        <div>
+                          <span name="questionText">{{cloudableQuestions[i].questionTextEN}}</span>
+                        </div>
+                      </td>
+                      <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+                    </tr>
+      
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-sm-2" style="float: left">
+                <table><thead>
+                  <input type="button" class="glyphicon glyphicon-transfer">
+                  <!-- <button type="button" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-transfer"></span> 
+                    </button> -->
+                    </thead>
+                    <tbody></tbody>
+                    </table>
+              </div>
+
+              <div class="col-sm-5" style="float: right" *ngIf=value>
+                  <table style="display: inline-block" class="table-striped table-bordered">
+                    <thead></thead>
+                    <tbody>
+                      <tr *ngFor="let rule of dtCloudableQuestionsRule;let i = index" (click)="onClickRule(rule.questionId)">
+        
+                        <td>
+                          <div>
+                            <span name="questionText">{{dtCloudableQuestionsRule[i].questionTextEN}}</span>
+                          </div>
+                        </td>
+                        <br>
+                  <div *ngIf=idvalue>
+                    <div *ngIf="dtCloudableQuestionsRule[i].questionId==id">
+                        <span *ngFor="let option of dtCloudableQuestionsRule[i]['questionOptionModel'] ; let op = index" name="optionText">
+                            <input type="checkbox" (change)="selectChangeHandler(option,$event,dtCloudableQuestionsRule[i].questionId,dtCloudableQuestionsRule[i].questionTextEN)">{{dtCloudableQuestionsRule[i].questionOptionModel[op]['optionTextEN']}}
+                            <br>
+                            </span>
+                            </div>
+                            </div>
+                        <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+                      </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+
+
+            </div>
+          </div>
+          <!-- <button type="submit" class="btn btn-sm btn-info div-button">Submit</button> -->
+          <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">Cancel</button> -->
+        </div>
+      </form>

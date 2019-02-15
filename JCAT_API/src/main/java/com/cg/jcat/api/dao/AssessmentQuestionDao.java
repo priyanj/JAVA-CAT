@@ -19,8 +19,8 @@ public class AssessmentQuestionDao {
 	@Autowired
 	IQuestionOptionService questionOptionService;
 
+	boolean isDeleted = false, assessmentTypeForMigration=true,assessmentTypeForCloudable = true;;
 	public List<AssessmentQuestionModel> getQuestions() {
-		System.out.println();
 		List<AssessmentQuestionModel> assessmentQuestionDAOList = new ArrayList<AssessmentQuestionModel>();
 		List<AssessmentQuestion> assessmentQuestionList = assessmentQuestionRepository.findAll();
 		return toGetQuestions(assessmentQuestionList, assessmentQuestionDAOList);
@@ -30,7 +30,7 @@ public class AssessmentQuestionDao {
 			List<AssessmentQuestionModel> assessmentQuestionDAOList) {
 
 		for (AssessmentQuestion assessmentQuestion : assessmentQuestionList) {
-			assessmentQuestionDAOList.add(toAssessmentQuestionModel(assessmentQuestion));
+			assessmentQuestionDAOList.add(toAssessmentQuestionDao(assessmentQuestion));
 		}
 		return assessmentQuestionDAOList;
 	}
@@ -109,7 +109,7 @@ public class AssessmentQuestionDao {
 		questionOptionModel.setOptionId(questionOption.getOptionId());
 		questionOptionModel.setOptionTextEN(questionOption.getOptionTextEN());
 		questionOptionModel.setOptionTextLang2(questionOption.getOptionTextLang2());
-		questionOptionModel.setAssessmentQuestionModel(assessmentQuestionModel);
+		//questionOptionModel.setAssessmentQuestionModel(assessmentQuestionModel);
 		return questionOptionModel;
 	}
 
@@ -168,6 +168,21 @@ public class AssessmentQuestionDao {
 
 	public AssessmentQuestion findByQuestionTextEn(String questionTextEN) {
 		return assessmentQuestionRepository.findByQuestionTextEN(questionTextEN);
+	}
+
+	public List<AssessmentQuestionModel> getQuestionsByMigrationId() {
+		List<AssessmentQuestion> assessmentQuestion = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForMigration(isDeleted,assessmentTypeForMigration);
+		List<AssessmentQuestionModel> assessmentQuestionModel1 = new ArrayList<>();
+		return toGetQuestions(assessmentQuestion, assessmentQuestionModel1) ;
+	}
+	
+	public List<AssessmentQuestionModel> getCloudableQuestions() {
+
+		List<AssessmentQuestionModel> assessmentQuestionModelList = new ArrayList<AssessmentQuestionModel>();
+		List<AssessmentQuestion> assessmentQuestionList =assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudable(isDeleted,
+				assessmentTypeForCloudable);
+		
+		return toGetQuestions(assessmentQuestionList, assessmentQuestionModelList);
 	}
 
 }

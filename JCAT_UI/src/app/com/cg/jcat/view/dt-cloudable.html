@@ -8,18 +8,18 @@
   </div>
 
   <form #productForm="ngForm" (ngSubmit)="submit()">
-    <div class="form-group">
-      <div class="container">
+    <div class="form-group" style="width: 100%;">
+      <div class="container-fluid">
         <div class="row">
 
-            <div class="col-sm-5" style="float: left">
+            <div class="col-sm-5" >
                 <table style="display: inline-block" class="table-striped table-bordered">
                   <thead></thead>
                   <tbody>
-                    <tr *ngFor="let cloudableQuestion of cloudableQuestions;let i = index" (click)="onClickAddrule(cloudableQuestion,i)">
-                      <td >
-                        <div>
-                          <span name="questionText">{{cloudableQuestions[i].questionTextEN}}</span>
+                    <tr *ngFor="let cloudableQuestion of cloudableQuestions;let i = index"  (click)="onClickAddrule(cloudableQuestion,i)">
+                      <td style="width: 500px;margin:auto" >
+                        <div >
+                          <span name="questionTex" style="word-wrap: break-word;">{{cloudableQuestions[i].questionTextEN}}</span>
                         </div>
                       </td>
                       <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
@@ -28,38 +28,42 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col-sm-2" style="float: left">
-                <table><thead>
-                  <input type="button" class="glyphicon glyphicon-transfer">
-                  <!-- <button type="button" class="btn btn-default btn-sm">
-                      <span class="glyphicon glyphicon-transfer"></span> 
-                    </button> -->
-                    </thead>
-                    <tbody></tbody>
-                    </table>
+              <div class="col-sm-2" align="left" style="padding-left:4%" >
+                  <input type="button" value=">>" (click)="clicked()" >
+                    <br>
+                    <br>
+                    <input type="button" value="<<" (click)="reverceClicked()" >
+                   
               </div>
 
-              <div class="col-sm-5" style="float: right" *ngIf=value>
+              <div class="col-sm-5"  *ngIf=value>
                   <table style="display: inline-block" class="table-striped table-bordered">
                     <thead></thead>
                     <tbody>
-                      <tr *ngFor="let rule of dtCloudableQuestionsRule;let i = index" (click)="onClickRule(rule.questionId)">
+                      <tr *ngFor="let rule of dtCloudableQuestionsRule;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
         
-                        <td>
-                          <div>
-                            <span name="questionText">{{dtCloudableQuestionsRule[i].questionTextEN}}</span>
+                        <td style="width: 500px;margin:auto">
+                          <div style="width: 100%">
+                            <span name="questionText" style="word-wrap: break-word;">{{dtCloudableQuestionsRule[i].questionTextEN}}</span>
                           </div>
-                        </td>
+                        
                         <br>
                   <div *ngIf=idvalue>
                     <div *ngIf="dtCloudableQuestionsRule[i].questionId==id">
                         <span *ngFor="let option of dtCloudableQuestionsRule[i]['questionOptionModel'] ; let op = index" name="optionText">
-                            <input type="checkbox" (change)="selectChangeHandler(option,$event,dtCloudableQuestionsRule[i].questionId,dtCloudableQuestionsRule[i].questionTextEN)">{{dtCloudableQuestionsRule[i].questionOptionModel[op]['optionTextEN']}}
+                            <div *ngIf="RuleChecked(option,dtCloudableQuestionsRule[i].questionId); else Notchecked">
+                          <input type="checkbox" checked (change)="selectChangeHandler(option,$event,dtCloudableQuestionsRule[i].questionId,dtCloudableQuestionsRule[i].questionTextEN)">{{dtCloudableQuestionsRule[i].questionOptionModel[op]['optionTextEN']}}
                             <br>
+                            </div>
+                            <ng-template #Notchecked>
+                                <input type="checkbox" (change)="selectChangeHandler(option,$event,dtCloudableQuestionsRule[i].questionId,dtCloudableQuestionsRule[i].questionTextEN)">{{dtCloudableQuestionsRule[i].questionOptionModel[op]['optionTextEN']}}
+                                <br>
+                              </ng-template>
                             </span>
                             </div>
                             </div>
                         <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+                      </td>
                       </tr>
         
                     </tbody>
@@ -69,7 +73,7 @@
 
             </div>
           </div>
-          <!-- <button type="submit" class="btn btn-sm btn-info div-button">Submit</button> -->
+          <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>
           <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">Cancel</button> -->
         </div>
       </form>

@@ -200,14 +200,16 @@ public class DTMigrationRuleDao {
 	public DTMigrationModel toGetDTMigration(DTMigration dtMigration) {
 		DTMigrationModel dtMigrationModel = new DTMigrationModel();
 		dtMigrationModel.setCreatedBy(dtMigration.getCreatedBy());
-		dtMigrationModel.setCreatedTtime(dtMigration.getCreatedTtime());
 		dtMigrationModel.setEvaluationOrder(dtMigration.getEvaluationOrder());
 		dtMigrationModel.setLogicalOperator(dtMigration.getLogicalOperator());
-		dtMigrationModel.setMigration_pattern(dtMigration.getMigration_pattern());
+		dtMigrationModel.setMigrationPattern(dtMigration.getMigration_pattern());
 		dtMigrationModel.setMigrationId(dtMigration.getMigrationId());
-		dtMigrationModel.setModifiedTime(dtMigration.getModified_time());
 		dtMigrationModel.setModifiedBy(dtMigration.getModifiedBy());
 		return dtMigrationModel;
+	}
+
+	public List<AssessmentQuestionModel> getQuestionsByMigrationId() {
+		return assessmentQuestionDao.getQuestionsByMigrationId();
 	}
 }
 

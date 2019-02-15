@@ -3,6 +3,7 @@ package com.cg.jcat.api.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -82,7 +83,7 @@ public class AssessmentQuestion {
 	@LastModifiedDate
 	private Date modifiedTime;
 
-	@OneToMany(mappedBy = "assessmentQuestion")
+	@OneToMany(mappedBy = "assessmentQuestion",cascade=CascadeType.ALL)
 	private List<QuestionOption> questionOption;
 
 	public List<QuestionOption> getQuestionOption() {

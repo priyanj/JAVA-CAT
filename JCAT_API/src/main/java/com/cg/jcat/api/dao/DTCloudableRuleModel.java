@@ -7,8 +7,10 @@ public class DTCloudableRuleModel {
 	private String questionTextEN;
 	private String optionIds;
 	private String optionTextsEN;
-
 	private int questionId;
+	private String createdBy;
+	private String modifiedBy;
+
 
 	public int getCloudableRuleId() {
 		return cloudableRuleId;
@@ -58,11 +60,29 @@ public class DTCloudableRuleModel {
 		this.questionId = questionId;
 	}
 
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
 	@Override
 	public String toString() {
 		return "DTCloudableRuleModel [cloudableRuleId=" + cloudableRuleId + ", executionOrder=" + executionOrder
 				+ ", questionTextEN=" + questionTextEN + ", optionIds=" + optionIds + ", optionTextsEN=" + optionTextsEN
-				+ ", questionId=" + questionId + "]";
+				+ ", questionId=" + questionId + ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + "]";
 	}
+
+	 
 
 }

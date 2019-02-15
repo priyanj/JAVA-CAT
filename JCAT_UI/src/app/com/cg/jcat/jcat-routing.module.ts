@@ -13,8 +13,8 @@ const routes: Routes = [
           { path: 'dashboard', loadChildren: './module/dashboard.module#DashboardModule' },
           { path: 'assessment-questions', loadChildren: './module/assessment-question.module#AssessmentQuestionsModule'},
           { path: 'dt-cloudable', loadChildren: './module/dt-cloudable.module#DtCloudableModule' },
+          { path: 'dt-migration-pattern', loadChildren: './module/dt-migration-pattern.module#DTMigrationPatternModule'}
       ]
-
       
   }
 ];

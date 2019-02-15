@@ -22,7 +22,6 @@ var AppComponent = /** @class */ (function () {
         core_1.Component({
             selector: 'app-root',
             templateUrl: './app.component.html',
-            styleUrls: ['./app.component.scss']
         }),
         __metadata("design:paramtypes", [core_2.TranslateService])
     ], AppComponent);

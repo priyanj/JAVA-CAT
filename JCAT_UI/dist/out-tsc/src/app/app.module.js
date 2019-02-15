@@ -19,15 +19,10 @@ var ngx_logger_1 = require("ngx-logger");
 var app_routing_module_1 = require("./app-routing.module");
 var app_component_1 = require("./app.component");
 var shared_1 = require("./shared");
-var assessment_questions_service_1 = require("./layout/assessment-questions/assessment-questions.service");
-// AoT requires an exported function for factories
+var forms_1 = require("@angular/forms");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
+var router_1 = require("@angular/router");
 exports.createTranslateLoader = function (http) {
-    /* for development
-    return new TranslateHttpLoader(
-        http,
-        '/start-angular/SB-Admin-BS4-Angular-6/master/dist/assets/i18n/',
-        '.json'
-    ); */
     return new http_loader_1.TranslateHttpLoader(http, './assets/i18n/', '.json');
 };
 var AppModule = /** @class */ (function () {
@@ -37,9 +32,12 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             imports: [
                 common_1.CommonModule,
+                forms_1.FormsModule,
                 platform_browser_1.BrowserModule,
                 animations_1.BrowserAnimationsModule,
                 http_1.HttpClientModule,
+                ng_bootstrap_1.NgbModule.forRoot(),
+                router_1.RouterModule.forRoot([]),
                 core_2.TranslateModule.forRoot({
                     loader: {
                         provide: core_2.TranslateLoader,
@@ -53,7 +51,7 @@ var AppModule = /** @class */ (function () {
                 ngx_logger_1.LoggerModule.forRoot({ level: ngx_logger_1.NgxLoggerLevel.DEBUG, serverLogLevel: ngx_logger_1.NgxLoggerLevel.OFF })
             ],
             declarations: [app_component_1.AppComponent],
-            providers: [shared_1.AuthGuard, assessment_questions_service_1.AssessmentQuestionsService],
+            providers: [shared_1.AuthGuard],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);

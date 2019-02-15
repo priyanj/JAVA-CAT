@@ -18,6 +18,12 @@ import { LocalStorageService } from '../utility/localStorage.service';
     dtCloudableQuestionsRule:any=[];
     idvalue:boolean=false;
     id:number;
+    cloudableRule:any=[];
+    clickedValue:boolean=false;
+    eventValue:number;
+    rule:DTCloudableRule= new DTCloudableRule();
+    clickedReversedValue:boolean=false;
+
     dtOptions: DataTables.Settings = {};
     dtTrigger:  Subject<any>  =  new  Subject();
     AllData: any;
@@ -46,28 +52,36 @@ import { LocalStorageService } from '../utility/localStorage.service';
   
     ngOnInit() {
       
-        this.dtCloudableRuleService.getAllCloudableQuestions().subscribe(result=>{this.cloudableQuestions=result,console.log(this.cloudableQuestions)});
-        
+        this.dtCloudableRuleService.getAllCloudableQuestions().subscribe(result=>{this.cloudableQuestions=result});
+        this.dtCloudableRuleService.getCloudableRule().subscribe(result=>{this.cloudableRule=result,console.log(this.cloudableRule)});
       }
 
       onClickAddrule(event:any,event1:number)
   {
     // console.log(event);
     // console.log(event1);
-    this.value=true;
-    this.dtCloudableQuestionsRule[this.index]=event;
-    // console.log(this.dtCloudableQuestionsRule);
-    this.cloudableQuestions.splice(event1,1);
-    this.index++;
+    // this.value=true;
+    this.clickedValue=true;
+    this.rule=event;
+    this.eventValue=event1;
+    // this.dtCloudableQuestionsRule[this.index]=event;
+    // // console.log(this.dtCloudableQuestionsRule);
+    // this.cloudableQuestions.splice(event1,1);
+    // this.index++;
 
   }
 
-  onClickRule(event:any)
+  onClickRule(event2:any,event:any,event1:number)
   {
+    this.clickedReversedValue=true;
+    this.rule=event2;
+    this.eventValue=event1;
+
     this.idvalue = true;
     this.id=event;
-    console.log("event");
-    console.log(event);
+
+    // console.log("event");
+    // console.log(event);
   }
 
       //   this.dtOptions  =  {
@@ -162,6 +176,191 @@ import { LocalStorageService } from '../utility/localStorage.service';
     //     });
     //   }
     // }
+
+    selectChangeHandler(optionObject,event,qid,qtext)
+    {
+      let flag=0;
+      // console.log()
+           if(event.target.checked)
+            {
+              for (let index = 0; index < this.cloudableRule.length; index++) {
+                if(this.cloudableRule[index].questionId==qid)
+                {
+                  this.cloudableRule[index].optionIds = this.cloudableRule[index].optionIds+","+optionObject.optionId;
+                  this.cloudableRule[index].optionTextsEN = this.cloudableRule[index].optionTextsEN+","+optionObject.optionTextEN;
+                  this.cloudableRule[index].modifiedBy = this.myStorage.getCurrentUserObject().username;
+                  flag++;
+                }
+              }
+              // if(flag==0){
+               
+              //   for (let index = 0; index < this.cloudableRule.length; index++) {
+                  
+              //     // if(this.cloudableRule[index].migrationId==this.migrationIdValue)
+              //     // {
+              //     if(this.cloudableRule[index].questionId==qid)
+              //     {
+                    
+              //       if(this.cloudableRule[index].optionIds==0)
+              //       {
+              //         let cloudableRuleNewObject:DTCloudableRule = new DTCloudableRule();
+              //         cloudableRuleNewObject.questionId = qid;
+              //         // cloudableRuleNewObject.migrationId = this.migrationIdValue;
+              //         cloudableRuleNewObject.optionTextsEN = optionObject.optionTextEN;
+              //         cloudableRuleNewObject.executionOrder =0;
+              //         cloudableRuleNewObject.questionTextEN = qtext;
+              //         cloudableRuleNewObject.optionIds = optionObject.optionId;
+              //         cloudableRuleNewObject.cloudableRuleId=this.cloudableRule[index].migrationRuleId;
+              //         flag = 1;
+              //       this.cloudableRule[index]=cloudableRuleNewObject;
+              //       }
+                   
+              //     }
+              //     //  }
+              //   }
+                if(flag==0){
+                  // console.log(this.allMigrationRules.length);
+                let cloudableRuleNewObject:DTCloudableRule = new DTCloudableRule();
+                cloudableRuleNewObject.questionId = qid;
+                // cloudableRuleNewObject.migrationId = this.migrationIdValue;
+                cloudableRuleNewObject.optionTextsEN = optionObject.optionTextEN;
+                cloudableRuleNewObject.executionOrder =0;
+                cloudableRuleNewObject.questionTextEN = qtext;
+                cloudableRuleNewObject.optionIds = optionObject.optionId;
+                cloudableRuleNewObject.createdBy = this.myStorage.getCurrentUserObject().username;
+                // migrationRuleNewObject.migrationRuleId = 
+                
+                this.cloudableRule[this.cloudableRule.length]=cloudableRuleNewObject;
+               // this.RuleId++;
+              }
+            // }
+            }
+            else{
+              
+              for (let index = 0; index < this.cloudableRule.length; index++) 
+              {
+                // console.log("Unchecked");
+                // console.log("*****"+this.cloudableRule[index].questionId+"&&&&&&&&&"+optionObject.qid);
+                if(this.cloudableRule[index].questionId===qid){
+                  // console.log("Unchecked**********************");
+                  // console.log("**********");
+                  // this.cloudableRule.splice(index,1);
+                  this.cloudableRule[index].optionIds =  this.cloudableRule[index].optionIds.replace(optionObject.optionId+",",'');
+                  this.cloudableRule[index].optionIds =  this.cloudableRule[index].optionIds.replace(","+optionObject.optionId,'');
+                  this.cloudableRule[index].optionTextsEN =  this.cloudableRule[index].optionTextsEN.replace(optionObject.optionTextEN+",",'');
+                  this.cloudableRule[index].optionTextsEN =  this.cloudableRule[index].optionTextsEN.replace(","+optionObject.optionTextEN,'');
+                  this.cloudableRule[index].optionIds =  this.cloudableRule[index].optionIds.replace(optionObject.optionId,'');
+                  this.cloudableRule[index].optionTextsEN =  this.cloudableRule[index].optionTextsEN.replace(optionObject.optionTextEN,'');
+                }
+              }
+            }
+            // console.log(this.cloudableRule);
+           
+    }
+
+    submit()
+    {
+      // console.log(this.cloudableRule);
+      this.dtCloudableRuleService.saveCloudableRule(this.cloudableRule).subscribe();
+    }
+
+    RuleChecked(opnObject,qid)
+    {
+      // console.log("&&&&&&&&&");
+      for (let index = 0; index < this.cloudableRule.length; index++) {
+        // console.log(this.allMigrationRules[index].questionId);
+        // console.log(opnObject.questionId+"   "+ this.allMigrationRules[index].questionId);
+        // if(this.cloudableRule[index].migrationId==this.migrationIdValue)
+        // {
+       if(qid==this.cloudableRule[index].questionId)
+       {
+        //  console.log("********");
+        if(this.cloudableRule[index].optionIds)
+        {
+         if(this.cloudableRule[index].optionIds.includes(opnObject.optionId))
+         {
+          //  Console.log("&&&&&&&&&&&&");
+              // console.log(true);
+           return true;
+          // this.checked=true;
+         }
+        }
+       }
+      // }
+      //  else{
+        
+      //   console.log(true);
+      //    return false;
+      //  }
+        
+      }
+    }
+
+    clicked(){
+      // if(this.clickedValue)
+      // {
+        this.value=true;
+        // this.idvalue = true;
+
+
+        var ins = this.dtCloudableQuestionsRule.length;
+        console.log("ins"+ins);
+        this.dtCloudableQuestionsRule[ins]=this.rule;
+        console.log(this.dtCloudableQuestionsRule);
+        this.cloudableQuestions.splice(this.eventValue,1);
+        console.log("**********")
+
+
+        // var ins = this.cloudableRule.length;
+        // console.log("ins"+ins);
+        // this.cloudableRule[ins]=this.rule;
+        // console.log(this.cloudableRule);
+        // this.cloudableQuestions.splice(this.eventValue,1);
+        // console.log("**********")
+
+        // console.log(this.index);
+        // this.index++;
+        
+      // }
+    }
+
+    reverceClicked()
+    {
+      var x = this.cloudableQuestions.length;
+      this.cloudableQuestions[x]=this.rule;   
+      console.log("&&&&&&&&&");
+      console.log(this.cloudableQuestions);
+      console.log(this.eventValue+"************");
+      this.dtCloudableQuestionsRule.splice(this.eventValue,1);
+      console.log(this.rule.questionTextEN);
+      for (let index = 0; index < this.cloudableRule.length; index++) {
+        if(this.cloudableRule[index].questionTextEN==this.rule.questionTextEN)
+        {
+          this.cloudableRule.splice(index,1);
+        }
+        
+      }
+      console.log(this.cloudableRule);
+
+      // this.cloudableRule.remove(this.rule.questionTextEN);
+     
+      // console.log(this.dtCloudableQuestionsRule);
+
+      // var x = this.cloudableQuestions.length;
+      // this.cloudableQuestions[x]=this.rule;   
+      // console.log("&&&&&&&&&");
+      // console.log(this.cloudableQuestions);
+      // console.log(this.eventValue+"************");
+      
+      // this.cloudableRule.splice(this.eventValue,1);
+      // console.log(this.cloudableRule);
+
+
+      // this.cloudableQuestions.splice(this.eventValue,1);
+      // x++;
+    }
+
+
   }
   
   

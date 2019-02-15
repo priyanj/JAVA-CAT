@@ -1,0 +1,79 @@
+<div>
+    <h2 class="text-muted">Cloudability Decision
+      <button style="background-color: white; border: aliceblue"  title="Page shows all questions which decide cloudability so here we can set rules for cloudability"
+         class="btn btn-light"  >
+        <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
+      </button>
+    </h2>
+  </div>
+
+  <form #productForm="ngForm" (ngSubmit)="submit()">
+    <div class="form-group" style="width: 100%;">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-5" >
+                <table style="display: inline-block" class="table-striped table-bordered">
+                  <thead></thead>
+                  <tbody>
+                    <tr *ngFor="let cloudableQuestion of cloudableQuestions;let i = index"  (click)="onClickAddrule(cloudableQuestion,i)">
+                      <td style="width: 500px;margin:auto" >
+                        <div >
+                          <span name="questionTex" style="word-wrap: break-word;">{{cloudableQuestions[i].questionTextEN}}</span>
+                        </div>
+                      </td>
+                      <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+                    </tr>
+      
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-sm-2" align="left" style="padding-left:4%" >
+                  <input type="button" value=">>" (click)="clicked()" >
+                    <br>
+                    <br>
+                    <input type="button" value="<<" (click)="reverceClicked()" >
+                   
+              </div>
+
+              <div class="col-sm-5"  *ngIf=value>
+                  <table style="display: inline-block" class="table-striped table-bordered">
+                    <thead></thead>
+                    <tbody>
+                      <tr *ngFor="let rule of dtCloudableQuestionsRule;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
+        
+                        <td style="width: 500px;margin:auto">
+                          <div style="width: 100%">
+                            <span name="questionText" style="word-wrap: break-word;">{{dtCloudableQuestionsRule[i].questionTextEN}}</span>
+                          </div>
+                        
+                        <br>
+                  <div *ngIf=idvalue>
+                    <div *ngIf="dtCloudableQuestionsRule[i].questionId==id">
+                        <span *ngFor="let option of dtCloudableQuestionsRule[i]['questionOptionModel'] ; let op = index" name="optionText">
+                            <div *ngIf="RuleChecked(option,dtCloudableQuestionsRule[i].questionId); else Notchecked">
+                          <input type="checkbox" checked (change)="selectChangeHandler(option,$event,dtCloudableQuestionsRule[i].questionId,dtCloudableQuestionsRule[i].questionTextEN)">{{dtCloudableQuestionsRule[i].questionOptionModel[op]['optionTextEN']}}
+                            <br>
+                            </div>
+                            <ng-template #Notchecked>
+                                <input type="checkbox" (change)="selectChangeHandler(option,$event,dtCloudableQuestionsRule[i].questionId,dtCloudableQuestionsRule[i].questionTextEN)">{{dtCloudableQuestionsRule[i].questionOptionModel[op]['optionTextEN']}}
+                                <br>
+                              </ng-template>
+                            </span>
+                            </div>
+                            </div>
+                        <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+                      </td>
+                      </tr>
+        
+                    </tbody>
+                  </table>
+                </div>
+
+
+            </div>
+          </div>
+          <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>
+          <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">Cancel</button> -->
+        </div>
+      </form>

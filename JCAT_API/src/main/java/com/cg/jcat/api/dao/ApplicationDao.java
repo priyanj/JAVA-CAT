@@ -45,7 +45,8 @@ public class ApplicationDao {
 	private boolean isDeleted = false;
 
 	public List<ApplicationModel> getApplications() {
-
+		System.out.println(applicationRepository
+				.findAllByIsActivateAndIsDeletedOrderByApplicationName(isActivate, isDeleted));
 		List<Application> applicationList = applicationRepository
 				.findAllByIsActivateAndIsDeletedOrderByApplicationName(isActivate, isDeleted);
 		List<ApplicationModel> applicationDaoList = new ArrayList<ApplicationModel>();

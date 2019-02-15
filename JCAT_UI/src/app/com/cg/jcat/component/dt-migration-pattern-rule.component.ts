@@ -16,6 +16,12 @@ import { DTMigrationRule } from '../entity/DTMigrationRule';
   styleUrls: ['../view/dt-migration-pattern-rule.component.scss']
 })
 export class DTMigrationPatternComponentRule implements OnInit {
+
+  clickedValue:boolean=false;
+  eventValue:number;
+  rule:DTMigrationRule= new DTMigrationRule();
+  clickedReversedValue:boolean=false;
+
   migrationRuleObject: Array<DTMigrationRule> = [];
   allMigrationRules: any = [];
   dtOptions: DataTables.Settings = {};
@@ -65,16 +71,55 @@ export class DTMigrationPatternComponentRule implements OnInit {
     this.originalQuestions.splice(event, 1);
   }
   onClickAddrule(event: any, event1: number) {
-    this.value = true;
-    this.rulesQuestion[this.index] = event;
+    // this.value = true;
+    // this.rulesQuestion[this.index] = event;
 
-    this.originalQuestions.splice(event1, 1);
-    this.index++;
+    // this.originalQuestions.splice(event1, 1);
+    // this.index++;
+    
+    this.clickedValue=true;
+    this.rule=event;
+    this.eventValue=event1;
   }
-  onClickRule(event: any) {
+
+  clicked(){
+    this.value = true;
+
+    var ins = this.rulesQuestion.length;
+        console.log("ins"+ins);
+        this.rulesQuestion[ins]=this.rule;
+        console.log(this.rulesQuestion);
+        this.originalQuestions.splice(this.eventValue,1);
+        console.log("**********")
+  }
+
+  onClickRule(event2:any,event:any,event1:number) {
     this.idvalue = true;
     this.id = event;
+
+    this.clickedReversedValue=true;
+    this.rule=event2;
+    this.eventValue=event1;
   }
+
+  reverceClicked()
+    {
+      var x = this.originalQuestions.length;
+      this.originalQuestions[x]=this.rule;   
+      console.log("&&&&&&&&&");
+      console.log(this.originalQuestions);
+      console.log(this.eventValue+"************");
+      this.rulesQuestion.splice(this.eventValue,1);
+      // console.log(this.rule.questionTextEN);
+      for (let index = 0; index < this.allMigrationRules.length; index++) {
+        if(this.allMigrationRules[index].questionTextEN==this.rule.questiontextEN)
+        {
+          this.allMigrationRules.splice(index,1);
+        }
+        
+      }
+      console.log(this.allMigrationRules);
+    }
 
   selectChangeHandler(optionObject, event, qid, qtext) {
     let flag = 0;

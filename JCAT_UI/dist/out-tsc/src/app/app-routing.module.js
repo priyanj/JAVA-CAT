@@ -8,12 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var shared_1 = require("./shared");
 var routes = [
-    { path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [shared_1.AuthGuard] },
-    //{ path: 'login', loadChildren: './login/login.module#LoginModule' },
-    { path: 'login', loadChildren: './layout/catlogin/catlogin.module#CatloginModule' },
-    { path: 'signup', loadChildren: './signup/signup.module#SignupModule' },
+    { path: '', loadChildren: './com/cg/jcat/jcat.module#JcatModule' },
+    //{ path: '', redirectTo: 'login', pathMatch: 'prefix' },   
+    { path: 'login', loadChildren: './com/cg/jcat/module/login.module#LoginModule' },
     { path: 'error', loadChildren: './server-error/server-error.module#ServerErrorModule' },
     { path: 'access-denied', loadChildren: './access-denied/access-denied.module#AccessDeniedModule' },
     { path: 'not-found', loadChildren: './not-found/not-found.module#NotFoundModule' },
@@ -24,6 +22,7 @@ var AppRoutingModule = /** @class */ (function () {
     }
     AppRoutingModule = __decorate([
         core_1.NgModule({
+            declarations: [],
             imports: [router_1.RouterModule.forRoot(routes)],
             exports: [router_1.RouterModule]
         })

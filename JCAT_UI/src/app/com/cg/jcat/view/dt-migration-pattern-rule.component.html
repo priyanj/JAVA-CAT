@@ -10,18 +10,18 @@
   </h2>
 </div>
 <form #productForm="ngForm" (ngSubmit)="migrationProviderMethod()">
-  <div class="form-group">
-    <div class="container">
+  <div class="form-group" style="width: 100%;">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-5" style="float: left">
-          <table style="width: 100%;display: inline-block" class="table-striped table-bordered">
+        <div class="col-sm-5">
+          <table style="display: inline-block" class="table-striped table-bordered">
             <thead></thead>
             <tbody>
-              <tr *ngFor="let size of originalQuestions;let i = index" style="width: 50%" (click)="onClickAddrule(size,i)">
+              <tr *ngFor="let size of originalQuestions;let i = index" (click)="onClickAddrule(size,i)">
 
-                <td style="width: 70%">
+                <td style="width: 500px;margin:auto" >
                   <div>
-                    <span name="questionTextEN">{{originalQuestions[i].questionTextEN}}</span>
+                    <span name="questionTextEN" style="word-wrap: break-word;">{{originalQuestions[i].questionTextEN}}</span>
                   </div>
                 </td>
               </tr>
@@ -30,15 +30,24 @@
           </table>
         </div>
 
-        <div class="col-sm-5" style="float: right" *ngIf=value>
-          <table style="width: 100%;display: inline-block" class="table-striped table-bordered">
+        <div class="col-sm-2" align="left" style="padding-left:4%" >
+          <input type="button" value=">>" (click)="clicked()" >
+            <br>
+            <br>
+            <input type="button" value="<<" (click)="reverceClicked()" >
+           
+      </div>
+
+
+        <div class="col-sm-5" *ngIf=value>
+          <table style="display: inline-block" class="table-striped table-bordered">
             <thead></thead>
             <tbody>
-              <tr *ngFor="let size of rulesQuestion;let i = index" style="width: 50%" (click)="onClickRule(size.questionId)">
+              <tr *ngFor="let size of rulesQuestion;let i = index" (click)="onClickRule(size,size.questionId,i)">
 
-                <td style="width: 700%">
-                  <div>
-                    <span name="questionTextEN">{{rulesQuestion[i].questionTextEN}}</span>
+                <td style="width: 500px;margin:auto">
+                  <div style="width: 100%">
+                    <span name="questionTextEN" style="word-wrap: break-word;">{{rulesQuestion[i].questionTextEN}}</span>
                   </div>
                   <br>
                   <div *ngIf=idvalue>

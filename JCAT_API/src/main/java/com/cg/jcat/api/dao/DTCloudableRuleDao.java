@@ -51,6 +51,8 @@ public class DTCloudableRuleDao {
 		dtCloudableRuleModel.setOptionTextsEN(dtCloudableRule.getOptionTextsEN());
 		dtCloudableRuleModel.setQuestionTextEN(dtCloudableRule.getQuestionTextEN());
 		dtCloudableRuleModel.setQuestionId(dtCloudableRule.getAssessmentQuestion().getQuestionId());
+		dtCloudableRuleModel.setCreatedBy(dtCloudableRule.getCreatedBy());
+		dtCloudableRuleModel.setModifiedBy(dtCloudableRule.getModifiedBy());
 		return dtCloudableRuleModel;
 	}
 
@@ -70,7 +72,8 @@ public class DTCloudableRuleDao {
 		dtCloudableRule.setAssessmentQuestion(assessmentQuestion);
 		dtCloudableRule.setQuestionTextEN(dtCloudableRuleModel.getQuestionTextEN());
 		dtCloudableRule.setExecutionOrder(dtCloudableRuleModel.getExecutionOrder());
-		dtCloudableRule.setCreatedBy("user1");
+		dtCloudableRule.setCreatedBy(dtCloudableRuleModel.getCreatedBy());
+		dtCloudableRule.setModifiedBy(dtCloudableRuleModel.getModifiedBy());
 		return dtCloudableRule;
 	}
 
@@ -140,7 +143,7 @@ public class DTCloudableRuleDao {
 		dtCloudableRuleHistory.setRuleOptionIds(cloudableRule.getOptionIds());
 		dtCloudableRuleHistory.setRuleOptionTextEN(cloudableRule.getOptionTextsEN());
 		dtCloudableRuleHistory.setExecutionOrder(cloudableRule.getExecutionOrder());
-		dtCloudableRuleHistory.setCreatedBy("Admin");
+		dtCloudableRuleHistory.setCreatedBy(cloudableRule.getCreatedBy());
 		dtCloudableRuleHistory.setCreatedTime(new Date());
 		return dtCloudableRuleHistory;
 	}

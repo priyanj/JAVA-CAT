@@ -6,6 +6,6 @@ export class DTCloudableRule {
     optionIds: string;
     optionTextsEN: string;
     questionId: number;
-    createdBy:number;
+    createdBy:string;
     modifiedBy:number;
 }

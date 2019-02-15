@@ -1,4 +1,4 @@
-export class DTMigrationRule {
+export class DTMigration {
 
     migrationId:number;
 	evaluationOrder:number;

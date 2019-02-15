@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTMigrationModel;
 import com.cg.jcat.api.dao.DTMigrationRuleModel;
 import com.cg.jcat.api.exception.JcatExceptions;
@@ -44,6 +45,11 @@ public class DTMigrationRuleController implements IDTMigrationRuleController {
 	@Override
 	public List<DTMigrationModel> getMigration() {
 		return dtMigrationRuleService.getMigrationPattern();
+	}
+
+	@Override
+	public List<AssessmentQuestionModel> getQuestionsByMigrationId() {
+		return dtMigrationRuleService.getQuestionsByMigrationId();
 	}
 
 }

@@ -1,0 +1,159 @@
+<!-- <form #productForm="ngForm" (ngSubmit)="migrationProviderMethod()">
+        <div class="form-group">
+              <table width="100%" datatable="bootstrap" width="100%"  [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped ">
+                 <thead bgcolor="#E0E0E0">
+                  <tr>
+                    <th>Question</th>
+                    <th>Question Description</th>
+                  </tr>
+                </thead> 
+                <tbody>
+                    <tr *ngFor="let size of migrationAllData;let i = index">
+                        <td>Question
+                            
+                            <br>Question type
+                            <br>Options
+                            <br>Migration Rule
+                         </td>  
+                        <td> 
+                                <span name="questionText" > {{migrationAllData[i].questionText}}</span> 
+                               
+                               <br> <span name="questionType" > {{migrationAllData[i].questionType}}</span>
+                               <br> <span *ngFor="let option of migrationAllData[i]['questionOption'] ; let op = index" name="optionText">{{migrationAllData[i].questionOption[op]['optionText']+" , "}}</span>
+                               <br> <input type="text" #cloudableRule name="migrationRule{{i}}" [(ngModel)]="migrationRule[i]"/>
+
+                               
+
+                           
+                        </td>
+                    </tr>
+              </tbody>
+              </table> 
+                <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>
+                <button type="cancel" class="btn btn-sm btn-info" value="Cancel"  (click)="Cancel()">Cancel</button>
+              </div>
+             </form>
+             <div *ngIf="migrationQuestionLength==0">
+                <button type="submit" class="btn btn-sm btn-info" (click)="addQuestions()">Add Questions</button>
+             </div>
+   
+     -->
+     <div>
+        <h2 class="text-muted"><strong>Migration Pattern </strong><small>Rule</small>  
+          <button style="background-color: white; border: aliceblue" title="Page shows all the Migration Pattern Questions, for which you have to set Rule" class="btn btn-light" ><i class="fa fa-question-circle" style="font-size:25px;color:blue"></i></button> 
+           
+          </h2>
+        </div>
+<form #productForm="ngForm" (ngSubmit)="migrationProviderMethod()">
+  <div class="form-group">
+    <div class="container">
+      <div class="row">
+        <!-- <div>
+         <table style="width: 100%;display: inline-block"  class="table-striped table-bordered">
+           <tbody>
+           <tr *ngFor="let size of originalQuestions;let i = index" class="table-striped table-bordered">
+              <td style="width: 40%"><div><span name="questionText" >{{originalQuestions[i].questionText}}</span></div></td>
+              <td style="width: 10%"> <input type="button" value=">>" (click)="onClickAddrule(originalQuestions[i].questionId)"></td>
+           </tr>
+          </tbody>
+         </table>
+        </div> -->
+
+
+        <div class="col-sm-5" style="float: left">
+          <table style="width: 100%;display: inline-block" class="table-striped table-bordered">
+            <thead></thead>
+            <tbody>
+              <tr *ngFor="let size of originalQuestions;let i = index" style="width: 50%" (click)="onClickAddrule(size,i)">
+
+                <td style="width: 70%">
+                  <div>
+                    <span name="questionTextEN">{{originalQuestions[i].questionTextEN}}</span>
+                  </div>
+                </td>
+                <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-sm-5" style="float: right" *ngIf=value>
+          <table style="width: 100%;display: inline-block" class="table-striped table-bordered">
+            <thead></thead>
+            <tbody>
+              <tr *ngFor="let size of rulesQuestion;let i = index" style="width: 50%" (click)="onClickRule(size.questionId)">
+
+                <td style="width: 700%">
+                  <div>
+                    <span name="questionTextEN">{{rulesQuestion[i].questionTextEN}}</span>
+                  </div>
+                  <br>
+                  <div *ngIf=idvalue>
+                    <div *ngIf="rulesQuestion[i].questionId==id">
+                      <!-- <div *ngFor="let migrationRule of allMigrationRules; let rule=index">  -->
+                      <!-- <div *ngIf ="rulesQuestion[i].questionId==migrationRule.questionId"> -->
+                      <!-- <div *ngIf="rule==0"> -->
+                      <span *ngFor="let option of rulesQuestion[i]['questionOptionModel'] ; let op = index" name="optionTextEN">
+                        <!-- <div *ngFor="let migrationRule of allMigrationRules; let rule=index"> -->
+                        <div *ngIf="RuleChecked(option); else Notchecked">
+                          <!-- [checked]="migrationRuleObject[i].migrationRule.indexOf(option.optionText)!== -1?true:false" -->
+                          <!-- </div> -->
+                          <!-- {{migrationRule.optionId}} {{option.optionId}} -->
+                          <!-- {{RuleChecked(option)}} -->
+                          <input type="checkbox" checked (change)="selectChangeHandler(option,$event,rulesQuestion[i].questionId,rulesQuestion[i].questionTextEN)">{{rulesQuestion[i].questionOptionModel[op]['optionTextEN']}}
+                          <br>
+                          <!-- migrationRule.optionId==option.optionId ? true:false -->
+                          <!-- [checked]="migrationRule.optionId==option.optionId"   -->
+                        </div>
+                        <ng-template #Notchecked>
+                          <input type="checkbox" (change)="selectChangeHandler(option,$event,rulesQuestion[i].questionId,rulesQuestion[i].questionTextEN)">{{rulesQuestion[i].questionOptionModel[op]['optionTextEN']}}
+                          <br>
+                        </ng-template>
+                      </span>
+                      <!-- </div>  -->
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                </td>
+                <!-- <td><input type="button" value=">>" (click)="onClickRule(originalQuestions[i].questionId)"></td> -->
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+
+
+        <!-- <div class="md-5" style="float: right;position: relative;vertical-align: top;margin-top: 0px" >
+          <table  style="width: 40%" >
+              <tbody>
+                <tr >
+                  <td >hsdfjsdvj</td>
+                  <td >sdhsjh</td>
+                </tr>
+                <tr >
+                    <td >hsdfjsdvj</td>
+                    <td >sdhsjh</td>
+                  </tr>
+                  <tr >
+                      <td >hsdfjsdvj</td>
+                      <td >sdhsjh</td>
+                    </tr>
+                    <tr >
+                        <td >hsdfjsdvj</td>
+                        <td >sdhsjh</td>
+                      </tr>
+                      <tr >
+                          <td >hsdfjsdvj</td>
+                          <td >sdhsjh</td>
+                        </tr>
+              </tbody>
+            </table> -->
+        <!-- </div> -->
+      </div>
+    </div>
+    <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>
+    <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">Cancel</button>
+  </div>
+</form>

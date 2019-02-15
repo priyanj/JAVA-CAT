@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTMigrationModel;
 import com.cg.jcat.api.dao.DTMigrationRuleDao;
 import com.cg.jcat.api.dao.DTMigrationRuleModel;
@@ -63,6 +64,12 @@ public class DTMigrationRuleService implements IDTMigrationRuleService {
 	@Override
 	public List<DTMigrationModel> getMigrationPattern() {
 		return dtMigrationRuleDao.getMigrationPattern();
+	}
+
+	@Override
+	public List<AssessmentQuestionModel> getQuestionsByMigrationId() {
+		// TODO Auto-generated method stub
+		return dtMigrationRuleDao.getQuestionsByMigrationId();
 	}
 
 }

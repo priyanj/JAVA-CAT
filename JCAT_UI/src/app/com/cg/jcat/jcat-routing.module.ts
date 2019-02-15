@@ -11,9 +11,10 @@ const routes: Routes = [
           { path: 'user', loadChildren: './module/user.module#UserModule' },
           { path: 'application', loadChildren: './module/application.module#ApplicationModule' },
           { path: 'dashboard', loadChildren: './module/dashboard.module#DashboardModule' },
-          { path: 'assessment-questions', loadChildren: './module/assessment-question.module#AssessmentQuestionsModule'}
+          { path: 'assessment-questions', loadChildren: './module/assessment-question.module#AssessmentQuestionsModule'},
+          { path: 'dt-migration-pattern', loadChildren: './module/dt-migration-pattern.module#DTMigrationPatternModule'}
       ]
-
+      
       
   }
 ];

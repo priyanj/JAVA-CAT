@@ -175,17 +175,17 @@ public class AssessmentService implements IAssessmentService {
 			}
 			if (migrationDAO.getLogicalOperator().equalsIgnoreCase("AND") && (count == numberOfRules.size())) {
 				application.setAssessmentStage(2);
-				application.setDtMigrationPattern(migrationDAO.getMigration_pattern());
+				application.setDtMigrationPattern(migrationDAO.getMigrationPattern());
 				assessmentDao.saveApp(application);
 				break;
 			}
 			if (migrationDAO.getLogicalOperator().equalsIgnoreCase("OR") && count >= 1) {
-				application.setDtMigrationPattern(migrationDAO.getMigration_pattern());
+				application.setDtMigrationPattern(migrationDAO.getMigrationPattern());
 				assessmentDao.saveApp(application);
 				break;
 			}
 			if (migrationDAO.getLogicalOperator().equalsIgnoreCase("Others")) {
-				application.setDtMigrationPattern(migrationDAO.getMigration_pattern());
+				application.setDtMigrationPattern(migrationDAO.getMigrationPattern());
 				assessmentDao.saveApp(application);
 				break;
 			}

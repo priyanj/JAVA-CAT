@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTMigrationModel;
 import com.cg.jcat.api.dao.DTMigrationRuleModel;
 import com.cg.jcat.api.exception.JcatExceptions;
@@ -19,5 +20,7 @@ public interface IDTMigrationRuleService {
 			throws SystemExceptions, OptionTextNotNullException;
 
 	public List<DTMigrationModel> getMigrationPattern();
+
+	public List<AssessmentQuestionModel> getQuestionsByMigrationId();
 
 }

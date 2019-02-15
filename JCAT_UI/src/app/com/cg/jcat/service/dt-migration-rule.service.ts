@@ -30,4 +30,8 @@ export class DTMigrationRuleService {
     return this.http.get(this.myStorage.getdomainURL() + `/migration/get/pattern`);
   }
 
+  getMigrationQuestions(){
+    return this.http.get(this.myStorage.getdomainURL() + `/migration/get/questions`);
+  }
+
 }

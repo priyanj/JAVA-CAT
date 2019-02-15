@@ -1,0 +1,76 @@
+<div>
+    <h2 class="text-muted">
+        <strong>Cloud Provider </strong>
+        <small>Rule</small>
+        <button style="background-color: white; border: aliceblue"  title="Page shows all the Migration Pattern Questions, for which you have to set Rule"
+             class="btn btn-light"  >
+            <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
+        </button>
+
+    </h2>
+</div>
+<form #productForm="ngForm" (ngSubmit)="cloudProviderMethod()">
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5" style="float: left">
+                    <table style="width: 100%;display: inline-block" class="table-striped table-bordered">
+                        <thead></thead>
+                        <tbody>
+                            <tr *ngFor="let size of originalQuestions;let i = index" style="width: 50%" (click)="onClickAddrule(size,i)">
+
+                                <td style="width: 10%">
+                                    <div>
+                                        <span name="questionTextEN">{{originalQuestions[i].questionTextEN}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-sm-2" align="left" style="padding-left:4%" >
+                    <input type="button" value=">>" (click)="clicked()" >
+                    <br>
+                    <br>
+                    <input type="button" value="<<" (click)="reverceClicked()" >
+                    </div> 
+
+                <div class="col-sm-5" style="float: right" *ngIf=value>
+                    <table style="width: 100%;display: inline-block" class="table-striped table-bordered">
+                        <thead></thead>
+                        <tbody>
+                            <tr *ngFor="let size of rulesQuestion;let i = index" style="width: 50%" (click)="onClickRule(size,i)">
+
+                                <td style="width: 700%">
+                                    <div>
+                                        <span name="questionTextEN">{{rulesQuestion[i].questionTextEN}}</span>
+                                    </div>
+                                    <br>
+                                    <div *ngIf=idvalue>
+                                        <div *ngIf="rulesQuestion[i].questionId==id">
+                                            <span *ngFor="let option of rulesQuestion[i]['questionOptionModel'] ; let op = index" name="optionTextEN">
+                                                <div *ngIf="RuleChecked(option,rulesQuestion[i].questionId); else Notchecked">
+                                                    <input type="checkbox" checked (change)="selectChangeHandler(option,$event,rulesQuestion[i].questionId,rulesQuestion[i].questionTextEN)">{{rulesQuestion[i].questionOptionModel[op]['optionTextEN']}}
+                                                    <br>
+                                                </div>
+                                                <ng-template #Notchecked>
+                                                    <input type="checkbox" (change)="selectChangeHandler(option,$event,rulesQuestion[i].questionId,rulesQuestion[i].questionTextEN)">{{rulesQuestion[i].questionOptionModel[op]['optionTextEN']}}
+                                                    <br>
+                                                </ng-template>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-sm btn-info div-button" (click)="saveRule()">Submit</button>
+        <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">Cancel</button>
+    </div>
+</form>

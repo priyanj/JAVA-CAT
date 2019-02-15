@@ -36,6 +36,9 @@ public class DTProviderRuleDao {
 
 	@Autowired
 	private IAssessmentQuestionRepository assessmentQuestionRepository;
+	
+	@Autowired
+	private AssessmentQuestionDao assessmentQuestionDao;
 
 	/*
 	 * GET ALL PROVIDERS PRESENT IN DATABASE
@@ -247,12 +250,9 @@ public class DTProviderRuleDao {
 		cloudProviderRule.setModifiedBy("Admin");
 		return cloudProviderRule;
 	}
-	//
-	// public void setCloudprovider(Application application, String providerName) {
-	// // TODO Auto-generated method stub
-	//
-	//
-	// }
-	//
+
+	public List<AssessmentQuestionModel> getProviderQuestions() {
+		return assessmentQuestionDao.getQuestionsByProvider();
+	}
 
 }

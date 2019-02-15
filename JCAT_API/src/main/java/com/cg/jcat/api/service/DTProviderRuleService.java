@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTProviderRuleDao;
 import com.cg.jcat.api.dao.DTProviderRuleModel;
 import com.cg.jcat.api.dao.DTProvidersModel;
@@ -69,6 +70,12 @@ public class DTProviderRuleService implements IDTProviderRuleService {
 		List<DTProviderRuleModel> DTProviderRuleModel = dtCloudProviderDao.getCloudProviderRules(providerId);
 		logger.info("Retriving all providers from DB! based on id, number of providers " + DTProviderRuleModel.size());
 		return DTProviderRuleModel;
+	}
+
+	@Override
+	public List<AssessmentQuestionModel> getProviderQuestions() {
+		// TODO Auto-generated method stub
+		return dtCloudProviderDao.getProviderQuestions();
 	}
 
 }

@@ -12,10 +12,9 @@ const routes: Routes = [
           { path: 'application', loadChildren: './module/application.module#ApplicationModule' },
           { path: 'dashboard', loadChildren: './module/dashboard.module#DashboardModule' },
           { path: 'assessment-questions', loadChildren: './module/assessment-question.module#AssessmentQuestionsModule'},
-          { path: 'dt-migration-pattern', loadChildren: './module/dt-migration-pattern.module#DTMigrationPatternModule'}
-      ]
-      
-      
+          { path: 'dt-migration-pattern', loadChildren: './module/dt-migration-pattern.module#DTMigrationPatternModule'},
+          { path: 'dt-cloud-provider', loadChildren: './module/dt-cloud-provider.module#ForCloudProviderModule'}
+      ] 
   }
 ];
 

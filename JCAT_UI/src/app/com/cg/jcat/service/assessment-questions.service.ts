@@ -29,6 +29,14 @@ export class AssessmentQuestionsService {
     return this.http.post(this.myStorage.getdomainURL() + `/assessmentQuestion/createQuestion`,question);
   }
 
+  private  comptransfer  =  new  BehaviorSubject("Assessment Questions");
+  question  =  this.comptransfer.asObservable();
+
+  sendMsgtoOtherComponent(messsage) {
+    this.comptransfer.next(messsage);
+  }
+
+
   updateQuestion(value: any): Observable<Object> {
     return this.http.put(this.myStorage.getdomainURL+`/assessmentQuestion/updateQuestion`, value);
   }
@@ -38,5 +46,6 @@ export class AssessmentQuestionsService {
       responseType: 'text' 
     });
   }
+
 
 }

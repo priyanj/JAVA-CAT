@@ -51,7 +51,12 @@ class DataTablesResponse {
     addAssessmentQuestions() {
           this.router.navigate(['/assessment-questions/add-assessment-question']);
           }
-  
+    
+     updateQuestions(formvalues){
+
+      this.assessmentQuestionsService.sendMsgtoOtherComponent(formvalues);
+        this.router.navigate(['/assessment-questions/assessment-question-update']);
+     }      
     deleteQuestions(formvalues) {
       this.assessmentQuestionsService.deleteQuestion(formvalues)
       .subscribe(

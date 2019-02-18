@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cg.jcat.api.JcatApiApplication;
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTProviderRuleModel;
 import com.cg.jcat.api.dao.DTProvidersModel;
 import com.cg.jcat.api.exception.CountMissMatchException;
@@ -36,7 +37,7 @@ public class DTProviderRuleController implements IDTProviderRuleController {
 	@Override
 	public boolean saveCloudProviderRule(List<DTProviderRuleModel> cloudProviderRuleModelList)
 			throws SystemExceptions, OptionTextNotNullException, CountMissMatchException {
-
+		System.out.println(cloudProviderRuleModelList);
 		return dtCloudProviderService.saveCloudProviderRule(cloudProviderRuleModelList);
 	}
 
@@ -44,6 +45,11 @@ public class DTProviderRuleController implements IDTProviderRuleController {
 	public List<DTProviderRuleModel> getCloudProviderRules(int providerId) {
 
 		return dtCloudProviderService.getCloudProviderRules(providerId);
+	}
+
+	@Override
+	public List<AssessmentQuestionModel> getProviderQuestions() throws SystemExceptions {
+		return dtCloudProviderService.getProviderQuestions();
 	}
 
 }

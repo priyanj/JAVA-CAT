@@ -29,8 +29,10 @@ public class ApplicationController implements IApplicationController {
 	@Override
 	public List<ApplicationModel> getApplications() throws SystemExceptions {
 		try {
+			System.out.println(applicationService.getApplications());
 			return applicationService.getApplications();
 		} catch (Exception e) {
+			
 			System.out.println(e);
 			logger.error("Applications Not available ", e.getMessage());
 			throw new SystemExceptions("getApplications()");

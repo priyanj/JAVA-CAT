@@ -35,6 +35,7 @@ public class DTMigrationRuleController implements IDTMigrationRuleController {
 	@Override
 	public void saveMigrationRule(List<DTMigrationRuleModel> dtMigrationRuleModel) throws SystemExceptions {
 		try {
+			System.out.println(dtMigrationRuleModel);
 			dtMigrationRuleService.saveMigrationRule(dtMigrationRuleModel);
 		} catch (JcatExceptions e) {
 			logger.error("Error in saveMigration()");

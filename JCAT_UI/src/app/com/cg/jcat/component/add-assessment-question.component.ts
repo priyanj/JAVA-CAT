@@ -1,18 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-// import { AssessmentQuestions } from '../Question';
-// import { AssessmentQuestionsService } from '../assessment-questions.service';
-// import { QuestionOption } from '../Option';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AssessmentQuestions } from '../entity/AssessmentQuestion';
 import { QuestionOption } from '../entity/QuestionOption';
 import { AssessmentQuestionsService } from '../service/assessment-questions.service';
 import { LocalStorageService } from '../utility/localStorage.service';
-// import { Observable, BehaviorSubject } from 'rxjs';
-// import { MigrationRule } from '../MigrationRule';
-// import { CloudProviderRule } from '../CloudProviderRule';
-// import { LocalStorageService } from '../../utility/service/localStorage.service';
+
 
 @Component({
   selector: 'app-add-assessment-question',

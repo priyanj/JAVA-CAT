@@ -30,4 +30,15 @@ ngOnInit() {
     return this.http.get(this.myStorage.getdomainURL() + `/cloudProvider/getAll`);
   }
 
+  getProviderQuestions(){
+    return this.http.get(this.myStorage.getdomainURL() + `/cloudProvider/get/questions`);
+  }
+
+  private  comptransfer  =  new  BehaviorSubject("Wrong Provider Id!!");
+  providerId  =  this.comptransfer.asObservable();
+
+  sendProviderIdtoProviderRuleComponent(messsage) {
+    this.comptransfer.next(messsage);
+  }
+
 }

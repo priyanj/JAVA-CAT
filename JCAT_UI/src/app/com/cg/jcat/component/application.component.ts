@@ -42,6 +42,7 @@ export class ApplicationComponent implements OnInit {
     this.applicationService.getAllAplication().subscribe(result => 
       {
       this.applicationList= result ;
+      console.log(this.applicationList);
       this.logger.log(JSON.stringify(this.applicationList));
       this.dtTrigger.next();
       });

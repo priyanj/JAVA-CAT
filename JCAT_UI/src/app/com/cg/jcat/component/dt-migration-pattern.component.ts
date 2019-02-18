@@ -14,29 +14,28 @@ import { DTMigrationRuleService } from '../service/dt-migration-rule.service';
 export class DTMigrationPatternComponent implements OnInit {
   assessmentQuestions: AssessmentQuestions = new AssessmentQuestions();
   dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
-  migrationPatternData : any = [];
-  constructor(private forMigrationPatternService : DTMigrationRuleService,public router: Router,private http: HttpClient) { }
+  dtTrigger:  Subject<any>  =  new  Subject();
+  migrationPatternData :  any  =  [];
+  constructor(private forMigrationPatternService: DTMigrationRuleService, public router: Router, private http: HttpClient) { }
 
   ngOnInit() {
 
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      responsive: true};
-    this.forMigrationPatternService.getMigration().subscribe(result => 
-      {
-      this.migrationPatternData = result ;
+    this.dtOptions  =  {
+      pagingType:  'full_numbers',
+      pageLength:  10,
+      responsive:  true
+    };
+    this.forMigrationPatternService.getMigration().subscribe(result  => {
+      this.migrationPatternData  =  result ;
       this.dtTrigger.next();
-     
-      });
+
+    });
   }
 
-  questions(migrationId:number)
-  {
+  questions(migrationId: number) {
+    this.forMigrationPatternService.sendMsgtoOtherComponent(migrationId);
     this.forMigrationPatternService.getMigrationQuestions().subscribe(
-      result =>
-      {
+      result => {
         this.router.navigate(['/dt-migration-pattern/dt-migration-pattern-rule']);
       }
     );

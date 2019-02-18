@@ -1,0 +1,33 @@
+<div>
+    <h2 class="text-muted"><strong>Detailed </strong><small>Decision Tree</small></h2>
+</div>
+
+
+<button (click)="setEvaluationOrder()" title="Set Order" style="font-size:16px" class="button button; btn btn-info">Set Evaluation Order</button>
+<div>
+    <br>
+    <div class="container">
+      <table datatable="bootstrap" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped ">
+          <thead>
+            <tr>
+              <th>Cloud Provider</th>
+             
+              <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor = "let size of AllData;let i = index">
+               
+                
+                <td>{{size.providerName}}</td>
+              
+                <td><button (click)="addRule(size.providerId)" title="For Cloudable" style="font-size:16px" class="button button; btn btn-info">Add Rule</button></td>
+               <hr>
+               
+            </tr> 
+        </tbody>
+      </table>
+</div>
+</div>
+
+

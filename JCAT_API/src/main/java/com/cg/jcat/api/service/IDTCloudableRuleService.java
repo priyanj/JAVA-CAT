@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTCloudableRuleModel;
 import com.cg.jcat.api.exception.SystemExceptions;
 
@@ -16,4 +17,5 @@ public interface IDTCloudableRuleService {
 
 	public boolean saveCloudableRule(List<DTCloudableRuleModel> dtCloudableRuleModelList) throws SystemExceptions;
 
+	public List<AssessmentQuestionModel> getCloudableQuestions();
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cg.jcat.api.dao.AssessmentQuestionModel;
 import com.cg.jcat.api.dao.DTCloudableRuleModel;
 import com.cg.jcat.api.exception.SystemExceptions;
 import com.cg.jcat.api.service.IDTCloudableRuleService;
@@ -38,7 +39,14 @@ public class DTCloudableRuleController implements IDTCloudableRuleController {
 	@Override
 	public boolean saveCloudableRule(List<DTCloudableRuleModel> dTCloudableRuleModelList) throws SystemExceptions {
 
+		System.out.println(dTCloudableRuleModelList);
 		return iDTCloudableRuleService.saveCloudableRule(dTCloudableRuleModelList);
+	}
+	
+	@Override
+	public List<AssessmentQuestionModel> getCloudableQuestions() {
+		
+		return iDTCloudableRuleService.getCloudableQuestions();
 	}
 
 }

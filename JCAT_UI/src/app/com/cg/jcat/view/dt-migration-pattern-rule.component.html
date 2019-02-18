@@ -19,7 +19,7 @@
             <tbody>
               <tr *ngFor="let size of originalQuestions;let i = index" (click)="onClickAddrule(size,i)">
 
-                <td style="width: 500px;margin:auto" >
+                <td style="width: 500px;margin:auto">
                   <div>
                     <span name="questionTextEN" style="word-wrap: break-word;">{{originalQuestions[i].questionTextEN}}</span>
                   </div>
@@ -30,13 +30,13 @@
           </table>
         </div>
 
-        <div class="col-sm-2" align="left" style="padding-left:4%" >
-          <input type="button" value=">>" (click)="clicked()" >
-            <br>
-            <br>
-            <input type="button" value="<<" (click)="reverceClicked()" >
-           
-      </div>
+        <div class="col-sm-2" align="left" style="padding-left:4%">
+          <input type="button" value=">>" (click)="clicked()">
+          <br>
+          <br>
+          <input type="button" value="<<" (click)="reverceClicked()">
+
+        </div>
 
 
         <div class="col-sm-5" *ngIf=value>

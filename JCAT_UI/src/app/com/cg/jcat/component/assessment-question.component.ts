@@ -53,7 +53,7 @@ class DataTablesResponse {
           }
     
      updateQuestions(formvalues){
-
+      console.log(formvalues);
       this.assessmentQuestionsService.sendMsgtoOtherComponent(formvalues);
         this.router.navigate(['/assessment-questions/assessment-question-update']);
      }      

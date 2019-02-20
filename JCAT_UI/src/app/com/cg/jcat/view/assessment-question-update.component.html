@@ -3,7 +3,7 @@
   <hr width="100%" size="80">
 </h1>
 <div [hidden]="submitted" style="width: 300px;">
-  <form role="form" #add="ngForm" style="width: 100%" (ngSubmit)="onSubmit(add.value)">
+  <form role="form" #add="ngForm" style="width: 100%" (ngSubmit)="onSubmit()">
     <div class="form-content">
       <div class="form-group">
         <br>
@@ -24,7 +24,7 @@
       <div class="form-group">
         <label for="questionType">Question Type</label>
         <select [(ngModel)]="question.questionType" class="form-control" #questionType="ngModel" required name="questionType">
-            <option hidden>select question type</option>
+            <!-- <option hidden>select question type</option> -->
             <option *ngFor="let size of questionTypeEnum" >{{size}}</option>
         </select>
       </div>
@@ -87,16 +87,18 @@
           <div *ngIf="first ; else notfirst">
           </div>
           <ng-template #notfirst>
-            <label for="answers">Answer Text English{{size}}</label>
+            <label for="answers">Option Text English{{size}}</label>
             <br>
-            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="optionText[i-1]" required #answer="ngModel" />
-            <br>
+            <input type="text" class="form-control" name="jk{{i}}" [(ngModel)]="optionText[i-1]"  />
+            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span>
             <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div>
-            <label for="answers">Answer Text German{{size}}</label>
             <br>
-            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="optionTextl2[i-1]" required #answer="ngModel" />
+            <label for="answers">Option Text German{{size}}</label>
+            <br>
+            <input type="text" class="form-control" name="{{i}}" [(ngModel)]="optionTextl2[size-1]"  />
+            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span>
             <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div>

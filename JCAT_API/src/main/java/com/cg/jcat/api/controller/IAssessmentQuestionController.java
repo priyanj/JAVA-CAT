@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.jcat.api.dao.AssessmentQuestionModel;
+import com.cg.jcat.api.dao.DTCloudableRuleModel;
 import com.cg.jcat.api.entity.AssessmentQuestion;
+import com.cg.jcat.api.exception.SystemExceptions;
 import com.cg.jcat.api.utility.QuestionTypeEnum;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -22,6 +24,9 @@ import com.cg.jcat.api.utility.QuestionTypeEnum;
 @RequestMapping("/assessmentQuestion")
 public interface IAssessmentQuestionController {
 
+	@GetMapping("/getCloudableQuestion")
+	public List<AssessmentQuestionModel> getCloudableQuestions();
+	
 	@GetMapping("/getAll")
 	public List<AssessmentQuestion> getQuestions();
 

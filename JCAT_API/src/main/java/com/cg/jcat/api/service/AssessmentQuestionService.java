@@ -48,4 +48,9 @@ public class AssessmentQuestionService implements IAssessmentQuestionService {
 		return assessmentQuestionDao.getQuestionById(questionId);
 	}
 
+	@Override
+	public List<AssessmentQuestionModel> getCloudableQuestions() {
+		
+		return assessmentQuestionDao.getCloudableQuestions();
+	}
 }

@@ -133,13 +133,12 @@ public class Answer {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getModifiedTime() {
-		return modifiedTime;
-	}
-
-	public void setModifiedTime(Date modifiedTime) {
-		this.modifiedTime = modifiedTime;
-	}
+//	public Date getModifiedTime() {
+//	}
+//
+//	public void setModifiedTime(Date modifiedTime) {
+//		this.modifiedTime = modifiedTime;
+//	}
 
 	@Override
 	public String toString() {
@@ -149,5 +148,7 @@ public class Answer {
 				+ dtMigrationRuleResult + ", dtProviderRuleResult=" + dtProviderRuleResult + ", modifiedBy="
 				+ modifiedBy + ", modifiedTime=" + modifiedTime + "]";
 	}
+
+	
 
 }

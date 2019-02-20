@@ -42,7 +42,6 @@ export class ApplicationComponent implements OnInit {
     this.applicationService.getAllAplication().subscribe(result => 
       {
       this.applicationList= result ;
-      console.log(this.applicationList);
       this.logger.log(JSON.stringify(this.applicationList));
       this.dtTrigger.next();
       });
@@ -137,7 +136,6 @@ headers:["Application Name","Application Description","UserId"]
    assessApplication(formvalues){
     this.logger.log(JSON.stringify(formvalues));
     this.logger.log(formvalues.applicationId)
-    console.log(JSON.stringify(formvalues));
     this.applicationService.sendMsgtoOtherComponent(formvalues);
      this.router.navigate(['/application/assesst-application']);
 

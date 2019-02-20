@@ -210,6 +210,19 @@ public class AssessmentQuestion {
 		this.modifiedBy = modifiedBy;
 	}
 	
+	
+	public Date getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
 	@Override
 	public String toString() {
 		return "AssessmentQuestion [questionId=" + questionId + ", assessmentTypeForCloudable="

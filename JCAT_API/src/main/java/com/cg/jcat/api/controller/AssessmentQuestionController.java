@@ -50,7 +50,6 @@ public class AssessmentQuestionController implements IAssessmentQuestionControll
 
 	@Override
 	public void updateQuestion(AssessmentQuestionModel question) {
-		System.out.println(question);
 		assessmentQuestionService.updateQuestion(question);
 
 	}

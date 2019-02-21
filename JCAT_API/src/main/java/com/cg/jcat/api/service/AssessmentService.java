@@ -48,8 +48,8 @@ public class AssessmentService implements IAssessmentService {
 	Date date = new Date();
 
 	@Override
-	public List<AnswerModel> getAnswers(int applicationId) {
-		return assessmentDao.getAnswers(applicationId);
+	public List<AnswerModel> getAnswers(int applicationId,int assessmentStage) {
+		return assessmentDao.getAnswers(applicationId,assessmentStage);
 	}
 
 	@Override
@@ -109,6 +109,9 @@ public class AssessmentService implements IAssessmentService {
 	}
 
 	private void stage1(Application application) {
+		System.out.println(application);
+		application.setAssessmentStage(1);
+		assessmentDao.saveApp(application);
 		cloudableCheck(application);
 	}
 
@@ -123,7 +126,6 @@ public class AssessmentService implements IAssessmentService {
 
 	public boolean cloudableCheck(Application application) {
 		int cloudableRuleFlag = 0;
-		application.setAssessmentStage(1);
 
 		List<DTCloudableRuleModel> cloudableRuleList = dtCloudableRuleDao.getCloudableRule();
 		List<Answer> answersList = assessmentDao.getAnswersByApplicationId(application.getAid());

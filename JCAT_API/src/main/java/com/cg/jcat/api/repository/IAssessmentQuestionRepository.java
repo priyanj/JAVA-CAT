@@ -9,8 +9,6 @@ import com.cg.jcat.api.entity.AssessmentQuestion;
 
 public interface IAssessmentQuestionRepository extends JpaRepository<AssessmentQuestion, Integer>{
 
-//	AssessmentQuestion findById(int questionId);
-	
 	AssessmentQuestion findByQuestionTextEN(String questionDescriptionEN);
 
 	List<AssessmentQuestion> findByIsDeleted(boolean isDeleteValue);
@@ -26,6 +24,9 @@ public interface IAssessmentQuestionRepository extends JpaRepository<AssessmentQ
 
 	List<AssessmentQuestion> findAllByIsDeletedAndAssessmentTypeForCloudable(boolean isDeleted,
 			boolean assessmentTypeForCloudable);
+
+	List<AssessmentQuestion> findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigration(
+			boolean isDeleted, boolean assessmentTypeForCloudProvider, boolean assessmentTypeForMigration);
 
 
 

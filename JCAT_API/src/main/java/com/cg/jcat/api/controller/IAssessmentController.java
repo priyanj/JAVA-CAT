@@ -20,16 +20,12 @@ import com.cg.jcat.api.exception.SystemExceptions;
 @RequestMapping("/assessment")
 public interface IAssessmentController {
 
-	@GetMapping("answer/get/{applicationId}")
-	public List<AnswerModel> getAnswers(@PathVariable int applicationId);
-	
-	@GetMapping("answer/get/{applicationId}/{assessmentStage}")
-	public List<AnswerModel> getAnswers(@PathVariable int applicationId, int assessmentStage);
-	
+	@GetMapping("answer/get/{applicationId}/{questionId}")
+	public List<AnswerModel> getAnswers(@PathVariable int applicationId, @PathVariable int questionId);
+
 	@PostMapping("answer/create/{applicationId}")
 	public boolean saveAnswers(@RequestBody List<AnswerModel> answerModels, @PathVariable int applicationId)
 			throws SystemExceptions, OptionTextNotNullException, CountMissMatchException;
-	
 
 	@PostMapping("finalize/{applicationId}/{assessmentStage}")
 	public void finalized(@RequestBody List<AnswerModel> answerModels, @PathVariable int applicationId,

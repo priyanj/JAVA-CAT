@@ -44,5 +44,8 @@ public interface IAssessmentQuestionController {
 
 	@DeleteMapping("/deleteQuestion/{questionId}")
 	public void deleteQuestion(@PathVariable int questionId);
+	
+	@GetMapping("/getPatternAndProviderQuestions")
+	public List<AssessmentQuestionModel> getPatternAndProviderQuestions();
 
 }

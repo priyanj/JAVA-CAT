@@ -5,7 +5,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LocalStorageService } from '../utility/localStorage.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AssessmentQuestionsService {
   constructor(private http: HttpClient, private myStorage: LocalStorageService) {
 
@@ -13,6 +15,14 @@ export class AssessmentQuestionsService {
 
   getAllQuestions() {
     return  this.http.get(this.myStorage.getdomainURL()+`/assessmentQuestion/getAll`);
+  }
+
+  // getPatternAndProviderQuestions(){
+  //   return  this.http.get(this.myStorage.getdomainURL()+`/assessmentQuestion/getPatternAndProviderQuestions`);
+  // }
+
+  getPatternAndProviderQuestions(){
+    return this.http.get(this.myStorage.getdomainURL()+`/assessmentQuestion/getPatternAndProviderQuestions`);
   }
 
   getQuestionType(){

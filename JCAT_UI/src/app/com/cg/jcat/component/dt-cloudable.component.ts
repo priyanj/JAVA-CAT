@@ -14,6 +14,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
   })
   export class DtCloudableComponent implements OnInit {
     cloudableQuestions:any = [];
+    cloudableQuestionsAfterSave:any = [];
     index:number=0;
     dtCloudableQuestionsRule:any=[];
     idvalue:boolean=false;
@@ -51,9 +52,14 @@ import { LocalStorageService } from '../utility/localStorage.service';
     }
   
     ngOnInit() {
+
+
       
-        this.dtCloudableRuleService.getAllCloudableQuestions().subscribe(result=>{this.cloudableQuestions=result});
-        this.dtCloudableRuleService.getCloudableRule().subscribe(result=>{this.cloudableRule=result,console.log(this.cloudableRule)});
+        this.dtCloudableRuleService.getAllCloudableQuestions().subscribe(result=>{
+          this.dtCloudableRuleService.getCloudableRule().subscribe(result=>{this.cloudableRule=result,console.log(this.cloudableRule)});
+        this.cloudableQuestions=result
+        this.cloudableQuestionsAfterSave=result});
+        
       }
 
       onClickAddrule(event:any,event1:number)

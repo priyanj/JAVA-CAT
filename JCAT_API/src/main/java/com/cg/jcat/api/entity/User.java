@@ -44,11 +44,11 @@ public class User {
 
 	@ColumnDefault("0")
 	@NotNull(message = "must select admin")
-	private boolean isAdmin = false;
+	private boolean isAdmin;
 
 	@ColumnDefault("0")
 	@NotNull(message = "select isDelete")
-	private boolean isDeleted = false;
+	private boolean isDeleted;
 
 	private Date lastLoginTime;
 

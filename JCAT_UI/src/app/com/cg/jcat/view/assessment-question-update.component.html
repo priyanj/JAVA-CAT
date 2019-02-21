@@ -48,8 +48,8 @@
 
       <div class="form-group">
         <label for="questionText">Question</label>
-        <input type="text" class="form-control" id="questionText" required #questionTest="ngModel" [(ngModel)]="question.questionTextEN"
-          name="questionText">
+        <input type="text" class="form-control" id="questionTextEn" required #questionTest="ngModel" [(ngModel)]="question.questionTextEN"
+          name="questionTextEn">
         <div *ngIf="questionTest?.touched">
           <div *ngIf="questionTest.errors?.required" class="color">*Question can't be empty</div>
         </div>
@@ -57,8 +57,8 @@
 
       <div class="form-group">
           <label for="questionText">Question Text German</label>
-          <input type="text" class="form-control" id="questionText" required #questionTest="ngModel" [(ngModel)]="question.questionTextLang2"
-            name="questionText">
+          <input type="text" class="form-control" id="questionTextl2" required #questionTest="ngModel" [(ngModel)]="question.questionTextLang2"
+            name="questionTextL2">
           <div *ngIf="questionTest?.touched">
             <div *ngIf="questionTest.errors?.required" class="color">*Question can't be empty</div>
           </div>
@@ -89,8 +89,8 @@
           <ng-template #notfirst>
             <label for="answers">Option Text English{{size}}</label>
             <br>
-            <input type="text" class="form-control" name="jk{{i}}" [(ngModel)]="optionText[i-1]"  />
-            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span>
+            <input type="text" class="form-control" name="option{{i}}" [(ngModel)]="optionText[i-1]"  />
+            <!-- <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span> -->
             <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div>
@@ -98,7 +98,7 @@
             <label for="answers">Option Text German{{size}}</label>
             <br>
             <input type="text" class="form-control" name="{{i}}" [(ngModel)]="optionTextl2[size-1]"  />
-            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span>
+            <!-- <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span> -->
             <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div>

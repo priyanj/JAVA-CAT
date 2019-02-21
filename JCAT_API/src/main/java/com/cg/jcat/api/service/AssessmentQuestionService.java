@@ -53,4 +53,10 @@ public class AssessmentQuestionService implements IAssessmentQuestionService {
 		
 		return assessmentQuestionDao.getCloudableQuestions();
 	}
+
+	@Override
+	public List<AssessmentQuestionModel> getPatternAndProviderQuestions() {
+		return assessmentQuestionDao.getPatternAndProviderQuestions();
+	}
+	
 }

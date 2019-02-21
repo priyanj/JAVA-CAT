@@ -108,15 +108,15 @@ public class TestAssessmentService {
 		answerModels.add(answerModel);
 		result = assessmentService.saveAnswers(answerModels, 1);
 		assertTrue(result); // check answers are saving in database or not
-		assertEquals(1, assessmentService.getAnswers(1).size()); // check size of answers in database
-		answerModels = assessmentService.getAnswers(1); // get answers in list
+		assertEquals(1, assessmentService.getAnswers(1,0).size()); // check size of answers in database  //**** changes
+		answerModels = assessmentService.getAnswers(1,0); // get answers in list //****
 
 		/*
 		 * Call finalize
 		 */
 		assessmentService.finalized(answerModels, 1, 1);
-		assertEquals(1, assessmentService.getAnswers(1).size());
-		assertEquals(true, assessmentService.getAnswers(1).get(0).isDtCloudableRuleResult());
+		assertEquals(1, assessmentService.getAnswers(1,0).size()); //****
+		assertEquals(true, assessmentService.getAnswers(1,0).get(0).isDtCloudableRuleResult()); //****
 
 		Application application = assessmentDao.getApplicationByApplicationId(1);
 		assertEquals(1, application.getAssessmentStage()); // check application stage
@@ -177,7 +177,7 @@ public class TestAssessmentService {
 		answerModels.add(getAnswerModel(2, 1, false, false, false, "Admin", "1,2", "2ms,5ms", 2, "question2"));
 		result = assessmentService.saveAnswers(answerModels, 1); // answerList, applicationId in parameter
 		assertTrue(result); // check answers are saving in database or not
-		assertEquals(2, assessmentService.getAnswers(1).size()); // check size of answers in database
+		assertEquals(2, assessmentService.getAnswers(1,0).size()); // check size of answers in database //****
 		// answerModels = assessmentService.getAnswers(1); // get answers in list
 		// assertEquals(1, answerModels.get(0).getAnswerId()); // check dt cloudable
 		// result
@@ -252,8 +252,8 @@ public class TestAssessmentService {
 				"Operating System: Provide version, edition for operating system on web"));
 		result = assessmentService.saveAnswers(answerModels, 1);
 		assertTrue(result); // check answers are saving in database or not
-		assertEquals(3, assessmentService.getAnswers(1).size()); // check size of answers in database
-		answerModels = assessmentService.getAnswers(1); // get answers in list
+		assertEquals(3, assessmentService.getAnswers(1,0).size()); // check size of answers in database //****
+		answerModels = assessmentService.getAnswers(1,0); // get answers in list //****
 		assertEquals(1, answerModels.get(0).getAnswerId()); // check dt cloudable result
 
 		/*
@@ -268,7 +268,7 @@ public class TestAssessmentService {
 		application = assessmentDao.getApplicationByApplicationId(1);
 		assertEquals(2, application.getAssessmentStage()); // check application stage
 		assertEquals("Public- Pass", assessmentDao.getApplicationByApplicationId(1).getDtMigrationPattern());
-		assertEquals(true, assessmentService.getAnswers(1).get(0).isDtMigrationRuleResult());
+		assertEquals(true, assessmentService.getAnswers(1,0).get(0).isDtMigrationRuleResult()); //****
 		// System.out.println(assessmentService);
 		// assertEquals(true, answerModels.get(0).isDtMigrationRuleResult());
 	}
@@ -323,8 +323,8 @@ public class TestAssessmentService {
 
 		result = assessmentService.saveAnswers(answerModels, 1);
 		assertTrue(result); // check answers are saving in database or not
-		assertEquals(3, assessmentService.getAnswers(1).size()); // check size of answers in database
-		answerModels = assessmentService.getAnswers(1); // get answers in list
+		assertEquals(3, assessmentService.getAnswers(1,0).size()); // check size of answers in database //****
+		answerModels = assessmentService.getAnswers(1,0); // get answers in list //****
 		assertEquals(1, answerModels.get(0).getAnswerId()); // check dt cloudable result
 		/*
 		 * Call finalize for migration rule id 1 public pass
@@ -393,8 +393,8 @@ public class TestAssessmentService {
 				"Web / Application Server: In case of Web application, on which Application Server this application is running")); // Re-Plateform
 		result = assessmentService.saveAnswers(answerModels, 1);
 		assertTrue(result); // check answers are saving in database or not
-		assertEquals(3, assessmentService.getAnswers(1).size()); // check size of answers in database
-		answerModels = assessmentService.getAnswers(1); // get answers in list
+		assertEquals(3, assessmentService.getAnswers(1,0).size()); // check size of answers in database //****
+		answerModels = assessmentService.getAnswers(1,0); // get answers in list //****
 		assertEquals(1, answerModels.get(0).getAnswerId()); // check dt cloudable result
 
 		/*

@@ -18,14 +18,13 @@ public class AssessmentController implements IAssessmentController {
 	IAssessmentService answerService;
 
 	@Override
-	public List<AnswerModel> getAnswers(int applicationId) {
-		return answerService.getAnswers(applicationId);
+	public List<AnswerModel> getAnswers(int applicationId, int questionId) {
+		return answerService.getAnswers(applicationId, questionId);
 	}
 
 	@Override
 	public boolean saveAnswers(List<AnswerModel> answerModels, int applicationId)
 			throws SystemExceptions, OptionTextNotNullException, CountMissMatchException {
-		System.out.println(answerModels);
 		return answerService.saveAnswers(answerModels, applicationId);
 	}
 
@@ -34,12 +33,6 @@ public class AssessmentController implements IAssessmentController {
 			throws SystemExceptions, OptionTextNotNullException, ApplicationIdNotFoundException,
 			CountMissMatchException {
 		answerService.finalized(answerModels, applicationId, assessmentStage);
-	}
-
-	@Override
-	public List<AnswerModel> getAnswers(int applicationId, int assessmentStage) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

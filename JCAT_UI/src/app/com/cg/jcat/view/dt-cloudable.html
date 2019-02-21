@@ -36,15 +36,15 @@
                    
               </div>
 
-              <div class="col-sm-5"  *ngIf=value>
+              <div class="col-sm-5">
                   <table style="display: inline-block" class="table-striped table-bordered">
                     <thead></thead>
                     <tbody>
-                      <tr *ngFor="let rule of dtCloudableQuestionsRule;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
+                      <tr *ngFor="let rule of cloudableQuestionsAfterSave;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
         
                         <td style="width: 500px;margin:auto">
                           <div style="width: 100%">
-                            <span name="questionText" style="word-wrap: break-word;">{{dtCloudableQuestionsRule[i].questionTextEN}}</span>
+                            <span name="questionText" style="word-wrap: break-word;">{{cloudableQuestionsAfterSave[i].questionTextEN}}</span>
                           </div>
                         
                         <br>

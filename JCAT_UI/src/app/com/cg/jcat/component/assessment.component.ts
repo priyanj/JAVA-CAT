@@ -9,6 +9,7 @@ import { UserService } from '../service/user.service';
 import { DTCloudableRuleService } from '../service/dt-cloudable-rule.service';
 import { Jsonp } from '../../../../../../node_modules/@angular/http';
 import { AssessmentQuestions } from '../entity/AssessmentQuestion';
+import { AssessmentQuestionsService } from '../service/assessment-questions.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class AssesstApplicationComponent implements OnInit {
   AllData : any;
   AssessmentPage: any;
   AllCloudableQuestions: any;
+  AllPatternAndProviders: any;
   assessmentQuestions: object[];
   numberOfOption: Array<string> = [];
   theCheckboxOptions: Array<string> = [];
@@ -45,7 +47,7 @@ export class AssesstApplicationComponent implements OnInit {
   AnswersData: any = [];
   clientIdValue: number;
   userType1: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  constructor(private router: Router, private cloudableService: DTCloudableRuleService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) { }
+  constructor(private router: Router, private cloudableService: DTCloudableRuleService,private assessmentQuestionService:AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) { }
 
   ngOnInit() {
 
@@ -59,17 +61,31 @@ export class AssesstApplicationComponent implements OnInit {
     // To get application id from application list page
     this.applicationService.applicationData.subscribe(data => {
       this.application = data;
+
+      if (this.application.assessmentStage == 0) {
+        //Get cloudable questions 
+        this.cloudableService.getAllCloudableQuestions().subscribe(result => {
+          this.AllCloudableQuestions = result;
+          this.setAssessmentData(this.AllCloudableQuestions); // this.setAssessmentData
+        });
+      }
+      else
+      {
+        //Get provider and pattern questions 
+        this.assessmentQuestionService.getPatternAndProviderQuestions().subscribe(result => {
+          this.AllPatternAndProviders = result;
+          this.setAssessmentData(this.AllPatternAndProviders); // this.setAssessmentData
+        });
+      }
+
     });
 
-    //Get cloudable questions 
-    this.cloudableService.getAllCloudableQuestions().subscribe(result => {
-      this.AllCloudableQuestions = result;
-      this.setAssessmentData(this.AllCloudableQuestions); // this.setAssessmentData
-    });
 
 
-    this.assessmentService.getAnswers(this.application.aid).subscribe(result => {
+
+    this.assessmentService.getAnswers(this.application.aid, this.application.assessmentStage).subscribe(result => {
       this.AnswersData = result;
+      console.log(this.AnswersData);
     });
   }
 
@@ -78,6 +94,19 @@ export class AssesstApplicationComponent implements OnInit {
     this.AssessmentPage = AssessmentPage;
   }
 
+  submit()
+  {
+   // alert("Please enter correct username and Password");
+    //alert("");
+    this.assessmentService.finalized(this.AnswersData,this.application.aid,1).subscribe();
+  }
+
+  clickMethod(name: string) {
+  if(confirm("Are you sure to submit answer!!!You will not be able to modify the data "+name)) {
+    console.log("Implement delete functionality here");
+    this.submit();
+  }
+}
 
   onSelect(obj) {
     let flag = 0;
@@ -86,9 +115,9 @@ export class AssesstApplicationComponent implements OnInit {
         if (this.AssessmentPage[index]['questionOptionModel'][i].optionId == obj) {
           for (let j = 0; j < this.AnswersData.length; j++) {
             if (this.AnswersData[j].questionId == this.AssessmentPage[index].questionId) {
-              this.AnswersData[j].questionTextEN=this.AssessmentPage[index].questionTextEN;
+              this.AnswersData[j].questionTextEN = this.AssessmentPage[index].questionTextEN;
               this.AnswersData[j].optionTextsEN = this.AssessmentPage[index]['questionOptionModel'][i].optionTextEN;
-              this.AnswersData[j].questionTextEN=this.AssessmentPage[index].questionTextEN;
+              this.AnswersData[j].questionTextEN = this.AssessmentPage[index].questionTextEN;
               flag = 1;
               break;
             }
@@ -111,24 +140,16 @@ export class AssesstApplicationComponent implements OnInit {
   }
 
   save() {
+
     let ansCount = this.AnswersData.length;
     for (let index = 0; index < this.AssessmentPage.length; index++) {
       let flag = 0
       for (let k = 0; k < this.AnswersData.length; k++) {
         if (this.AnswersData[k].questionId == this.AssessmentPage[index].questionId) {
+          this.AnswersData[k].questionTextEN = this.AssessmentPage[index].questionTextEN;
           flag = 1;
         }
       }
-      if (flag == 0) {
-        let answer: Answer = new Answer();
-        answer.applicationId = this.application.aid;
-        answer.questionId = this.AssessmentPage[index].questionId;
-        answer.optionIds = "";
-        answer.optionTextsEN = "";
-        //this.AnswersData[ansCount]=answer;
-        ansCount++
-      }
-
     }
 
     this.AnswersData.sort(function (questionOrder1, questionOrder2) {
@@ -139,14 +160,13 @@ export class AssesstApplicationComponent implements OnInit {
         return -1;
       }
     });
-
-    this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
+    //this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
     if (this.myStorage.getCurrentUserObject().isAdmin) {
       // location.reload();
       this.router.navigate(['/application']);
     } else {
       //location.reload();
-      this.router.navigate(['/user/user-role']);
+      //this.router.navigate(['/user/user-role']);
     }
   }
 
@@ -155,6 +175,8 @@ export class AssesstApplicationComponent implements OnInit {
   }
 
   onSubmit(formvalues) {
+    // console.log(this.AnswersData)
+    this.save();
     this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
     if (this.myStorage.getCurrentUserObject().isAdmin) {
       // location.reload();
@@ -165,10 +187,9 @@ export class AssesstApplicationComponent implements OnInit {
     }
   }
 
-  back()
-  {
+  back() {
     location.reload();
-    this.router.navigate(['/application']); 
+    this.router.navigate(['/application']);
   }
 
   updateSelectedTimeslots(event) {
@@ -186,13 +207,14 @@ export class AssesstApplicationComponent implements OnInit {
 
     }
   }
-  selectChangeHandler(optionObject, event, qid) {
+  selectChangeHandler(optionObject, event, question) {
     let flag = 0;
     if (event.target.checked) {
       for (let x = 0; x < this.AnswersData.length; x++) {
-        if (this.AnswersData[x].questionId === qid) {
+        if (this.AnswersData[x].questionId === question.questionId) {
           if (this.AnswersData[x].optionIds == "option") {
             this.AnswersData[x].optionIds = optionObject.optionId;
+            this.AnswersData[x].questionTextEN = question.questionTextEN;
             this.AnswersData[x].optionTextsEN = optionObject.optionTextEN;
             flag = 1;
           }
@@ -207,7 +229,7 @@ export class AssesstApplicationComponent implements OnInit {
       if (flag == 0) {
         let answer: Answer = new Answer();
         answer.applicationId = this.application.aid;
-        answer.questionId = qid;
+        answer.questionId = question.questionId;
         answer.optionIds = optionObject.optionId;
         answer.optionTextsEN = optionObject.optionTextEN;
         this.AnswersData[this.opId] = answer;
@@ -217,10 +239,10 @@ export class AssesstApplicationComponent implements OnInit {
 
     } else {
       for (let x = 0; x < this.AnswersData.length; x++) {
-        if (this.AnswersData[x].questionId === qid) {
+        if (this.AnswersData[x].questionId === question.questionId) {
+          this.AnswersData[x].questionTextEN = question.questionTextEN;
           this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN + ",", '');
-          if(this.AnswersData[x].optionTextsEN==optionObject.optionTextEN)
-          {
+          if (this.AnswersData[x].optionTextsEN == optionObject.optionTextEN) {
             this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN, '');
           }
           this.AnswersData[x].optionIds = this.AnswersData[x].optionIds.replace(optionObject.optionId + ",", '');

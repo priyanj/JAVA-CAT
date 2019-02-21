@@ -41,8 +41,9 @@ public class AssessmentDao {
 
 	Date date = new Date();
 	String option = "option";
+	boolean isDeleted=false, assessmentTypeForCloudable=true, assessmentTypeForCloudProvider=true, assessmentTypeForMigration=true;
 
-	public List<AnswerModel> getAnswers(int applicationId) {
+	public List<AnswerModel> getAnswers(int applicationId,int assessmentStage) {
 
 		List<AnswerModel> answerModelList = new ArrayList<>();
 		List<AnswerModel> answerModelList2 = new ArrayList<>();
@@ -50,16 +51,31 @@ public class AssessmentDao {
 		HashSet<Integer> questionIdList = new HashSet<>();
 		HashSet<Integer> answerIdList = new HashSet<>();
 		List<AssessmentQuestion> assessmentQuestionList = new ArrayList<>();
-		assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudable(false,
-				true);
+		if(assessmentStage==0)
+		{
+			assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudable(isDeleted,
+					assessmentTypeForCloudable);
+		}
+		else
+		{
+			assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigration(isDeleted,
+					assessmentTypeForCloudProvider,assessmentTypeForMigration);
+		}
+		
 		for (AssessmentQuestion assessmentQuestion : assessmentQuestionList) {
 			questionIdList.add(assessmentQuestion.getQuestionId());
 		}
 		for (Answer answer : answerRepository.findByApplicationId(applicationId)) {
-			answerIdList.add(answer.getQuestionId());
-			answerModelList.add(toAnswer(answer));
+			answerIdList.add(answer.getQuestionId()); //1,2,3,4
+			for(Integer questionId:questionIdList)
+			{
+				if(answer.getQuestionId()==questionId)
+				{
+					answerModelList.add(toAnswer(answer));
+				}
+			}
 		}
-		questionIdList.removeAll(answerIdList);
+		questionIdList.removeAll(answerIdList); //1,2,3,4,5,6,7 - (1,2,3,4) = 5,6,7
 		for (Integer questionId : questionIdList) {
 			AnswerModel answerModel = new AnswerModel();
 			answerModel.setQuestionId(questionId);
@@ -77,21 +93,41 @@ public class AssessmentDao {
 		List<Answer> answerList = new ArrayList<>();
 		List<Answer> answersByApplicationId = getAnswersByApplicationId(applicationId);
 
-		HashSet<Integer> answerModelIdSet = new HashSet<>();
-		HashSet<Integer> answerIdSet = new HashSet<>();
+		HashSet<Integer> answerModelIdSet = new HashSet<>(); //new
+		HashSet<Integer> answerIdSet = new HashSet<>(); //previous
 		HashSet<Integer> answerIdSetCopy = new HashSet<>();
+		
+		HashSet<Integer> questionNewId = new HashSet<>(); //new
+		HashSet<Integer> questionPreviousId = new HashSet<>(); //previous
+		HashSet<Integer> questionPreviousIdCopy = new HashSet<>();
 
 		for (AnswerModel answerModel : answerModels) {
-			answerModelIdSet.add(answerModel.getAnswerId());
+			answerModelIdSet.add(answerModel.getAnswerId()); //get all new answer id 1,2,3
+			questionNewId.add(answerModel.getQuestionId()); //get new question id 1,2,3
 		}
 
 		for (Answer answer : answersByApplicationId) {
-			answerIdSet.add(answer.getAnswerId());
+			answerIdSet.add(answer.getAnswerId()); //get previous answer id 1,4
+			questionNewId.add(answer.getQuestionId()); //get previous question id 1,4
 		}
+		
+		questionPreviousIdCopy.addAll(questionPreviousId);  //get previous id 1,4
+		questionPreviousId.removeAll(questionNewId); //2,3,4
+		questionPreviousId.retainAll(questionPreviousIdCopy); //2,3
 
-		answerIdSetCopy.addAll(answerIdSet);
-		answerIdSet.removeAll(answerModelIdSet);
-		answerIdSet.retainAll(answerIdSetCopy);
+		answerIdSetCopy.addAll(answerIdSet);  //get previous id 1,4
+		answerIdSet.removeAll(answerModelIdSet); //2,3,4
+		answerIdSet.retainAll(answerIdSetCopy); //2,3
+		
+		if (!questionPreviousId.isEmpty()) {
+			for (int questionId : questionPreviousId) {
+				Answer answer=new Answer();
+				answer=answerRepository.findByQuestionId(questionId);
+				answerHistoryRepository.save(toGetAnswerHistory(answer));
+				answerRepository.deleteById(answer.getAnswerId());
+			}
+
+		}
 
 		if (!answerIdSet.isEmpty()) {
 			for (int answerId : answerIdSet) {
@@ -113,8 +149,8 @@ public class AssessmentDao {
 						String[] optionTextArrayPrevious = answerPrevious.getOptionTextsEN().split(",");
 						
 					
-						Arrays.sort(optionIdArrayNew);
-						Arrays.sort(optionIdArrayPrevious);
+						Arrays.sort(optionIdArrayNew); //1,2,3
+						Arrays.sort(optionIdArrayPrevious); //1
 
 						if (!answersByApplicationId.isEmpty() && !Arrays.equals(optionIdArrayNew, optionIdArrayPrevious)
 								|| !Arrays.equals(optionTextArrayNew, optionTextArrayPrevious)) {
@@ -123,7 +159,7 @@ public class AssessmentDao {
 									toGetAnswerHistory(answerRepository.findByAnswerId(answerModel.getAnswerId())));
 						}
 					}
-
+					
 					answerList.add(toAnswer(answerModel));
 				}
 			}
@@ -195,7 +231,6 @@ public class AssessmentDao {
 		answer.setDtMigrationRuleResult(answerModel.isDtMigrationRuleResult());
 		answer.setDtProviderRuleResult(answerModel.isDtProviderRuleResult());
 		answer.setModifiedBy("Admin");
-		// answer.setModifiedTime(date);
 		answer.setOptionIds(answerModel.getOptionIds());
 		answer.setOptionTextsEN(answerModel.getOptionTextsEN());
 		answer.setQuestionId(answerModel.getQuestionId());

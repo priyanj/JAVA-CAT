@@ -1,4 +1,5 @@
-<form #add="ngForm">
+<div>
+  <form #add="ngForm">
     <div class="form-group">
       <h2 class="text-muted">Detailed Assessment</h2>
     </div>
@@ -29,15 +30,106 @@
               </ng-container>
             </ng-template>
             <ng-template #others>
-              <input type="text" [(ngModel)]="AnswersData[i].optionTextsEN" name="{{i}}" size="45" />
+              <div>
+                <input type="text" [(ngModel)]="AnswersData[i].optionTextsEN" name="{{i}}" size="45" />
+              </div>
             </ng-template>
           </tr>
         </tbody>
       </table>
     </div>
-    <div>
+    <div *ngIf="this.assessmentStage == 0">
       <button type="submit" class="btn btn-info" title="saving application" (click)="onSubmit(add.value)">Save</button>&nbsp;
-      <button type=button class="btn btn-info"  (click)="clickMethod('name')">submit</button>&nbsp;
+      <button type=button class="btn btn-info" [disabled]="!submitEnabled" title="please select all answer then submit button will enable"
+        (click)="clickMethod('submit')">submit and Next</button>&nbsp;
+      <!--  -->
+      <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">back</button>&nbsp;
+    </div>
+    <div *ngIf="this.assessmentStage == 1">
+      <button type="submit" class="btn btn-info" title="saving application" (click)="onSubmit(add.value)">Save</button>&nbsp;
+      <!-- <button type=button class="btn btn-info" (click)="clickMethod('finalize')">finalize</button>&nbsp; -->
+      <button type=button class="btn btn-info" (click)="clickMethod('finalize')">finalize</button>&nbsp;
+    </div>
+    <div *ngIf="this.assessmentStage >1">
+      <button type=button class="btn btn-info" disabled (click)="clickMethod('finalize')">finalized</button>&nbsp;
       <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">back</button>&nbsp;
     </div>
   </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div *ngIf="this.application.assessmentStage == 1">
+      <form #add="ngForm">
+          <div class="form-group">
+            <h2 class="text-muted">Detailed Assessment</h2>
+          </div>
+          <div>
+            <table class="table table-bordered table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Answer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr width="100%" *ngFor ="let row of AssessmentPage;let i = index">
+                  <td width="70%">Question{{i+1}}. {{row.questionTextEN}}</td>
+      
+                  <td width="30%" *ngIf="AssessmentPage[i].questionType==='MULTIPLE_CHOICE_MULTIPLE_ANSWER'; else dropdownbox">
+                    <div *ngFor="let option of AssessmentPage[i]['questionOptionModel'] ;let j = index">
+                      <input type="checkbox" [checked]="AnswersData[i].optionTextsEN.indexOf(option.optionTextEN)!== -1?true:false" (change)="selectChangeHandler(option,$event,AssessmentPage[i])"> {{AssessmentPage[i].questionOptionModel[j]['optionTextEN']}}
+                    </div>
+                  </td>
+                  <ng-template #dropdownbox>
+                    <ng-container *ngIf="AssessmentPage[i].questionType==='MULTIPLE_CHOICE_SINGLE_ANSWER'; else others">
+                      <select style="width:100%" (change)="onSelect($event.target.value)" [(ngModel)]="AnswersData[i].optionIds" name="{{i}}" class="form-control">
+                        <option *ngFor="let singleOption of AssessmentPage[i]['questionOptionModel']; let i = index" [value]="singleOption.optionId">
+                          {{singleOption.optionTextEN}}
+                        </option>
+                      </select>
+                    </ng-container>
+                  </ng-template>
+                  <ng-template #others>
+                    <input type="text" [(ngModel)]="AnswersData[i].optionTextsEN" name="{{i}}" size="45" />
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-info" title="saving application" (click)="onSubmit(add.value)">Save</button>&nbsp;
+            <button type=button class="btn btn-info"  (click)="clickMethod('finalize')">finalize</button>&nbsp;
+            <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">back</button>&nbsp;
+          </div>
+        </form>
+
+  </div> -->

@@ -58,8 +58,8 @@ public class AssessmentDao {
 		}
 		else
 		{
-			assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigration(isDeleted,
-					assessmentTypeForCloudProvider,assessmentTypeForMigration);
+			assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigrationAndAssessmentTypeForCloudable(isDeleted,
+					assessmentTypeForCloudProvider,assessmentTypeForMigration,!assessmentTypeForCloudable);
 		}
 		
 		for (AssessmentQuestion assessmentQuestion : assessmentQuestionList) {
@@ -90,8 +90,8 @@ public class AssessmentDao {
 
 	public boolean saveAnswers(List<AnswerModel> answerModels, int applicationId) throws SystemExceptions {
 		boolean saveResult = false;
-		List<Answer> answerList = new ArrayList<>();
-		List<Answer> answersByApplicationId = getAnswersByApplicationId(applicationId);
+		List<Answer> answerList = new ArrayList<>(); 
+		List<Answer> answersByApplicationId = getAnswersByApplicationId(applicationId); //get previous answer eg 1,2,3,4
 
 		HashSet<Integer> answerModelIdSet = new HashSet<>(); //new
 		HashSet<Integer> answerIdSet = new HashSet<>(); //previous
@@ -101,37 +101,40 @@ public class AssessmentDao {
 		HashSet<Integer> questionPreviousId = new HashSet<>(); //previous
 		HashSet<Integer> questionPreviousIdCopy = new HashSet<>();
 
-		for (AnswerModel answerModel : answerModels) {
-			answerModelIdSet.add(answerModel.getAnswerId()); //get all new answer id 1,2,3
-			questionNewId.add(answerModel.getQuestionId()); //get new question id 1,2,3
+		for (AnswerModel answerModel : answerModels) { 
+			answerModelIdSet.add(answerModel.getAnswerId()); //get all new answer id 1,5,6
+			questionNewId.add(answerModel.getQuestionId()); //get new question id 1,5,6
 		}
 
 		for (Answer answer : answersByApplicationId) {
-			answerIdSet.add(answer.getAnswerId()); //get previous answer id 1,4
-			questionNewId.add(answer.getQuestionId()); //get previous question id 1,4
+			answerIdSet.add(answer.getAnswerId()); //get previous answer id 1,2,3,4
+			questionPreviousId.add(answer.getQuestionId()); //get previous question id 1,2,3,4
 		}
 		
-		questionPreviousIdCopy.addAll(questionPreviousId);  //get previous id 1,4
-		questionPreviousId.removeAll(questionNewId); //2,3,4
-		questionPreviousId.retainAll(questionPreviousIdCopy); //2,3
+//		questionPreviousIdCopy.addAll(questionPreviousId);  //get previous id 1,2,3,4
+//		questionPreviousId.removeAll(questionNewId); //
+//		questionPreviousId.retainAll(questionPreviousIdCopy); //2,3
 
 		answerIdSetCopy.addAll(answerIdSet);  //get previous id 1,4
 		answerIdSet.removeAll(answerModelIdSet); //2,3,4
 		answerIdSet.retainAll(answerIdSetCopy); //2,3
 		
-		if (!questionPreviousId.isEmpty()) {
-			for (int questionId : questionPreviousId) {
-				Answer answer=new Answer();
-				answer=answerRepository.findByQuestionId(questionId);
-				answerHistoryRepository.save(toGetAnswerHistory(answer));
-				answerRepository.deleteById(answer.getAnswerId());
-			}
-
-		}
+		questionPreviousId.retainAll(questionNewId);
+//		
+//		if (!questionPreviousId.isEmpty()) {
+//			for (int questionId : questionPreviousId) {
+//				Answer answer=new Answer();
+//				answer=answerRepository.findByQuestionId(questionId);
+//				answerHistoryRepository.save(toGetAnswerHistory(answer));
+//				answerRepository.deleteById(answer.getAnswerId());
+//			}
+//
+//		}
 
 		if (!answerIdSet.isEmpty()) {
 			for (int answerId : answerIdSet) {
-				answerHistoryRepository.save(toGetAnswerHistory(answerRepository.findByAnswerId(answerId)));
+				Answer answerDatabase=answerRepository.findByAnswerId(answerId);
+				answerHistoryRepository.save(toGetAnswerHistory(answerDatabase));
 				answerRepository.deleteById(answerId);
 			}
 

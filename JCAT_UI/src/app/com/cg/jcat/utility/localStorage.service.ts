@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../entity/user';
+import { Application } from '../entity/application';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,16 @@ export class LocalStorageService {
 
   setCurrentUserObject(user : Object){
     localStorage.setItem('user',JSON.stringify(user));
+  }
+
+  setCurrentApplicationObject(application : Object)
+  {
+    localStorage.setItem('application',JSON.stringify(application));
+  }
+
+  getCurrentApplicationObject() : Application
+  {
+    return JSON.parse(localStorage.getItem('application'));
   }
 
   getCurrentUserObject() : User{
@@ -54,6 +65,5 @@ export class LocalStorageService {
   clearCurrentUser(){
     return localStorage.removeItem('user');
   }
-
 
 }

@@ -28,6 +28,9 @@ public interface IAssessmentQuestionRepository extends JpaRepository<AssessmentQ
 	List<AssessmentQuestion> findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigration(
 			boolean isDeleted, boolean assessmentTypeForCloudProvider, boolean assessmentTypeForMigration);
 
+	List<AssessmentQuestion> findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigrationAndAssessmentTypeForCloudable(
+			boolean isDeleted, boolean assessmentTypeForCloudProvider, boolean assessmentTypeForMigration, boolean b);
+
 
 
 }

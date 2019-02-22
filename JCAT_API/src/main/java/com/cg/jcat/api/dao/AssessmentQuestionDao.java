@@ -201,8 +201,8 @@ public class AssessmentQuestionDao {
 
 	public List<AssessmentQuestionModel> getPatternAndProviderQuestions() {
 		List<AssessmentQuestionModel> assessmentQuestionModelList = new ArrayList<AssessmentQuestionModel>();
-		List<AssessmentQuestion> assessmentQuestionList =assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigration(isDeleted,
-				assessmentTypeForCloudProvider,assessmentTypeForMigration);
+		List<AssessmentQuestion> assessmentQuestionList =assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigrationAndAssessmentTypeForCloudable(isDeleted,
+				assessmentTypeForCloudProvider,assessmentTypeForMigration,!assessmentTypeForCloudable);
 		
 		return toGetQuestions(assessmentQuestionList, assessmentQuestionModelList);
 	}

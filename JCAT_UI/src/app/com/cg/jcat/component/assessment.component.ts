@@ -10,6 +10,9 @@ import { DTCloudableRuleService } from '../service/dt-cloudable-rule.service';
 import { Jsonp } from '../../../../../../node_modules/@angular/http';
 import { AssessmentQuestions } from '../entity/AssessmentQuestion';
 import { AssessmentQuestionsService } from '../service/assessment-questions.service';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+
 
 
 @Component({
@@ -18,11 +21,16 @@ import { AssessmentQuestionsService } from '../service/assessment-questions.serv
   //   styleUrls: ['./assesst-application.component.scss']
 })
 export class AssesstApplicationComponent implements OnInit {
+  application: any;
+  assessmentStage: number;
+  appId: number;
+  questionType: string = "a";
   userActive: string;
   notSaved: boolean = true;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   AllData : any;
+  userData: any;
   AssessmentPage: any;
   AllCloudableQuestions: any;
   AllPatternAndProviders: any;
@@ -39,15 +47,20 @@ export class AssesstApplicationComponent implements OnInit {
   queId1 = 0;
   qid = 0;
   opId = 0;
+  submitEnabled: boolean;
+
+
   i = -1;
   All: any = [1, 2, 3, 4, 5, 6, 7];
   isChecked = false;
 
-  application: any;
+  // application: any;
   AnswersData: any = [];
   clientIdValue: number;
   userType1: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  constructor(private router: Router, private cloudableService: DTCloudableRuleService,private assessmentQuestionService:AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) { }
+
+  name: string;
+  constructor(private translate: TranslateService, private router: Router, private cloudableService: DTCloudableRuleService, private assessmentQuestionService: AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) { }
 
   ngOnInit() {
 
@@ -58,55 +71,65 @@ export class AssesstApplicationComponent implements OnInit {
       columnDefs: [{ orderable: false, targets: 3 }]
     };
 
+    this.submitEnabled = false;
+
     // To get application id from application list page
     this.applicationService.applicationData.subscribe(data => {
-      this.application = data;
+      //this.application = data;
+      console.log(data)
+      if (data != "default") {
+        this.myStorage.setCurrentApplicationObject(data);
+      }
 
-      if (this.application.assessmentStage == 0) {
+      this.assessmentStage = this.myStorage.getCurrentApplicationObject().assessmentStage;
+      this.appId = this.myStorage.getCurrentApplicationObject().aid;
+
+      if (this.assessmentStage == 0) {
         //Get cloudable questions 
         this.cloudableService.getAllCloudableQuestions().subscribe(result => {
           this.AllCloudableQuestions = result;
-          this.setAssessmentData(this.AllCloudableQuestions); // this.setAssessmentData
+          this.setAssessmentData(this.AllCloudableQuestions); // set cloudable questions in assessment page
         });
       }
-      else
-      {
+      else {
         //Get provider and pattern questions 
         this.assessmentQuestionService.getPatternAndProviderQuestions().subscribe(result => {
           this.AllPatternAndProviders = result;
-          this.setAssessmentData(this.AllPatternAndProviders); // this.setAssessmentData
+          this.setAssessmentData(this.AllPatternAndProviders); // set pattern and provider questions in assessment page
         });
+
       }
 
     });
 
-
-
-
-    this.assessmentService.getAnswers(this.application.aid, this.application.assessmentStage).subscribe(result => {
-      this.AnswersData = result;
-      console.log(this.AnswersData);
+    this.assessmentService.getAnswers(this.appId, this.assessmentStage).subscribe(result => {
+      this.AnswersData = result; //get answers from database 
     });
   }
 
   setAssessmentData(AssessmentPage: any) {
-
     this.AssessmentPage = AssessmentPage;
   }
 
-  submit()
-  {
-   // alert("Please enter correct username and Password");
-    //alert("");
-    this.assessmentService.finalized(this.AnswersData,this.application.aid,1).subscribe();
+  submit() {
+
+    if (this.assessmentStage == 0) {
+
+      this.assessmentService.finalized(this.AnswersData, this.appId, (this.assessmentStage + 1)).subscribe();
+      this.application = this.myStorage.getCurrentApplicationObject();
+      this.application.assessmentStage = (this.assessmentStage + 1);
+      this.myStorage.setCurrentApplicationObject(this.application);
+    }
+    else if (this.assessmentStage == 1) {
+      this.assessmentService.finalized(this.AnswersData, this.appId, (this.assessmentStage + 1)).subscribe();
+      this.myStorage.setCurrentApplicationObject("null");
+      this.router.navigate(['/application']);
+    }
+
   }
 
-  clickMethod(name: string) {
-  if(confirm("Are you sure to submit answer!!!You will not be able to modify the data "+name)) {
-    console.log("Implement delete functionality here");
-    this.submit();
-  }
-}
+
+
 
   onSelect(obj) {
     let flag = 0;
@@ -117,14 +140,14 @@ export class AssesstApplicationComponent implements OnInit {
             if (this.AnswersData[j].questionId == this.AssessmentPage[index].questionId) {
               this.AnswersData[j].questionTextEN = this.AssessmentPage[index].questionTextEN;
               this.AnswersData[j].optionTextsEN = this.AssessmentPage[index]['questionOptionModel'][i].optionTextEN;
-              this.AnswersData[j].questionTextEN = this.AssessmentPage[index].questionTextEN;
+              this.AnswersData[j].questionId = this.AssessmentPage[index].questionId;
               flag = 1;
               break;
             }
           }
           if (flag == 0) {
             let answer: Answer = new Answer();
-            answer.applicationId = this.application.aid;
+            answer.applicationId = this.appId;
             answer.questionId = this.AssessmentPage[index].questionId;
             answer.questionTextEN = this.AssessmentPage[index].questionTextEN;
             answer.optionIds = obj;
@@ -162,7 +185,6 @@ export class AssesstApplicationComponent implements OnInit {
     });
     //this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
     if (this.myStorage.getCurrentUserObject().isAdmin) {
-      // location.reload();
       this.router.navigate(['/application']);
     } else {
       //location.reload();
@@ -174,21 +196,46 @@ export class AssesstApplicationComponent implements OnInit {
     this.notSaved = false;
   }
 
+
+  clickMethod(name: string) {
+    const submitAlert = this.translate.instant('alertMessage');
+    if (confirm(submitAlert)) {
+      this.submit();
+    }
+    if (this.assessmentStage == 1) {
+      this.router.navigate(['/application']);
+    }
+    location.reload();
+  }
+
   onSubmit(formvalues) {
-    // console.log(this.AnswersData)
+    let result = 0;
     this.save();
-    this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
-    if (this.myStorage.getCurrentUserObject().isAdmin) {
-      // location.reload();
-      //this.router.navigate(['/application']);
-    } else {
-      // location.reload();
-      // this.router.navigate(['/user/user-role']);
+    this.assessmentService.saveAnswers(this.AnswersData, this.appId).subscribe();
+    this.result = this.validateAnswers(0);
+    if (this.result != 1) {
+      this.submitEnabled = true;
+    }
+  }
+
+  validateAnswers(validateResult: any): Observable<number> {
+    let count = 0;
+    for (let index = 0; index < this.AssessmentPage.length; index++) {
+      for (let index1 = 0; index1 < this.AnswersData.length; index1++) {
+
+        if (this.AssessmentPage[index].questionId == this.AnswersData[index1].questionId && this.AnswersData[index1].optionIds != "option") {
+          count++;
+        }
+      }
+    }
+    if (count != this.AssessmentPage.length) {
+      //alert("Please select answer for all questions");
+      validateResult = 1;
+      return validateResult;
     }
   }
 
   back() {
-    location.reload();
     this.router.navigate(['/application']);
   }
 
@@ -228,7 +275,7 @@ export class AssesstApplicationComponent implements OnInit {
       }
       if (flag == 0) {
         let answer: Answer = new Answer();
-        answer.applicationId = this.application.aid;
+        answer.applicationId = this.appId;
         answer.questionId = question.questionId;
         answer.optionIds = optionObject.optionId;
         answer.optionTextsEN = optionObject.optionTextEN;

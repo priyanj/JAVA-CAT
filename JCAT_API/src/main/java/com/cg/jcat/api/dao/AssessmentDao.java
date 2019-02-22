@@ -111,25 +111,25 @@ public class AssessmentDao {
 			questionPreviousId.add(answer.getQuestionId()); //get previous question id 1,2,3,4
 		}
 		
-//		questionPreviousIdCopy.addAll(questionPreviousId);  //get previous id 1,2,3,4
-//		questionPreviousId.removeAll(questionNewId); //
-//		questionPreviousId.retainAll(questionPreviousIdCopy); //2,3
+		questionPreviousIdCopy.addAll(questionPreviousId);  //get previous id 1,2,3,4
+		questionPreviousId.removeAll(questionNewId); //
+		questionPreviousId.retainAll(questionPreviousIdCopy); //2,3
 
 		answerIdSetCopy.addAll(answerIdSet);  //get previous id 1,4
 		answerIdSet.removeAll(answerModelIdSet); //2,3,4
 		answerIdSet.retainAll(answerIdSetCopy); //2,3
 		
 		questionPreviousId.retainAll(questionNewId);
-//		
-//		if (!questionPreviousId.isEmpty()) {
-//			for (int questionId : questionPreviousId) {
-//				Answer answer=new Answer();
-//				answer=answerRepository.findByQuestionId(questionId);
-//				answerHistoryRepository.save(toGetAnswerHistory(answer));
-//				answerRepository.deleteById(answer.getAnswerId());
-//			}
-//
-//		}
+		
+		if (!questionPreviousId.isEmpty()) {
+			for (int questionId : questionPreviousId) {
+				Answer answer=new Answer();
+				answer=answerRepository.findByQuestionId(questionId);
+				answerHistoryRepository.save(toGetAnswerHistory(answer));
+				answerRepository.deleteById(answer.getAnswerId());
+			}
+
+		}
 
 		if (!answerIdSet.isEmpty()) {
 			for (int answerId : answerIdSet) {

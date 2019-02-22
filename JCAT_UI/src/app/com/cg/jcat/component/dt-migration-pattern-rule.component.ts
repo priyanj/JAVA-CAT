@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '../../../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -17,10 +17,10 @@ import { DTMigrationRule } from '../entity/DTMigrationRule';
 })
 export class DTMigrationPatternComponentRule implements OnInit {
 
-  clickedValue:boolean=false;
-  eventValue:number;
-  rule:DTMigrationRule= new DTMigrationRule();
-  clickedReversedValue:boolean=false;
+  clickedValue: boolean = false;
+  eventValue: number;
+  rule: DTMigrationRule = new DTMigrationRule();
+  clickedReversedValue: boolean = false;
 
   migrationRuleObject: Array<DTMigrationRule> = [];
   allMigrationRules: any = [];
@@ -40,7 +40,6 @@ export class DTMigrationPatternComponentRule implements OnInit {
   id: number;
   RuleId = 0;
   checked: boolean = false;
-  clientIdValue: number;
   constructor(private forMigrationPatternService: DTMigrationRuleService, public router: Router, private http: HttpClient, private myStorage: LocalStorageService) { }
   migrationIdValue: any;
 
@@ -50,7 +49,7 @@ export class DTMigrationPatternComponentRule implements OnInit {
       pageLength: 10,
       responsive: true
     };
-    this.forMigrationPatternService.migrationId.subscribe(data  =>  { this.migrationIdValue =  data; });
+    this.forMigrationPatternService.migrationId.subscribe(data => { this.migrationIdValue = data; });
     this.forMigrationPatternService.getMigrationQuestions().subscribe(result => {
       this.dtTrigger.next();
       this.migrationAllData = result ;
@@ -71,55 +70,38 @@ export class DTMigrationPatternComponentRule implements OnInit {
     this.originalQuestions.splice(event, 1);
   }
   onClickAddrule(event: any, event1: number) {
-    // this.value = true;
-    // this.rulesQuestion[this.index] = event;
 
-    // this.originalQuestions.splice(event1, 1);
-    // this.index++;
-    
-    this.clickedValue=true;
-    this.rule=event;
-    this.eventValue=event1;
+    this.clickedValue = true;
+    this.rule = event;
+    this.eventValue = event1;
   }
 
-  clicked(){
+  clicked() {
     this.value = true;
-
     var ins = this.rulesQuestion.length;
-        console.log("ins"+ins);
-        this.rulesQuestion[ins]=this.rule;
-        console.log(this.rulesQuestion);
-        this.originalQuestions.splice(this.eventValue,1);
-        console.log("**********")
+    this.rulesQuestion[ins] = this.rule;
+    this.originalQuestions.splice(this.eventValue, 1);
   }
 
-  onClickRule(event2:any,event:any,event1:number) {
+  onClickRule(event2: any, event: any, event1: number) {
     this.idvalue = true;
     this.id = event;
-
-    this.clickedReversedValue=true;
-    this.rule=event2;
-    this.eventValue=event1;
+    this.clickedReversedValue = true;
+    this.rule = event2;
+    this.eventValue = event1;
   }
 
-  reverceClicked()
-    {
-      var x = this.originalQuestions.length;
-      this.originalQuestions[x]=this.rule;   
-      console.log("&&&&&&&&&");
-      console.log(this.originalQuestions);
-      console.log(this.eventValue+"************");
-      this.rulesQuestion.splice(this.eventValue,1);
-      // console.log(this.rule.questionTextEN);
-      for (let index = 0; index < this.allMigrationRules.length; index++) {
-        if(this.allMigrationRules[index].questionTextEN==this.rule.questiontextEN)
-        {
-          this.allMigrationRules.splice(index,1);
-        }
-        
+  reverceClicked() {
+    var x = this.originalQuestions.length;
+    this.originalQuestions[x] = this.rule;
+    this.rulesQuestion.splice(this.eventValue, 1);
+    for (let index = 0; index < this.allMigrationRules.length; index++) {
+      if (this.allMigrationRules[index].questionTextEN == this.rule.questiontextEN) {
+        this.allMigrationRules.splice(index, 1);
       }
-      console.log(this.allMigrationRules);
+
     }
+  }
 
   selectChangeHandler(optionObject, event, qid, qtext) {
     let flag = 0;

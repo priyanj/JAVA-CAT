@@ -2,7 +2,7 @@ export class Answer {
     answerId: number;
     applicationId: number;
     questionId: number;
-    questionTextEN: number;
+    questionTextEN: string;
     optionIds: string;
     optionTextsEN: string;
     dtCloudableRuleResult: boolean;

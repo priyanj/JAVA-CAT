@@ -7,5 +7,5 @@ export class DTCloudableRule {
     optionTextsEN: string;
     questionId: number;
     createdBy:string;
-    modifiedBy:number;
+    modifiedBy:string;
 }

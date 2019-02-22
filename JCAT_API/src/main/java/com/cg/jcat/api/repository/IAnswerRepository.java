@@ -12,7 +12,7 @@ public interface IAnswerRepository extends JpaRepository<Answer, Integer>{
 
 	Answer findByAnswerId(int answerId);
 
-	List<Answer> findByApplicationId(int applicationId);
+	List<Answer> findByApplicationId(int aid);
 
 
 

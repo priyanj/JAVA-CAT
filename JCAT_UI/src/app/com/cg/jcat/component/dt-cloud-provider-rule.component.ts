@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '../../../../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { LocalStorageService } from '../utility/localStorage.service';
@@ -14,7 +14,7 @@ import { DTProviderRule } from '../entity/DTProviderRule';
   styleUrls: ['../view/dt-cloud-provider-rule.component.scss']
 })
 export class DTCloudProviderComponentRule implements OnInit {
-  shiftToFirstTable:boolean=false;
+  shiftToFirstTable: boolean = false;
   allProviderRules: any = [];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
@@ -26,11 +26,17 @@ export class DTCloudProviderComponentRule implements OnInit {
   value: boolean = false;
   idvalue: boolean = false;
   id: number;
+  RuleId = 0;
+  checked: boolean = false;
   constructor(private dtProviderRuleService: DTProviderRuleService, public router: Router, private http: HttpClient, private myStorage: LocalStorageService) { }
   providerIdValue: any;
+  clickedValue: boolean = false;
+  eventValue: number;
+  rule: DTProviderRule = new DTProviderRule();
+  clickedReversedValue: boolean = false;
 
   ngOnInit() {
-    this.shiftToFirstTable=false;
+    this.shiftToFirstTable = false;
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -44,7 +50,7 @@ export class DTCloudProviderComponentRule implements OnInit {
       this.providerQuestionLength = this.providerAllData.length;
     });
     this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data });
-    
+
   }
 
   Cancel() {
@@ -58,17 +64,36 @@ export class DTCloudProviderComponentRule implements OnInit {
     this.originalQuestions.splice(event, 1);
   }
   onClickAddrule(event: any, event1: number) {
-    this.value = true;
-    this.rulesQuestion[this.index] = event;
-    this.originalQuestions.splice(event1, 1);
-    this.index++;
+    this.clickedValue = true;
+    this.rule = event;
+    this.eventValue = event1;
   }
-  onClickRule(event: any, event1: number) {
-    // console.log("***************************888")
-    // this.shiftToFirstTable=false;
-    
+
+  clicked() {
+    this.value = true;
+    var ins = this.rulesQuestion.length;
+    this.rulesQuestion[ins] = this.rule;
+    this.originalQuestions.splice(this.eventValue, 1);
+  }
+
+  onClickRule(event2: any, event: any, event1: number) {
     this.idvalue = true;
-    this.id = event.questionId;
+    this.id = event;
+    this.clickedReversedValue = true;
+    this.rule = event2;
+    this.eventValue = event1;
+  }
+
+  reverceClicked() {
+    var x = this.originalQuestions.length;
+    this.originalQuestions[x] = this.rule;
+    this.rulesQuestion.splice(this.eventValue, 1);
+    for (let index = 0; index < this.allProviderRules.length; index++) {
+      if (this.allProviderRules[index].questionTextEN == this.rule.questiontextEN) {
+        this.allProviderRules.splice(index, 1);
+      }
+
+    }
   }
 
   selectChangeHandler(optionObject, event, qid, qtext) {

@@ -37,8 +37,8 @@ export class AssessmentQuestionsService {
   }
 
 
-  updateQuestion(value: any): Observable<Object> {
-    return this.http.put(this.myStorage.getdomainURL+`/assessmentQuestion/updateQuestion`, value);
+  updateQuestion(question: any): Observable<Object> {
+    return this.http.put(this.myStorage.getdomainURL()+`/assessmentQuestion/updateQuestion`, question);
   }
 
   deleteQuestion(questionId: number): Observable<any> {

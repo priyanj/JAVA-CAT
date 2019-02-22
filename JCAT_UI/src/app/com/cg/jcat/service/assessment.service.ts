@@ -20,10 +20,14 @@ ngOnInit() {
     return  this.http.get(this.myStorage.getdomainURL()+`/assessment/answer/get/`+applicationId);
   }
 
-  saveAnswers(answerList: any,applicationId : number): Observable<any> {
+  saveAnswers(answerList: any,aid : number): Observable<any> {
+    console.log(JSON.stringify(answerList))
+    // let headers = new HttpHeaders();
+    // headers = headers.set('Content-Type', 'application/json; charset=utf-8'); 
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8'); 
-    return this.http.post(this.myStorage.getdomainURL() + `/assessment/answer/create/`+applicationId,answerList);
+    console.log(this.myStorage.getdomainURL() + `/assessment/answer/create/`+aid);
+    return this.http.post(this.myStorage.getdomainURL() + `/assessment/answer/create/`+aid,answerList);
   }
 
   finalized(answerList:any,applicationId : number,assessmentStage:number): Observable<any> {

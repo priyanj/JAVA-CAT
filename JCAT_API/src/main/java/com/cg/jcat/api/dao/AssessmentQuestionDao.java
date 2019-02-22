@@ -1,6 +1,7 @@
 package com.cg.jcat.api.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,12 +83,19 @@ public class AssessmentQuestionDao {
 		assessmentQuestion.setQuestionTextLang2(assessmentQuestionsModel.getQuestionTextLang2());
 		assessmentQuestion.setQuestionType(assessmentQuestionsModel.getQuestionType());
 		assessmentQuestion.setNumberOfOptions(assessmentQuestionsModel.getNumberOfOptions());
-		//assessmentQuestion.setCreatedTime(assessmentQuestionsModel.getCreatedTime());
+//		assessmentQuestion.setModifiedTime(new Date());
+//		//assessmentQuestion.setCreatedTime(assessmentQuestionsModel.getCreatedTime());
 		List<QuestionOption> questionOptionList = new ArrayList<>();
 
 		try {
 			for (QuestionOptionModel questionOptionModel : assessmentQuestionsModel.getQuestionOptionModel()) {
-				questionOptionList.add(toQuestionOption(questionOptionModel, assessmentQuestion));
+				QuestionOption questionOptionObj=toQuestionOption(questionOptionModel, assessmentQuestion);
+				if(questionOptionObj.getOptionTextEN().isEmpty())
+				{
+					System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+					assessmentQuestionRepository.deleteById(questionOptionObj.getOptionId());
+				}else
+				questionOptionList.add(questionOptionObj);
 			}
 			assessmentQuestion.setQuestionOption(questionOptionList);
 		} catch (Exception e) {
@@ -191,5 +199,6 @@ public class AssessmentQuestionDao {
 		
 		return toGetQuestions(assessmentQuestionList, assessmentQuestionModelList);
 	}
+	
 
 }

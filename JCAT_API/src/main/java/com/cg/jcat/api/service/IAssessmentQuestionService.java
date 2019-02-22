@@ -20,7 +20,9 @@ public interface IAssessmentQuestionService {
 
 	public AssessmentQuestionModel getQuestionById(int questionId);
 
-	public List<QuestionTypeEnum> getQuestionType(); 
+	public List<QuestionTypeEnum> getQuestionType();
+
+	public List<AssessmentQuestionModel> getCloudableQuestions(); 
  
 
 }

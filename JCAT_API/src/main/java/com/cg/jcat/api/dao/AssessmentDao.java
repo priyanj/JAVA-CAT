@@ -92,79 +92,21 @@ public class AssessmentDao {
 		boolean saveResult = false;
 		List<Answer> answerList = new ArrayList<>(); 
 		List<Answer> answersByApplicationId = getAnswersByApplicationId(applicationId); //get previous answer eg 1,2,3,4
-
-		HashSet<Integer> answerModelIdSet = new HashSet<>(); //new
-		HashSet<Integer> answerIdSet = new HashSet<>(); //previous
-		HashSet<Integer> answerIdSetCopy = new HashSet<>();
 		
-		HashSet<Integer> questionNewId = new HashSet<>(); //new
-		HashSet<Integer> questionPreviousId = new HashSet<>(); //previous
-		HashSet<Integer> questionPreviousIdCopy = new HashSet<>();
-
-		for (AnswerModel answerModel : answerModels) { 
-			answerModelIdSet.add(answerModel.getAnswerId()); //get all new answer id 1,5,6
-			questionNewId.add(answerModel.getQuestionId()); //get new question id 1,5,6
-		}
-
-		for (Answer answer : answersByApplicationId) {
-			answerIdSet.add(answer.getAnswerId()); //get previous answer id 1,2,3,4
-			questionPreviousId.add(answer.getQuestionId()); //get previous question id 1,2,3,4
-		}
 		
-		questionPreviousIdCopy.addAll(questionPreviousId);  //get previous id 1,2,3,4
-		questionPreviousId.removeAll(questionNewId); //
-		questionPreviousId.retainAll(questionPreviousIdCopy); //2,3
-
-		answerIdSetCopy.addAll(answerIdSet);  //get previous id 1,4
-		answerIdSet.removeAll(answerModelIdSet); //2,3,4
-		answerIdSet.retainAll(answerIdSetCopy); //2,3
-		
-		questionPreviousId.retainAll(questionNewId);
-		
-		if (!questionPreviousId.isEmpty()) {
-			for (int questionId : questionPreviousId) {
-				Answer answer=new Answer();
-				answer=answerRepository.findByQuestionId(questionId);
-				answerHistoryRepository.save(toGetAnswerHistory(answer));
-				answerRepository.deleteById(answer.getAnswerId());
-			}
-
-		}
-
-		if (!answerIdSet.isEmpty()) {
-			for (int answerId : answerIdSet) {
-				Answer answerDatabase=answerRepository.findByAnswerId(answerId);
-				answerHistoryRepository.save(toGetAnswerHistory(answerDatabase));
-				answerRepository.deleteById(answerId);
-			}
-
-		}
-
 		try {
-			for (AnswerModel answerModel : answerModels) {
-				if (!answerModel.getOptionIds().equals(option)) {
-					Answer answerPrevious = answerRepository.findByAnswerId(answerModel.getAnswerId());
-
-					if (answerPrevious != null) {
-						String[] optionIdArrayNew = answerModel.getOptionIds().split(",");
-						String[] optionTextArrayNew = answerModel.getOptionTextsEN().split(",");
-						String[] optionIdArrayPrevious = answerPrevious.getOptionIds().split(",");
-						String[] optionTextArrayPrevious = answerPrevious.getOptionTextsEN().split(",");
-						
-					
-						Arrays.sort(optionIdArrayNew); //1,2,3
-						Arrays.sort(optionIdArrayPrevious); //1
-
-						if (!answersByApplicationId.isEmpty() && !Arrays.equals(optionIdArrayNew, optionIdArrayPrevious)
-								|| !Arrays.equals(optionTextArrayNew, optionTextArrayPrevious)) {
-							
-							answerHistoryRepository.save(
-									toGetAnswerHistory(answerRepository.findByAnswerId(answerModel.getAnswerId())));
-						}
-					}
-					
-					answerList.add(toAnswer(answerModel));
+			
+			for(AnswerModel answerModel:answerModels)
+			{
+				Answer answer=new Answer();
+				answer = answerRepository.findByAnswerId(answerModel.getAnswerId());
+				if(answer!=null && (!answer.getOptionIds().equals(answerModel.getOptionIds()))
+						&& (answer.getQuestionId()==answerModel.getQuestionId())&&((!answer.getOptionTextsEN().equals(answerModel.getOptionTextsEN()))))
+				{
+					answerHistoryRepository.save(toGetAnswerHistory(answer));
+					//answerRepository.deleteById(answer.getAnswerId());
 				}
+				answerList.add(toAnswer(answerModel));
 			}
 
 		} catch (Exception e) {

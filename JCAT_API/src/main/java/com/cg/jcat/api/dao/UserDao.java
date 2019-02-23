@@ -44,7 +44,7 @@ public class UserDao {
 			userDao.setPassword(user.getPassword());
 			userDao.setUserEmail(user.getUserEmail());
 			userDao.setCompany(user.getCompany());
-			userDao.setAdmin(user.isAdmin());
+			userDao.setIsAdmin(user.isAdmin());
 			userDao.setCreatedBy(user.getCreatedBy());
 			userDao.setModifiedBy(user.getModifiedBy());
 		}
@@ -115,6 +115,7 @@ public class UserDao {
 			users.setLastName(userModel.getLastName());
 			users.setPassword(userModel.getPassword());
 			users.setUserEmail(userModel.getUserEmail());
+			users.setAdmin(userModel.getIsAdmin());
 		}
 		return users;
 	}

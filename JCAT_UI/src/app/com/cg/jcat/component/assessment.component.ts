@@ -73,16 +73,20 @@ export class AssesstApplicationComponent implements OnInit {
 
     this.submitEnabled = false;
 
+
+
     // To get application id from application list page
     this.applicationService.applicationData.subscribe(data => {
       //this.application = data;
-      console.log(data)
       if (data != "default") {
         this.myStorage.setCurrentApplicationObject(data);
       }
 
       this.assessmentStage = this.myStorage.getCurrentApplicationObject().assessmentStage;
       this.appId = this.myStorage.getCurrentApplicationObject().aid;
+      if (!this.myStorage.getCurrentUserObject().isAdmin && (this.myStorage.getCurrentUserObject().userId == this.myStorage.getCurrentApplicationObject().applicationUser)) {
+        this.router.navigate(['/login']);
+      }
 
       if (this.assessmentStage == 0) {
         //Get cloudable questions 
@@ -104,6 +108,10 @@ export class AssesstApplicationComponent implements OnInit {
 
     this.assessmentService.getAnswers(this.appId, this.assessmentStage).subscribe(result => {
       this.AnswersData = result; //get answers from database 
+      this.result = this.validateAnswers(0);
+    if (this.result != 1) {
+      this.submitEnabled = true;
+    }
     });
   }
 
@@ -184,12 +192,12 @@ export class AssesstApplicationComponent implements OnInit {
       }
     });
     //this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
-    if (this.myStorage.getCurrentUserObject().isAdmin) {
-      this.router.navigate(['/application']);
-    } else {
-      //location.reload();
-      //this.router.navigate(['/user/user-role']);
-    }
+    // if (this.myStorage.getCurrentUserObject().isAdmin) {
+    //   this.router.navigate(['/application']);
+    // } else {
+    //   location.reload();
+    //   this.router.navigate(['/user/user-role']);
+    // }
   }
 
   saveFlag() {
@@ -212,10 +220,12 @@ export class AssesstApplicationComponent implements OnInit {
     let result = 0;
     this.save();
     this.assessmentService.saveAnswers(this.AnswersData, this.appId).subscribe();
+    //location.reload();
     this.result = this.validateAnswers(0);
     if (this.result != 1) {
       this.submitEnabled = true;
     }
+    location.reload();
   }
 
   validateAnswers(validateResult: any): Observable<number> {

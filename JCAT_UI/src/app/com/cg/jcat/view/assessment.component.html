@@ -13,7 +13,7 @@
         </thead>
         <tbody>
           <tr width="100%" *ngFor ="let row of AssessmentPage;let i = index">
-            <td width="70%">Question{{i+1}}. {{row.questionTextEN}}</td>
+            <td width="70%">Question{{row.displayOrder}}. {{row.questionTextEN}}</td>
 
             <td width="30%" *ngIf="AssessmentPage[i].questionType==='MULTIPLE_CHOICE_MULTIPLE_ANSWER'; else dropdownbox">
               <div *ngFor="let option of AssessmentPage[i]['questionOptionModel'] ;let j = index">

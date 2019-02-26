@@ -1,85 +1,85 @@
 <div>
-    <h2 class="text-muted">Cloudability Decision
-      <button style="background-color: white; border: aliceblue"  title="Page shows all questions which decide cloudability so here we can set rules for cloudability"
-         class="btn btn-light"  >
-        <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
-      </button>&nbsp;
-      <button class="btn btn-info btn-sm" (click)="expandall()" style="position: absolute;right: 180px" title="On button click it will show options of all questions,if answer is given then the check box will be checked otherwise unchecked">ExpandAll</button>
-      <button class="btn btn-info btn-sm" (click)="hideall()" style="position: absolute;right: 100px" title="On button click it will hide options of all questions">HideAll</button>
-    </h2>
-  </div>
+  <h2 class="text-muted">Cloudability Decision
+    <button style="background-color: white; border: aliceblue"  title="Page shows all questions which decide cloudability so here we can set rules for cloudability"
+       class="btn btn-light"  >
+      <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
+    </button>&nbsp;
+    <button class="btn btn-info btn-sm" (click)="expandall()" style="position: absolute;right: 180px" title="On button click it will show options of all questions,if answer is given then the check box will be checked otherwise unchecked">ExpandAll</button>
+    <button class="btn btn-info btn-sm" (click)="hideall()" style="position: absolute;right: 100px" title="On button click it will hide options of all questions">HideAll</button>
+  </h2>
+</div>
 
-  <form #productForm="ngForm" (ngSubmit)="submit()">
-    <div class="form-group" style="width: 100%;">
-      <div class="container-fluid">
-        <div class="row">
+<form #productForm="ngForm" (ngSubmit)="submit()">
+  <div class="form-group" style="width: 100%;">
+    <div class="container-fluid">
+      <div class="row">
 
-            <div class="col-sm-5" >
+          <div class="col-sm-5" >
+              <table style="display: inline-block" class="table-striped table-bordered">
+                <thead></thead>
+                <tbody>
+                  <tr *ngFor="let cloudableQuestion of cloudableQuestions;let i = index"  (click)="onClickAddrule(cloudableQuestion,i)">
+                    <td style="width: 500px;margin:auto">
+                      <div >
+                        <span name="questionTex" style="word-wrap: break-word;">{{cloudableQuestions[i].questionTextEN}}</span>
+                      </div>
+                    </td>
+                  </tr>
+    
+                </tbody>
+              </table>
+            </div>
+            <div class="col-sm-2" align="left" style="padding-left:4%" >
+                <input type="button" value=">>" (click)="clicked()" >
+                  <br>
+                  <br>
+                  <input type="button" value="<<" (click)="reverceClicked()" >
+                 
+            </div>
+
+
+            <div class="col-sm-5"  >
                 <table style="display: inline-block" class="table-striped table-bordered">
                   <thead></thead>
                   <tbody>
-                    <tr *ngFor="let cloudableQuestion of cloudableQuestions;let i = index"  (click)="onClickAddrule(cloudableQuestion,i)">
-                      <td style="width: 500px;margin:auto">
-                        <div >
-                          <span name="questionTex" style="word-wrap: break-word;">{{cloudableQuestions[i].questionTextEN}}</span>
+                    <tr *ngFor="let rule of questionSaved;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
+      
+                      <td style="width: 500px;margin:auto" >
+                        <div style="width: 100%">
+                            <i class="fa fa-exclamation-circle" *ngIf="rule.questionId===checkValid(rule.questionId)" style="font-size:15px;color:blue" title="unanswered Question" ></i>&nbsp;
+                          <!-- <i class="fa fa-question-circle" *ngIf=" l && rule.questionId===checkValid(rule.questionId)" style="font-size:15px;color:blue"></i>&nbsp; -->
+                          <span name="questionText"  style="word-wrap: break-word;">{{questionSaved[i].questionTextEN}}</span>
+                         
                         </div>
-                      </td>
+                      
+                      <br>
+                <div >
+                  <div *ngIf="questionSaved[i].questionId==id || expand">
+                      <span *ngFor="let option of questionSaved[i]['questionOptionModel'] ; let op = index" name="optionText">
+                          <div *ngIf="RuleChecked(option,questionSaved[i].questionId); else Notchecked">
+                       
+                            <input type="checkbox" checked (change)="selectChangeHandler(option,$event,questionSaved[i].questionId,questionSaved[i].questionTextEN)">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
+                          <br>
+                          </div>
+                          <ng-template #Notchecked>
+                              <input type="checkbox" (change)="selectChangeHandler(option,$event,questionSaved[i].questionId,questionSaved[i].questionTextEN)">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
+                              <br>
+                            </ng-template>
+                            
+                          </span>
+                          </div>
+                          </div>
+                    </td>
                     </tr>
       
                   </tbody>
                 </table>
               </div>
-              <div class="col-sm-2" align="left" style="padding-left:4%" >
-                  <input type="button" value=">>" (click)="clicked()" >
-                    <br>
-                    <br>
-                    <input type="button" value="<<" (click)="reverceClicked()" >
-                   
-              </div>
 
-
-              <div class="col-sm-5"  >
-                  <table style="display: inline-block" class="table-striped table-bordered">
-                    <thead></thead>
-                    <tbody>
-                      <tr *ngFor="let rule of questionSaved;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
-        
-                        <td style="width: 500px;margin:auto" >
-                          <div style="width: 100%">
-                              <i class="fa fa-exclamation-circle" *ngIf="rule.questionId===checkValid(rule.questionId)" style="font-size:15px;color:blue" title="unanswered Question" ></i>&nbsp;
-                            <!-- <i class="fa fa-question-circle" *ngIf=" l && rule.questionId===checkValid(rule.questionId)" style="font-size:15px;color:blue"></i>&nbsp; -->
-                            <span name="questionText"  style="word-wrap: break-word;">{{questionSaved[i].questionTextEN}}</span>
-                           
-                          </div>
-                        
-                        <br>
-                  <div >
-                    <div *ngIf="questionSaved[i].questionId==id || expand">
-                        <span *ngFor="let option of questionSaved[i]['questionOptionModel'] ; let op = index" name="optionText">
-                            <div *ngIf="RuleChecked(option,questionSaved[i].questionId); else Notchecked">
-                         
-                              <input type="checkbox" checked (change)="selectChangeHandler(option,$event,questionSaved[i].questionId,questionSaved[i].questionTextEN)">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
-                            <br>
-                            </div>
-                            <ng-template #Notchecked>
-                                <input type="checkbox" (change)="selectChangeHandler(option,$event,questionSaved[i].questionId,questionSaved[i].questionTextEN)">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
-                                <br>
-                              </ng-template>
-                              
-                            </span>
-                            </div>
-                            </div>
-                      </td>
-                      </tr>
-        
-                    </tbody>
-                  </table>
-                </div>
-
-            </div>
           </div>
-          <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>&nbsp;
-          <!-- <button type="submit" class="btn btn-sm btn-info div-button" style="position: fixed;bottom: 30px;left: 260px">Submit</button>&nbsp; -->
-          <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" style="position: fixed;bottom: 30px" (click)="Cancel()">Cancel</button> -->
         </div>
-      </form>
+        <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>&nbsp;
+        <!-- <button type="submit" class="btn btn-sm btn-info div-button" style="position: fixed;bottom: 30px;left: 260px">Submit</button>&nbsp; -->
+        <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" style="position: fixed;bottom: 30px" (click)="Cancel()">Cancel</button> -->
+      </div>
+    </form>

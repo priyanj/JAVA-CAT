@@ -16,7 +16,6 @@ export class JCATLoginComponent implements OnInit {
       message:String;
       users: User = new User();
       userId:string;
-      client:any;
       
        constructor(private loginService :UserService,public router: Router,private myStorage:LocalStorageService) {}
    

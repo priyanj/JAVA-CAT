@@ -133,15 +133,17 @@ headers:["Application Name","Application Description","UserId"]
      this.logger.log(formvalues);
     this.router.navigate(['/application/view-application']);
    }
-   assessApplication(formvalues){
-    this.logger.log(JSON.stringify(formvalues));
-    this.logger.log(formvalues.applicationId)
-    this.applicationService.sendMsgtoOtherComponent(formvalues);
-     this.router.navigate(['/application/assesst-application']);
 
+
+   assessApplication(app){
+    this.logger.log(JSON.stringify(app));
+    this.logger.log(app.applicationId)
+    this.applicationService.sendMsgtoOtherComponent(app);
+    this.router.navigate(['/application/assesst-application']);
    }
 
    deactivate(formvalues){
      this.applicationService.deactivate(formvalues).subscribe();
    }
+   
 }

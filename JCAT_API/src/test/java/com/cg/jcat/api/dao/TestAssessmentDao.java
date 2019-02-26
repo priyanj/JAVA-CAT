@@ -32,7 +32,7 @@ public class TestAssessmentDao {
 	@Test
 	public void getAnswers() {
 
-		assertNotNull(assessmentDao.getAnswers(1));
+		assertNotNull(assessmentDao.getAnswers(1,0)); //**** changes
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class TestAssessmentDao {
 		answerModels.add(getAnswerModel(3,1,true,true,true,"Admin","1","a",1,"q1"));
 		result = assessmentDao.saveAnswers(answerModels, 1);
 		assertTrue(result);
-		assertEquals(3, assessmentDao.getAnswers(1).size());
+		assertEquals(3, assessmentDao.getAnswers(1,0).size()); //****
 		assertEquals(0, assessmentDao.getAnswerHistory().size());
 		
 		List<AnswerModel> answerModels1 = new ArrayList<>();
@@ -59,7 +59,7 @@ public class TestAssessmentDao {
 		answerModels1.add(getAnswerModel(3,1,true,true,true,"Admin","1","a",1,"q1"));
 		result = assessmentDao.saveAnswers(answerModels1, 1);
 		assertTrue(result);
-		assertEquals(2, assessmentDao.getAnswers(1).size());
+		assertEquals(2, assessmentDao.getAnswers(1,0).size()); //****
 		assertEquals(1, assessmentDao.getAnswerHistory().size()); //delete one answer from answers
 		
 		List<AnswerModel> answerModels2 = new ArrayList<>();
@@ -67,7 +67,7 @@ public class TestAssessmentDao {
 		answerModels2.add(getAnswerModel(3,1,true,true,true,"Admin","1,2","a",1,"q1"));
 		result = assessmentDao.saveAnswers(answerModels2, 1);
 		assertTrue(result);
-		assertEquals(2, assessmentDao.getAnswers(1).size());
+		assertEquals(2, assessmentDao.getAnswers(1,0).size()); //****
 		assertEquals(3, assessmentDao.getAnswerHistory().size()); //modified all answers
 
 	}

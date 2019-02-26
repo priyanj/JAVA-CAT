@@ -92,9 +92,8 @@ public class AssessmentQuestionDao {
 				QuestionOption questionOptionObj=toQuestionOption(questionOptionModel, assessmentQuestion);
 				if(questionOptionObj.getOptionTextEN().isEmpty())
 				{
-					System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
 					assessmentQuestionRepository.deleteById(questionOptionObj.getOptionId());
-				}else
+				}
 				questionOptionList.add(questionOptionObj);
 			}
 			assessmentQuestion.setQuestionOption(questionOptionList);
@@ -196,6 +195,14 @@ public class AssessmentQuestionDao {
 		List<AssessmentQuestionModel> assessmentQuestionModelList = new ArrayList<AssessmentQuestionModel>();
 		List<AssessmentQuestion> assessmentQuestionList =assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudable(isDeleted,
 				assessmentTypeForCloudable);
+		
+		return toGetQuestions(assessmentQuestionList, assessmentQuestionModelList);
+	}
+
+	public List<AssessmentQuestionModel> getPatternAndProviderQuestions() {
+		List<AssessmentQuestionModel> assessmentQuestionModelList = new ArrayList<AssessmentQuestionModel>();
+		List<AssessmentQuestion> assessmentQuestionList =assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigrationAndAssessmentTypeForCloudable(isDeleted,
+				assessmentTypeForCloudProvider,assessmentTypeForMigration,!assessmentTypeForCloudable);
 		
 		return toGetQuestions(assessmentQuestionList, assessmentQuestionModelList);
 	}

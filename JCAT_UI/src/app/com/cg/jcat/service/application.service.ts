@@ -37,7 +37,7 @@ export class ApplicationService {
       return this.http.post(this.myStorage.getdomainURL() + `/application/import`, value);
     }
 
-    private comptransfer = new BehaviorSubject("Hello");
+    private comptransfer = new BehaviorSubject("default");
     applicationData= this.comptransfer.asObservable();
   
     sendMsgtoOtherComponent(messsage){

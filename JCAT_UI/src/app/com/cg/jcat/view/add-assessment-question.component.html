@@ -1,3 +1,4 @@
+
 <h3>Assessment Questions</h3>
 <h1>
   <hr width="100%" size="80">
@@ -21,12 +22,16 @@
         <label>Cloudable</label>
         <br/>
       </div>
+     
       <div class="form-group">
         <label for="questionType">Question Type</label>
-        <select [(ngModel)]="question.questionType" class="form-control" #questionType="ngModel" required name="questionType">
+        <select [(ngModel)]="question.questionType" class="form-control" #q="ngModel" required name="questionType">
             <option hidden>select question type</option>
             <option *ngFor="let size of questionTypeEnum" >{{size}}</option>
         </select>
+        <div *ngIf="q?.touched">
+            <div *ngIf="q.errors?.required" class="color">*Question Display Order can't be empty</div>
+          </div>
       </div>
       <div class="form-group">
         <label for="questionDisplayOrder">Question Display Order</label>
@@ -38,11 +43,11 @@
       </div>
       <div class="form-group">
         <span>number of option</span>&ngsp;
-        <select (change)="selectChangeHandler($event)" required #option="ngModel" [(ngModel)]="question.numberOfOptions" name="numberOfOptions">
+        <select (change)="selectChangeHandler($event)" required #option1="ngModel" [(ngModel)]="question.numberOfOptions" name="numberOfOptions">
           <option class='option' *ngFor='let option of optionsValues'>{{option}}</option>
         </select>
-        <div *ngIf="option?.touched">
-          <div *ngIf="option.errors?.required" class="color">*number of option can't be empty</div>
+        <div *ngIf="option1?.touched">
+          <div *ngIf="option1.errors?.required" class="color">*number of option can't be empty</div>
         </div>
       </div>
 

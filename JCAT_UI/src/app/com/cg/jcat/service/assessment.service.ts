@@ -16,14 +16,11 @@ constructor(private http: HttpClient,private myStorage:LocalStorageService) { }
 ngOnInit() {
   }
 
-  getAnswers(applicationId : number) {
-    return  this.http.get(this.myStorage.getdomainURL()+`/assessment/answer/get/`+applicationId);
+  getAnswers(applicationId : number,assessmentStage:number) {
+    return  this.http.get(this.myStorage.getdomainURL()+`/assessment/answer/get/`+applicationId+'/'+assessmentStage);
   }
 
   saveAnswers(answerList: any,aid : number): Observable<any> {
-    console.log(JSON.stringify(answerList))
-    // let headers = new HttpHeaders();
-    // headers = headers.set('Content-Type', 'application/json; charset=utf-8'); 
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8'); 
     console.log(this.myStorage.getdomainURL() + `/assessment/answer/create/`+aid);
@@ -31,6 +28,8 @@ ngOnInit() {
   }
 
   finalized(answerList:any,applicationId : number,assessmentStage:number): Observable<any> {
+    console.log("******************")
+    console.log(this.myStorage.getdomainURL() + `/assessment/finalize/`+applicationId+`/`+assessmentStage);
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8'); 
     return this.http.post(this.myStorage.getdomainURL() + `/assessment/finalize/`+applicationId+`/`+assessmentStage,answerList);

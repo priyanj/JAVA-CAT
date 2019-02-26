@@ -50,8 +50,8 @@ public class AssessmentQuestionController implements IAssessmentQuestionControll
 
 	@Override
 	public void updateQuestion(AssessmentQuestionModel question) {
+		System.out.println(question);
 		assessmentQuestionService.updateQuestion(question);
-
 	}
 
 	@Override
@@ -75,6 +75,12 @@ public class AssessmentQuestionController implements IAssessmentQuestionControll
 	public List<AssessmentQuestionModel> getCloudableQuestions() {
 		
 		return assessmentQuestionService.getCloudableQuestions();
+	}
+
+	@Override
+	public List<AssessmentQuestionModel> getPatternAndProviderQuestions() {
+		
+		return assessmentQuestionService.getPatternAndProviderQuestions();
 	}
 
 }

@@ -24,5 +24,6 @@ public interface IAssessmentQuestionService {
 
 	public List<AssessmentQuestionModel> getCloudableQuestions(); 
  
+	public List<AssessmentQuestionModel> getPatternAndProviderQuestions();
 
 }

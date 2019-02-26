@@ -12,7 +12,7 @@ import com.cg.jcat.api.exception.SystemExceptions;
 @Service
 public interface IAssessmentService {
 	
-	public List<AnswerModel> getAnswers(int applicationId);
+	public List<AnswerModel> getAnswers(int applicationId,int assessmentStage);
 	
 	public boolean saveAnswers(List<AnswerModel> answerModels, int applicationId) throws SystemExceptions, OptionTextNotNullException, CountMissMatchException;
 	

@@ -68,32 +68,23 @@ import { AssessmentQuestions } from '../entity/AssessmentQuestion';
       
       
         this.dtCloudableRuleService.getAllCloudableQuestions().subscribe(result=>{this.cloudableQuestions=result,
-          this.dtCloudableRuleService.getCloudableRule().subscribe(result=>{this.cloudableRule=result,this.checkedCloudableRule=result
+          this.dtCloudableRuleService.getCloudableRule().subscribe(result=>{this.cloudableRule=result
           
+            console.log(this.cloudableQuestions);
+            console.log(this.cloudableRule);
            
+            for (let index1 = 0; index1 < this.cloudableRule.length; index1++) {
              for (let index = 0; index < this.cloudableQuestions.length; index++) {
-              let length=1;
-           for (let index1 = 0; index1 < this.cloudableRule.length; index1++) {
-             
-             if(this.cloudableQuestions[index].questionId===this.cloudableRule[index1].questionId)
+           
+             if(this.cloudableRule[index1].questionId===this.cloudableQuestions[index].questionId)
              {
-               this.questionSaved[this.i]=this.cloudableQuestions[index];
-               this.i++;
+               console.log(this.cloudableRule[index1].questionId+"***"+this.cloudableQuestions[index].questionId)
+               this.questionSaved[this.questionSaved.length]=this.cloudableQuestions[index];
                this.cloudableQuestions.splice(index,1);
              }
            }
          }
-         for (let index = 0; index < this.cloudableQuestions.length; index++) {
-
-          for (let index1 = 0; index1 < this.cloudableRule.length; index1++) {
-            if(this.cloudableQuestions[index].questionId!=this.cloudableRule[index1].questionId)
-             {
-              this.unsavedQuestionRules[this.j]=this.cloudableQuestions[index];
-              this.j++;
-             }
-
-          }
-        }
+         console.log(this.questionSaved);
           });
         });
     }
@@ -269,6 +260,7 @@ import { AssessmentQuestions } from '../entity/AssessmentQuestion';
         }
         
       }
+      console.log(this.cloudableRule);
     }
     this.clickedReversedValue=false;
     }

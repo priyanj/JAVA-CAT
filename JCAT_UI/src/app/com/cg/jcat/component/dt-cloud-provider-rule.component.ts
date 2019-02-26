@@ -52,14 +52,17 @@ export class DTCloudProviderComponentRule implements OnInit {
     console.log(this.providerIdValue);
     // this.dtProviderRuleService.providerId.subscribe(data => { this.providerIdValue = data; });
     this.dtProviderRuleService.getProviderQuestions().subscribe(result => {
-      this.dtTrigger.next();
       this.providerAllData = result ;
       this.originalQuestions = result ;
       this.providerQuestionLength = this.providerAllData.length;
-      this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data
+      console.log(this.providerAllData);
       
+      this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data,
+        console.log(this.allProviderRules);
+      
+        for (let index1 = 0; index1 <this.allProviderRules.length; index1++) {
         for (let index = 0; index < this.providerAllData.length; index++) {
-          for (let index1 = 0; index1 < this.allProviderRules.length; index1++) {
+         
             if(this.providerAllData[index].questionId===this.allProviderRules[index1].questionId)
             {
               this.savedProviderRule[this.savedProviderRule.length]=this.providerAllData[index];
@@ -68,7 +71,6 @@ export class DTCloudProviderComponentRule implements OnInit {
           }
           
         }
-
       });
     });
     
@@ -115,15 +117,20 @@ export class DTCloudProviderComponentRule implements OnInit {
   reverceClicked() {
     if(this.clickedReversedValue)
     {
+
+      
+
     var x = this.originalQuestions.length;
     this.originalQuestions[x] = this.rule;
+    console.log(this.rule);
     this.savedProviderRule.splice(this.eventValue, 1);
     for (let index = 0; index < this.allProviderRules.length; index++) {
-      if (this.allProviderRules[index].questionTextEN == this.rule.questiontextEN) {
+      if (this.allProviderRules[index].questionId === this.rule.questionId) {
         this.allProviderRules.splice(index, 1);
       }
     }
   }
+  console.log(this.allProviderRules);
     this.clickedReversedValue=false;
   }
 

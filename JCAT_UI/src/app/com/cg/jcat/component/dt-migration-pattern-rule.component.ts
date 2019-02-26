@@ -50,16 +50,18 @@ export class DTMigrationPatternComponentRule implements OnInit {
 
   ngOnInit() {
     this.migrationIdValue = this.myStorage.getMigrationId();
-    console.log(this.migrationIdValue);
+    // console.log(this.migrationIdValue);
     // this.forMigrationPatternService.migrationId.subscribe(data => { this.migrationIdValue = data; });
     this.forMigrationPatternService.getMigrationQuestions().subscribe(result => {
       this.migrationAllData = result ;
       this.originalQuestions = result ;
       this.migrationQuestionLength = this.migrationAllData.length;
       this.forMigrationPatternService.getMigrationRule(this.migrationIdValue).subscribe(data => { this.allMigrationRules = data
-      
+      console.log(this.allMigrationRules);
+      console.log("*******");
+        for (let index1 = 0; index1 < this.allMigrationRules.length; index1++) {
         for (let index = 0; index < this.migrationAllData.length; index++) {
-         for (let index1 = 0; index1 < this.allMigrationRules.length; index1++) {
+        
            if(this.migrationAllData[index].questionId===this.allMigrationRules[index1].questionId)
            {
              this.savedMigrationQuestion[this.savedMigrationQuestion.length]=this.migrationAllData[index];
@@ -122,6 +124,8 @@ export class DTMigrationPatternComponentRule implements OnInit {
     this.idvalue = true;
     this.id = event;
     this.clickedReversedValue = true;
+
+    console.log(event2);
     this.rule = event2;
     this.eventValue = event1;
   }
@@ -131,13 +135,17 @@ export class DTMigrationPatternComponentRule implements OnInit {
     {
     var x = this.originalQuestions.length;
     this.originalQuestions[x] = this.rule;
+    console.log(this.rule);
     this.savedMigrationQuestion.splice(this.eventValue, 1);
+    console.log(this.allMigrationRules);
     for (let index = 0; index < this.allMigrationRules.length; index++) {
-      if (this.allMigrationRules[index].questionTextEN == this.rule.questiontextEN) {
+      if (this.allMigrationRules[index].questionId === this.rule.questionId) {
+      // if (this.allMigrationRules[index].questionId === this.rule.questionId) {
         this.allMigrationRules.splice(index, 1);
       }
 
     }
+    console.log(this.allMigrationRules);
   }
   this.clickedReversedValue=false;
   }
@@ -168,7 +176,6 @@ export class DTMigrationPatternComponentRule implements OnInit {
         {
           this.unAnswered.splice(index,1);
         }
-      console.log("^^^^^^"+this.unAnswered);
     }
     }
     else {

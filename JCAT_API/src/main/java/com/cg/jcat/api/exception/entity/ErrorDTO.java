@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class ErrorDTO {
 
-	// CRE_CART_INCOMPLETE_BODY(400,"E001","Incomplete request body","");
 
 	private String errorCode;
 	private String errorMessage;

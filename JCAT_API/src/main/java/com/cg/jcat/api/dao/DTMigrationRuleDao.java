@@ -170,7 +170,7 @@ public class DTMigrationRuleDao {
 		dtMigrationRuleModel.setMigrationId(dtMigrationRule.getDtMigration().getMigrationId());
 		dtMigrationRuleModel.setMigrationRuleId(dtMigrationRule.getMigrationRuleId());
 		dtMigrationRuleModel.setQuestionId(dtMigrationRule.getAssessmentQuestion().getQuestionId());
-		dtMigrationRuleModel.setQuestiontextEN(dtMigrationRule.getRuleOptionTextEN());
+		dtMigrationRuleModel.setQuestiontextEN(dtMigrationRule.getQuestiontextEN());
 		dtMigrationRuleModel.setRuleOptionIds(dtMigrationRule.getRuleOptionIds());
 		dtMigrationRuleModel.setRuleOptionTextEN(dtMigrationRule.getRuleOptionTextEN());
 		return dtMigrationRuleModel;

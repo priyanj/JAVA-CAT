@@ -6,4 +6,7 @@ import com.cg.jcat.api.entity.DTProviders;
 
 public interface IDTProviderRepository extends JpaRepository<DTProviders, Integer>{
 
+	DTProviders findByProviderId(int id);
+
+
 }

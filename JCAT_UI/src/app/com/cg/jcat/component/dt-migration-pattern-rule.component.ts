@@ -17,6 +17,11 @@ import { DTMigrationRule } from '../entity/DTMigrationRule';
 })
 export class DTMigrationPatternComponentRule implements OnInit {
 
+  savedMigrationQuestion:any=[];
+  expand:boolean=false;
+  unAnswered:any=[];
+  flag2:number=0;
+
   clickedValue: boolean = false;
   eventValue: number;
   rule: DTMigrationRule = new DTMigrationRule();
@@ -44,19 +49,31 @@ export class DTMigrationPatternComponentRule implements OnInit {
   migrationIdValue: any;
 
   ngOnInit() {
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      responsive: true
-    };
-    this.forMigrationPatternService.migrationId.subscribe(data => { this.migrationIdValue = data; });
+    this.migrationIdValue = this.myStorage.getMigrationId();
+    console.log(this.migrationIdValue);
+    // this.forMigrationPatternService.migrationId.subscribe(data => { this.migrationIdValue = data; });
     this.forMigrationPatternService.getMigrationQuestions().subscribe(result => {
-      this.dtTrigger.next();
       this.migrationAllData = result ;
       this.originalQuestions = result ;
       this.migrationQuestionLength = this.migrationAllData.length;
+      this.forMigrationPatternService.getMigrationRule(this.migrationIdValue).subscribe(data => { this.allMigrationRules = data
+      
+        for (let index = 0; index < this.migrationAllData.length; index++) {
+         for (let index1 = 0; index1 < this.allMigrationRules.length; index1++) {
+           if(this.migrationAllData[index].questionId===this.allMigrationRules[index1].questionId)
+           {
+             this.savedMigrationQuestion[this.savedMigrationQuestion.length]=this.migrationAllData[index];
+             this.migrationAllData.splice(index,1);
+           }
+         }
+          
+        }
+      
+      });
+      
+
     });
-    this.forMigrationPatternService.getMigrationRule(this.migrationIdValue).subscribe(data => { this.allMigrationRules = data });
+    
   }
 
   Cancel() {
@@ -75,12 +92,30 @@ export class DTMigrationPatternComponentRule implements OnInit {
     this.rule = event;
     this.eventValue = event1;
   }
+  hideall(){
+    for (let index = 0; index < this.savedMigrationQuestion.length; index++) {
+      this.expand=false;
+      
+    }
+  }
+  expandall(){
+    for (let index = 0; index < this.savedMigrationQuestion.length; index++) {
+      this.expand=true;
+      
+    }
+  }
 
   clicked() {
     this.value = true;
-    var ins = this.rulesQuestion.length;
-    this.rulesQuestion[ins] = this.rule;
+    if(this.clickedValue){
+    var ins = this.savedMigrationQuestion.length;
+    this.savedMigrationQuestion[ins] = this.rule;
     this.originalQuestions.splice(this.eventValue, 1);
+
+    this.unAnswered[this.unAnswered.length]=this.savedMigrationQuestion[ins].questionId;
+    console.log("************"+this.unAnswered[this.unAnswered.length-1]);
+  }
+  this.clickedValue=false;
   }
 
   onClickRule(event2: any, event: any, event1: number) {
@@ -92,15 +127,19 @@ export class DTMigrationPatternComponentRule implements OnInit {
   }
 
   reverceClicked() {
+    if(this.clickedReversedValue)
+    {
     var x = this.originalQuestions.length;
     this.originalQuestions[x] = this.rule;
-    this.rulesQuestion.splice(this.eventValue, 1);
+    this.savedMigrationQuestion.splice(this.eventValue, 1);
     for (let index = 0; index < this.allMigrationRules.length; index++) {
       if (this.allMigrationRules[index].questionTextEN == this.rule.questiontextEN) {
         this.allMigrationRules.splice(index, 1);
       }
 
     }
+  }
+  this.clickedReversedValue=false;
   }
 
   selectChangeHandler(optionObject, event, qid, qtext) {
@@ -120,22 +159,42 @@ export class DTMigrationPatternComponentRule implements OnInit {
         migrationRuleNewObject.ruleOptionTextEN = optionObject.optionTextEN;
         migrationRuleNewObject.executionOrder = 0;
         migrationRuleNewObject.questiontextEN = qtext;
-        migrationRuleNewObject.ruleOptionIds = optionObject.optionId
+        migrationRuleNewObject.ruleOptionIds = String(optionObject.optionId);
         this.allMigrationRules[this.allMigrationRules.length] = migrationRuleNewObject;
       }
+      for (let index = 0; index < this.unAnswered.length; index++) {
+                  
+        if(this.unAnswered[index]===qid)
+        {
+          this.unAnswered.splice(index,1);
+        }
+      console.log("^^^^^^"+this.unAnswered);
+    }
     }
     else {
       for (let index = 0; index < this.allMigrationRules.length; index++) {
 
         if (this.allMigrationRules[index].questionId === qid) {
-          this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN.replace("," + optionObject.optionTextEN, '');
-          this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds.replace("," + optionObject.optionId + ",", '');
-          this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds.replace("," + optionObject.optionId, '');
-          this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN, '');
-          this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN + ",", '');
-          this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds.replace(optionObject.optionId + ",", '');
+          this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds.replace(optionObject.optionId+",", '');
+          this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds.replace(","+optionObject.optionId, '');
+          this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN+",",'');
+          this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN.replace(","+optionObject.optionTextEN,'');
+          this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds.replace(optionObject.optionId,'');
+          this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN,'');
+          console.log("Test 1ui"+this.allMigrationRules[index].ruleOptionIds.length);
+          if(this.allMigrationRules[index].ruleOptionIds.length<=0)
+          {
+            console.log("Test2io"+this.allMigrationRules[index].ruleOptionIds.length);
+            this.flag2=1;
+          }
         }
       }
+      if(this.flag2===1)
+              {
+              this.unAnswered[this.unAnswered.length]=qid;
+              console.log("$$$$"+this.unAnswered);
+              this.flag2=0;
+            }
     }
     console.log(this.allMigrationRules)
 
@@ -155,8 +214,24 @@ export class DTMigrationPatternComponentRule implements OnInit {
   }
 
   saveRule() {
+
+    if(this.unAnswered.length===0){
     this.forMigrationPatternService.saveMigrationRule(this.allMigrationRules).subscribe(
     );
+    location.reload();
+  }else{
+    alert("Some questions are unanswered");
+  }
+  }
+
+  checkValid(qid)
+  {
+    for (let index1 = 0; index1 < this.unAnswered.length; index1++) {
+    if(this.unAnswered[index1]===qid)
+      {
+        return qid;
+      }
+  }
   }
 
 }

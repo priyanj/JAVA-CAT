@@ -20,6 +20,7 @@ class DataTablesResponse {
   export class AssessmentQuestionsComponent implements OnInit {
       
     question: AssessmentQuestions = new AssessmentQuestions();
+    question2: AssessmentQuestions = new AssessmentQuestions();
     questionId : number;
     dtOptions: DataTables.Settings = {};
     dtTrigger: Subject<any> = new Subject();
@@ -53,7 +54,12 @@ class DataTablesResponse {
           }
     
      updateQuestions(formvalues){
-      console.log(formvalues);
+      // console.log(formvalues);
+      this.myStorage.setCurrentEditQuestionObject(formvalues);
+     
+      this.question2 =  this.myStorage.getCurrentEditQuestionObject();
+      console.log(this.question2);
+      console.log("&&&&&&&&&&");
       this.assessmentQuestionsService.sendMsgtoOtherComponent(formvalues);
         this.router.navigate(['/assessment-questions/assessment-question-update']);
      }      

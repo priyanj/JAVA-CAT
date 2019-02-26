@@ -9,6 +9,8 @@ public class DTProviderRuleModel {
 	private String questiontextEN;
 	private String ruleOptionIds; // in case multiple options comma separated
 	private String ruleOptionTextEN; // in case multiple options comma separated
+	private String createdBy;
+	private String modifiedBy;
 
 	public int getProviderRuleId() {
 		return providerRuleId;
@@ -65,12 +67,31 @@ public class DTProviderRuleModel {
 	public void setRuleOptionTextEN(String ruleOptionTextEN) {
 		this.ruleOptionTextEN = ruleOptionTextEN;
 	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 
 	@Override
 	public String toString() {
-		return "CloudProviderRuleModel [providerRuleId=" + providerRuleId + ", providerId=" + providerId
+		return "DTProviderRuleModel [providerRuleId=" + providerRuleId + ", providerId=" + providerId
 				+ ", evaluationOrder=" + evaluationOrder + ", questionId=" + questionId + ", questiontextEN="
-				+ questiontextEN + ", ruleOptionIds=" + ruleOptionIds + ", ruleOptionTextEN=" + ruleOptionTextEN + "]";
+				+ questiontextEN + ", ruleOptionIds=" + ruleOptionIds + ", ruleOptionTextEN=" + ruleOptionTextEN
+				+ ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + "]";
 	}
+
+	
 
 }

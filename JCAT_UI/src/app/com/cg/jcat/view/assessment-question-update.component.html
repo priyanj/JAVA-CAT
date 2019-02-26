@@ -36,7 +36,16 @@
           <div *ngIf="displayOrder.errors?.required" class="color">*Question Display Order can't be empty</div>
         </div>
       </div>
+
       <div class="form-group">
+        <span>number of option</span>&ngsp;
+        <select (change)="selectChangeHandler($event)" required [(ngModel)]="question.numberOfOptions" name="numberOfOptions">
+          <option class='option' *ngFor='let option of optionsValues' [value]="option">{{option}}</option>
+        </select>
+      </div>
+  
+
+      <!-- <div class="form-group">
         <span>number of option</span>&ngsp;
         <select (change)="selectChangeHandler($event)" required #option="ngModel" [(ngModel)]="question.numberOfOptions" name="numberOfOptions">
           <option class='option' *ngFor='let option of optionsValues'>{{option}}</option>
@@ -44,7 +53,7 @@
         <div *ngIf="option?.touched">
           <div *ngIf="option.errors?.required" class="color">*number of option can't be empty</div>
         </div>
-      </div>
+      </div> -->
 
       <div class="form-group">
         <label for="questionText">Question</label>
@@ -87,21 +96,29 @@
           <div *ngIf="first ; else notfirst">
           </div>
           <ng-template #notfirst>
-            <label for="answers">Option Text English{{size}}</label>
+            <label for="answers">Option Text English{{i}}</label>
             <br>
-            <input type="text" class="form-control" name="jk{{i}}" [(ngModel)]="optionText[i-1]"  />
-            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span>
-            <div *ngIf="answer?.touched">
+            <!-- <input type="text" class="form-control" name="jk{{i}}" [(ngModel)]="optionText[i-1]"  /> -->
+            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="{{i-1}}" #answer="ngModel" /> &nbsp;
+            <span *ngIf="prevNumberOfOptions<numberOfOptions && i>prevNumberOfOptions">
+            <button type="button" class="close" aria-label="Close"(click)="deleteTextField(i-1)" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </span>
+            <!-- <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
-            </div>
+            </div> -->
             <br>
-            <label for="answers">Option Text German{{size}}</label>
+            <label for="answers">Option Text German{{i}}</label>
             <br>
-            <input type="text" class="form-control" name="{{i}}" [(ngModel)]="optionTextl2[size-1]"  />
-            <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.languages.controls.length > 1" (click)="removeLanguage(i)"></span>
-            <div *ngIf="answer?.touched">
+            <!-- <input type="text" class="form-control" name="{{i}}" [(ngModel)]="optionTextl2[size-1]"  /> -->
+            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="{{i-1}}" #answer="ngModel" /> &nbsp;
+            <!-- <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+            <!-- <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
-            </div>
+            </div> -->
           </ng-template>
         </div>
       </div>

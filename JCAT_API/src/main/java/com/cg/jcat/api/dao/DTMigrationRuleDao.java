@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.jcat.api.entity.AssessmentQuestion;
 import com.cg.jcat.api.entity.DTMigration;
@@ -66,16 +67,28 @@ public class DTMigrationRuleDao {
 		return dtMigrationRuleRepository.findAll();
 	}
 
+	@Transactional
 	public boolean saveDTMigrationRule(List<DTMigrationRuleModel> dtMigrationRuleModelList) throws SystemExceptions {
 		countOfHistoryRule = getCountOfMigrationRuleHistoryRule();
+		int id=0;
+		
+		for(DTMigrationRuleModel dtMigrationRuleModel:dtMigrationRuleModelList)
+		{
+			id=dtMigrationRuleModel.getMigrationId();
+		}
+	 
+		
 		if (getCountOfMigrationRule() != 0) {
 			try {
-				saveMigrationRuleHistory(toGetMigrationRule());
+				   List<DTMigrationRule> deletedRules= dtMigrationRuleRepository.deleteAllByDtMigration(dtMigrationRepository.findByMigrationId(id));
+//				saveMigrationRuleHistory(toGetMigrationRule());
+				saveMigrationRuleHistory(deletedRules);
 			} catch (Exception e) {
 				throw new SystemExceptions("saveDTMigrationRule()");
 			}
 		}
-		dtMigrationRuleRepository.deleteAll();
+
+	    //		dtMigrationRuleRepository.deleteAll();
 		afterSaved = saveAllMigrationRule(dtMigrationRuleModelList);
 		return afterSaved;
 	}

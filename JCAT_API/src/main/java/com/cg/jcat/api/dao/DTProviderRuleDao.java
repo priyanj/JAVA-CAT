@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cg.jcat.api.entity.AssessmentQuestion;
+import com.cg.jcat.api.entity.DTMigrationRule;
 import com.cg.jcat.api.entity.DTProviderRule;
 import com.cg.jcat.api.entity.DTProviderRuleHistory;
 import com.cg.jcat.api.entity.DTProviders;
@@ -136,15 +138,34 @@ public class DTProviderRuleDao {
 	 * MOVE THEM TO THE HISTORY TABLE THEN SAVE THE RULES TO THE DATABASE
 	 * 
 	 */
-
+	@Transactional
 	public boolean saveProviderRule(List<DTProviderRuleModel> cloudProviderRuleModel) throws SystemExceptions {
 		boolean savedValue = false;
+		
+		int id = 0;
+		
+		for(DTProviderRuleModel dtproviderRuleModel:cloudProviderRuleModel)
+		{
+			id=dtproviderRuleModel.getProviderId();
+		}
+//	    List<DTProviderRule> deletedRules= cloudProviderRuleRepository.deleteAllByDtProviders(cloudProviderRepository.findByProviderId(id));
+		
+		
 		try {
 			List<DTProviderRule> cloudProviderRuleList = getProviderRules();
+			System.out.println("********"+cloudProviderRuleRepository.findAll());
+			System.out.println("getCountOfProviderRule()"+cloudProviderRuleRepository.findAll().size());
 			if (getCountOfProviderRule() != 0) {
-				saveProviderRuleHistory(cloudProviderRuleList);
+				List<DTProviderRule> deletedRules = cloudProviderRuleRepository.deleteAllByDtProviders(cloudProviderRepository.findByProviderId(id));
+			    System.out.println(deletedRules);
+			    try {
+				saveProviderRuleHistory(deletedRules);
+			    }catch (Exception e) {
+			    	logger.error("Error in saveProviderRuleHistory(): " + e.getMessage() + " ", e);
+					throw new SystemExceptions("Error in saveProviderRuleHistory():" + e.getMessage());
+				}
 			}
-			cloudProviderRuleRepository.deleteAll();
+//			cloudProviderRuleRepository.deleteAll();
 			savedValue = saveDTCloudProviderRule(cloudProviderRuleModel);
 
 		} catch (Exception e) {
@@ -186,6 +207,8 @@ public class DTProviderRuleDao {
 		for (DTProviderRule providerRule : cloudProviderRule) {
 			providerRuleHistoryList.add(toProviderHistory(providerRule));
 		}
+		System.out.println("*********HHH*");
+		System.out.println(providerRuleHistoryList);
 		providerRuleHistory.saveAll(providerRuleHistoryList);
 	}
 
@@ -200,6 +223,7 @@ public class DTProviderRuleDao {
 		providerRuleHistory.setRuleOptionIds(providerRule.getRuleOptionTextEN());
 		providerRuleHistory.setRuleOptionTextEN(providerRule.getRuleOptionTextEN());
 		providerRuleHistory.setCreatedBy(providerRule.getCreatedBy());
+		providerRuleHistory.setCreatedTime(date);
 		return providerRuleHistory;
 	}
 

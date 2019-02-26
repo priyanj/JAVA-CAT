@@ -14,13 +14,19 @@ import { DTProviderRule } from '../entity/DTProviderRule';
   styleUrls: ['../view/dt-cloud-provider-rule.component.scss']
 })
 export class DTCloudProviderComponentRule implements OnInit {
+
+  savedProviderRule:any=[];
+  expand:boolean=false;
+  unAnswered:any=[];
+  flag2:number=0;
+
   shiftToFirstTable: boolean = false;
   allProviderRules: any = [];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   providerAllData: any = [];
   originalQuestions: any = [];
-  rulesQuestion: any = [];
+  // rulesQuestion: any = [];
   providerQuestionLength: number;
   index: number = 0;
   value: boolean = false;
@@ -42,14 +48,30 @@ export class DTCloudProviderComponentRule implements OnInit {
       pageLength: 10,
       responsive: true
     };
-    this.dtProviderRuleService.providerId.subscribe(data => { this.providerIdValue = data; });
+    this.providerIdValue= this.myStorage.getProviderId();
+    console.log(this.providerIdValue);
+    // this.dtProviderRuleService.providerId.subscribe(data => { this.providerIdValue = data; });
     this.dtProviderRuleService.getProviderQuestions().subscribe(result => {
       this.dtTrigger.next();
       this.providerAllData = result ;
       this.originalQuestions = result ;
       this.providerQuestionLength = this.providerAllData.length;
+      this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data
+      
+        for (let index = 0; index < this.providerAllData.length; index++) {
+          for (let index1 = 0; index1 < this.allProviderRules.length; index1++) {
+            if(this.providerAllData[index].questionId===this.allProviderRules[index1].questionId)
+            {
+              this.savedProviderRule[this.savedProviderRule.length]=this.providerAllData[index];
+              this.providerAllData.splice(index,1);
+            }
+          }
+          
+        }
+
+      });
     });
-    this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data });
+    
 
   }
 
@@ -71,9 +93,15 @@ export class DTCloudProviderComponentRule implements OnInit {
 
   clicked() {
     this.value = true;
-    var ins = this.rulesQuestion.length;
-    this.rulesQuestion[ins] = this.rule;
+    if(this.clickedValue){
+    var ins = this.savedProviderRule.length;
+    this.savedProviderRule[ins] = this.rule;
     this.originalQuestions.splice(this.eventValue, 1);
+
+    this.unAnswered[this.unAnswered.length]=this.savedProviderRule[ins].questionId;
+
+  }
+  this.clickedValue=false;
   }
 
   onClickRule(event2: any, event: any, event1: number) {
@@ -85,14 +113,30 @@ export class DTCloudProviderComponentRule implements OnInit {
   }
 
   reverceClicked() {
+    if(this.clickedReversedValue)
+    {
     var x = this.originalQuestions.length;
     this.originalQuestions[x] = this.rule;
-    this.rulesQuestion.splice(this.eventValue, 1);
+    this.savedProviderRule.splice(this.eventValue, 1);
     for (let index = 0; index < this.allProviderRules.length; index++) {
       if (this.allProviderRules[index].questionTextEN == this.rule.questiontextEN) {
         this.allProviderRules.splice(index, 1);
       }
+    }
+  }
+    this.clickedReversedValue=false;
+  }
 
+  hideall(){
+    for (let index = 0; index < this.savedProviderRule.length; index++) {
+      this.expand=false;
+      
+    }
+  }
+  expandall(){
+    for (let index = 0; index < this.savedProviderRule.length; index++) {
+      this.expand=true;
+      
     }
   }
 
@@ -113,22 +157,39 @@ export class DTCloudProviderComponentRule implements OnInit {
         providerRuleNewObject.ruleOptionTextEN = optionObject.optionTextEN;
         providerRuleNewObject.evaluationOrder = 0;
         providerRuleNewObject.questiontextEN = qtext;
-        providerRuleNewObject.ruleOptionIds = optionObject.optionId
+        providerRuleNewObject.ruleOptionIds = String(optionObject.optionId);
         this.allProviderRules[this.allProviderRules.length] = providerRuleNewObject;
       }
+      for (let index = 0; index < this.unAnswered.length; index++) {
+                  
+        if(this.unAnswered[index]===qid)
+        {
+          this.unAnswered.splice(index,1);
+        }
+    }
     }
     else {
       for (let index = 0; index < this.allProviderRules.length; index++) {
 
         if (this.allProviderRules[index].questionId === qid) {
-          this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace("," + optionObject.optionTextEN, '');
-          this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace("," + optionObject.optionId + ",", '');
-          this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace("," + optionObject.optionId, '');
-          this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN, '');
-          this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN + ",", '');
-          this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace(optionObject.optionId + ",", '');
+          this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace(optionObject.optionId+",",'');
+          this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace("," + optionObject.optionId,'');
+          this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN + ",",'');
+          this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace(","+optionObject.optionTextEN,'');
+          this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN,'');
+          this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace(optionObject.optionId,'');
+          
+          if(this.allProviderRules[index].ruleOptionIds.length<=0)
+          {
+            this.flag2=1;
+          }
         }
       }
+      if(this.flag2===1)
+              {
+              this.unAnswered[this.unAnswered.length]=qid;
+              this.flag2=0;
+            }
     }
 
   }
@@ -147,8 +208,24 @@ export class DTCloudProviderComponentRule implements OnInit {
   }
 
   saveRule() {
+    if(this.unAnswered.length===0){
     this.dtProviderRuleService.saveCloudProviderRule(this.allProviderRules).subscribe(
     );
+    location.reload();
+  }else{
+    alert("Some questions are unanswered");
+  }
+  
+  }
+
+  checkValid(qid)
+  {
+    for (let index1 = 0; index1 < this.unAnswered.length; index1++) {
+    if(this.unAnswered[index1]===qid)
+      {
+        return qid;
+      }
+  }
   }
 
 }

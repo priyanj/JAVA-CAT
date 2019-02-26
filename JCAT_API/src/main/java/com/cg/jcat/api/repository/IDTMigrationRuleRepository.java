@@ -14,4 +14,6 @@ public interface IDTMigrationRuleRepository extends JpaRepository<DTMigrationRul
 
 	DTMigrationRule findByMigrationRuleId(int migrationRuleId);
 
+	List<DTMigrationRule> deleteAllByDtMigration(DTMigration dtMigration);
+
 }

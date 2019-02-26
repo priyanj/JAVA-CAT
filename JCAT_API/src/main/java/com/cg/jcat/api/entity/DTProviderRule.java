@@ -144,8 +144,9 @@ public class DTProviderRule {
 		return "DTProviderRule [providerRuleId=" + providerRuleId + ", executionOrder=" + executionOrder
 				+ ", questiontextEN=" + questiontextEN + ", ruleOptionIds=" + ruleOptionIds + ", ruleOptionTextEN="
 				+ ruleOptionTextEN + ", createdBy=" + createdBy + ", createdTime=" + createdTime + ", modifiedBy="
-				+ modifiedBy + ", modifiedTime=" + modifiedTime + ", dtProviders=" + dtProviders
-				+ ", assessmentQuestion=" + assessmentQuestion + "]";
+				+ modifiedBy + ", modifiedTime=" + modifiedTime + "]";
 	}
+
+	
 
 }

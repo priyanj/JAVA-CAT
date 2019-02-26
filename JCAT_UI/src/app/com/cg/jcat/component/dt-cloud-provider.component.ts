@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DTProvider } from '../entity/DTProvider';
 import { DTProviderRuleService } from '../service/dt-provider-rule.service';
+import { LocalStorageService } from '../utility/localStorage.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class ForCloudProviderComponent implements OnInit {
    value1: string;
 
   AllData : any = [];
-  constructor(private forCloudProviderService : DTProviderRuleService,public router: Router,private http: HttpClient) { }
+  constructor(private forCloudProviderService : DTProviderRuleService,public router: Router,private http: HttpClient, private myStorage: LocalStorageService) { }
 
   ngOnInit() {
     this.dtOptions = {
@@ -39,6 +40,7 @@ export class ForCloudProviderComponent implements OnInit {
   }
 
   addRule(providerId:number){
+    this.myStorage.setProviderId(providerId);
     this.forCloudProviderService.sendProviderIdtoProviderRuleComponent(providerId);
     this.router.navigate(['/dt-cloud-provider/dt-cloud-provider-rule']);
 

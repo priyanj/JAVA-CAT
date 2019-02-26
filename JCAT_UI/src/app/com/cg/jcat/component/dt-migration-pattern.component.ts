@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AssessmentQuestions } from '../entity/AssessmentQuestion';
 import { AssessmentService } from '../service/assessment.service';
 import { DTMigrationRuleService } from '../service/dt-migration-rule.service';
+import { LocalStorageService } from '../utility/localStorage.service';
 
 @Component({
   selector: 'app-for-migration-pattern',
@@ -16,7 +17,7 @@ export class DTMigrationPatternComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger:  Subject<any>  =  new  Subject();
   migrationPatternData :  any  =  [];
-  constructor(private forMigrationPatternService: DTMigrationRuleService, public router: Router, private http: HttpClient) { }
+  constructor(private forMigrationPatternService: DTMigrationRuleService, public router: Router, private http: HttpClient,private myStorage:LocalStorageService) { }
 
   ngOnInit() {
 
@@ -33,6 +34,7 @@ export class DTMigrationPatternComponent implements OnInit {
   }
 
   questions(migrationId: number) {
+    this.myStorage.setMigrationId(migrationId);
     this.forMigrationPatternService.sendMsgtoOtherComponent(migrationId);
     this.forMigrationPatternService.getMigrationQuestions().subscribe(
       result => {

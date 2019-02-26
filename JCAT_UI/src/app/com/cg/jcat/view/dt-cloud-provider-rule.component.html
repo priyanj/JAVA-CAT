@@ -6,10 +6,11 @@
        class="btn btn-light"  >
       <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
     </button>
-
+    <button class="btn btn-info btn-sm" (click)="expandall()" style="position: absolute;right: 180px" title="On button click it will show options of all questions,if answer is given then the check box will be checked otherwise unchecked">ExpandAll</button>
+    <button class="btn btn-info btn-sm" (click)="hideall()" style="position: absolute;right: 100px" title="On button click it will hide options of all questions">HideAll</button>
   </h2>
 </div>
-<form #productForm="ngForm" (ngSubmit)="migrationProviderMethod()">
+<form #productForm="ngForm">
   <div class="form-group" style="width: 100%;">
     <div class="container-fluid">
       <div class="row">
@@ -39,26 +40,27 @@
         </div>
 
 
-        <div class="col-sm-5" *ngIf=value>
+        <div class="col-sm-5" >
           <table style="display: inline-block" class="table-striped table-bordered">
             <thead></thead>
             <tbody>
-              <tr *ngFor="let size of rulesQuestion;let i = index" (click)="onClickRule(size,size.questionId,i)">
+              <tr *ngFor="let size of savedProviderRule;let i = index" (click)="onClickRule(size,size.questionId,i)">
 
                 <td style="width: 500px;margin:auto">
                   <div style="width: 100%">
-                    <span name="questionTextEN" style="word-wrap: break-word;">{{rulesQuestion[i].questionTextEN}}</span>
+                      <i class="fa fa-exclamation-circle" *ngIf="size.questionId===checkValid(size.questionId)" style="font-size:15px;color:blue"></i>&nbsp;
+                    <span name="questionTextEN" style="word-wrap: break-word;">{{savedProviderRule[i].questionTextEN}}</span>
                   </div>
                   <br>
-                  <div *ngIf=idvalue>
-                    <div *ngIf="rulesQuestion[i].questionId==id">
-                      <span *ngFor="let option of rulesQuestion[i]['questionOptionModel'] ; let op = index" name="optionTextEN">
-                        <div *ngIf="RuleChecked(option,rulesQuestion[i].questionId); else Notchecked">
-                          <input type="checkbox" checked (change)="selectChangeHandler(option,$event,rulesQuestion[i].questionId,rulesQuestion[i].questionTextEN)">{{rulesQuestion[i].questionOptionModel[op]['optionTextEN']}}
+                  <div >
+                    <div *ngIf="savedProviderRule[i].questionId==id || expand">
+                      <span *ngFor="let option of savedProviderRule[i]['questionOptionModel'] ; let op = index" name="optionTextEN">
+                        <div *ngIf="RuleChecked(option,savedProviderRule[i].questionId); else Notchecked">
+                          <input type="checkbox" checked (change)="selectChangeHandler(option,$event,savedProviderRule[i].questionId,savedProviderRule[i].questionTextEN)">{{savedProviderRule[i].questionOptionModel[op]['optionTextEN']}}
                           <br>
                         </div>
                         <ng-template #Notchecked>
-                          <input type="checkbox" (change)="selectChangeHandler(option,$event,rulesQuestion[i].questionId,rulesQuestion[i].questionTextEN)">{{rulesQuestion[i].questionOptionModel[op]['optionTextEN']}}
+                          <input type="checkbox" (change)="selectChangeHandler(option,$event,savedProviderRule[i].questionId,savedProviderRule[i].questionTextEN)">{{savedProviderRule[i].questionOptionModel[op]['optionTextEN']}}
                           <br>
                         </ng-template>
                       </span>

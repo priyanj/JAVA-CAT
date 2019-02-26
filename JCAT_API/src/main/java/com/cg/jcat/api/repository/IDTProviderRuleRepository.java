@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.cg.jcat.api.entity.DTMigrationRule;
 import com.cg.jcat.api.entity.DTProviderRule;
 import com.cg.jcat.api.entity.DTProviders;
 
@@ -16,6 +17,8 @@ public interface IDTProviderRuleRepository extends JpaRepository<DTProviderRule,
 	List<DTProviderRule> findByDtProviders(Optional<DTProviders> findById);
 
 	DTProviderRule findByProviderRuleId(int providerRuleId);
+
+	List<DTProviderRule> deleteAllByDtProviders(DTProviders findByProviderId);
 
 
 }

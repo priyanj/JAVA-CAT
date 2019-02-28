@@ -186,7 +186,6 @@ public class AssessmentService implements IAssessmentService {
 				}
 			}
 			if (migrationDAO.getLogicalOperator().equalsIgnoreCase("AND") && (count == numberOfRules.size())) {
-				application.setIsAssessmentStage(2);
 				application.setDtMigrationPattern(migrationDAO.getMigrationPattern());
 				assessmentDao.saveApp(application);
 				break;

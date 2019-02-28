@@ -8,7 +8,7 @@ import { AssessmentQuestions } from '../entity/AssessmentQuestion';
 @Component({
     selector: 'app-assessment-question-update',
     templateUrl: '../view/assessment-question-update.component.html',
-    styleUrls: ['../view/add-assessment-question.component.scss']
+    styleUrls: ['../view/assessment-question-add.component.scss']
   })
   export class AssessmentQuestionUpdateComponent implements OnInit {
    questionId : number;

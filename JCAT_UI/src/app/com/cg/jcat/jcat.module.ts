@@ -7,9 +7,9 @@ import { FormsModule } from '@angular/forms';
 
 import { JcatRoutingModule } from './jcat-routing.module';
 import { JcatComponent } from './jcat.component';
-import { SidebarComponent } from './component/sidebar.component';
-import { HeaderComponent } from './component/header.component';
-import { FooterComponent } from './component/footer.component';
+import { SidebarComponent } from './component/component.sidebar';
+import { HeaderComponent } from './component/component.header';
+import { FooterComponent } from './component/component.footer';
 
 @NgModule({
   imports: [

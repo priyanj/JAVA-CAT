@@ -9,8 +9,8 @@ import { LocalStorageService } from '../utility/localStorage.service';
 
 @Component({
   selector: 'app-add-assessment-question',
-  templateUrl: '../view/add-assessment-question.component.html',
-  styleUrls: ['../view/add-assessment-question.component.scss']
+  templateUrl: '../view/assessment-question-add.component.html',
+  styleUrls: ['../view/assessment-question-add.component.scss']
 })
 export class AddAssessmentQuestionComponent implements OnInit {
   assessmentTypeForMigrationValue: boolean;

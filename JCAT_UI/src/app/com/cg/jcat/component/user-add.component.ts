@@ -11,7 +11,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
 })
 export class AddUserComponent implements OnInit {
   user: User;
-  AllData :  any  =  [];
+  AllData: any = [];
   IpAddress: string;
   userName: string;
   status: boolean = true;
@@ -29,8 +29,8 @@ export class AddUserComponent implements OnInit {
       this.myStorage.setIpAddress(data['ip']);
     });
 
-    this.userService.getUsers().subscribe(result  => {
-      this.AllData  =  result ;
+    this.userService.getUsers().subscribe(result => {
+      this.AllData = result;
     });
   }
 
@@ -47,7 +47,6 @@ export class AddUserComponent implements OnInit {
       }
     }
     if (this.status) {
-      //this.user.ipAddress = this.myStorage.getIpAddress();
       this.user.createdBy = this.myStorage.getCurrentUserObject().username;
       this.userService.addUser(this.user).subscribe();
       location.reload();

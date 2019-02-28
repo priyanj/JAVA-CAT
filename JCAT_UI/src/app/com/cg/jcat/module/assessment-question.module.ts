@@ -5,7 +5,7 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { AssessmentQuestionsRoutingModule } from '../router/assessment-question-routing.module';
 import { AssessmentQuestionsComponent } from '../component/assessment-question.component';
 import { AssessmentQuestionsService } from '../service/assessment-questions.service';
-import { AddAssessmentQuestionComponent } from '../component/add-assessment-question.component';
+import { AddAssessmentQuestionComponent } from '../component/assessment-question-add.component';
 import { AssessmentQuestionUpdateComponent } from '../component/assessment-question-update.component';
 
 @NgModule({

@@ -28,7 +28,6 @@ ngOnInit() {
   }
 
   finalized(answerList:any,applicationId : number,assessmentStage:number): Observable<any> {
-    console.log("******************")
     console.log(this.myStorage.getdomainURL() + `/assessment/finalize/`+applicationId+`/`+assessmentStage);
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8'); 

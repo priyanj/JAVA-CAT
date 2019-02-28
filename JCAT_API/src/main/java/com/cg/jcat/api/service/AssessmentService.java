@@ -91,11 +91,11 @@ public class AssessmentService implements IAssessmentService {
 
 			switch (stage) {
 			case 1:
-				stage1(application);
+				stage1(application,stage);
 				break;
 
 			case 2:
-				stage2(application);
+				stage2(application,stage);
 				break;
 
 			default:
@@ -108,17 +108,17 @@ public class AssessmentService implements IAssessmentService {
 
 	}
 
-	private void stage1(Application application) {
+	private void stage1(Application application,int stage) {
 		System.out.println(application);
-		application.setAssessmentStage(1);
+		application.setIsAssessmentStage(stage);
 		assessmentDao.saveApp(application);
 		cloudableCheck(application);
 	}
 
-	private void stage2(Application application) {
+	private void stage2(Application application,int stage) {
 		migrationCheck(application);
 		cloudProviderCheck(application);
-		application.setAssessmentStage(2);
+		application.setIsAssessmentStage(stage);
 		application.setAssessmentCompleted(true);
 		application.setAssessmentCompletionTime(date);
 		assessmentDao.saveApp(application);
@@ -131,13 +131,18 @@ public class AssessmentService implements IAssessmentService {
 		List<Answer> answersList = assessmentDao.getAnswersByApplicationId(application.getAid());
 
 		for (DTCloudableRuleModel cloudableRule : cloudableRuleList) {
-
+			System.out.println("---------------------------------------------------------------");
 			String[] cloudableRuleArray = cloudableRule.getOptionIds().split(",");
 			for (Answer answers : answersList) {
 				String[] answerOptionIdsArray = answers.getOptionIds().split(",");
-
+//				if (cloudableRule.getQuestionId() == (answers.getQuestionId()) //For previous version of jcat
+//						&& Arrays.equals(cloudableRuleArray, answerOptionIdsArray)) {
+//					System.out.println("*****");
+//					assessmentDao.setCloudableInAns(answers.getAnswerId());
+//					cloudableRuleFlag++;
+//				}
 				if (cloudableRule.getQuestionId() == (answers.getQuestionId())
-						&& Arrays.equals(cloudableRuleArray, answerOptionIdsArray)) {
+						&& Arrays.asList(cloudableRuleArray).containsAll(Arrays.asList(answerOptionIdsArray))) {
 					assessmentDao.setCloudableInAns(answers.getAnswerId());
 					cloudableRuleFlag++;
 				}
@@ -168,7 +173,12 @@ public class AssessmentService implements IAssessmentService {
 						numberOfRules.add(migrationRuleDAO.getQuestionId());
 						String[] migrationRuleIdsArray = migrationRuleDAO.getRuleOptionIds().split(",");
 						String[] answerOptionIdsArray = answers.getOptionIds().split(",");
-						if (Arrays.equals(migrationRuleIdsArray, answerOptionIdsArray)) {
+						
+//						if (Arrays.equals(migrationRuleIdsArray, answerOptionIdsArray)) {
+//							assessmentDao.setMigrationInAnswerInAns(answers.getAnswerId());
+//							count++;
+//						}
+						if (Arrays.asList(migrationRuleIdsArray).containsAll(Arrays.asList(answerOptionIdsArray))) {
 							assessmentDao.setMigrationInAnswerInAns(answers.getAnswerId());
 							count++;
 						}
@@ -176,7 +186,7 @@ public class AssessmentService implements IAssessmentService {
 				}
 			}
 			if (migrationDAO.getLogicalOperator().equalsIgnoreCase("AND") && (count == numberOfRules.size())) {
-				application.setAssessmentStage(2);
+				application.setIsAssessmentStage(2);
 				application.setDtMigrationPattern(migrationDAO.getMigrationPattern());
 				assessmentDao.saveApp(application);
 				break;
@@ -208,7 +218,12 @@ public class AssessmentService implements IAssessmentService {
 						String[] cloudProviderRuleArray = cloudProviderRuleDAO.getRuleOptionIds().split(",");
 						String[] answerOptionIdsArray = answers.getOptionIds().split(",");
 						numberOfRules++;
-						if (Arrays.equals(cloudProviderRuleArray, answerOptionIdsArray)) {
+						
+						/*if (Arrays.equals(cloudProviderRuleArray, answerOptionIdsArray)) {
+							//assessmentDao.setCloudProviderInAnswer(answers.getAnswerId());
+							count++;
+						}*/
+						if (Arrays.asList(cloudProviderRuleArray).containsAll(Arrays.asList(answerOptionIdsArray))) {
 							assessmentDao.setCloudProviderInAnswer(answers.getAnswerId());
 							count++;
 						}

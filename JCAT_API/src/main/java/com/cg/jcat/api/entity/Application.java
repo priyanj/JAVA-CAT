@@ -185,11 +185,11 @@ public class Application {
 		return assessmentStage;
 	}
 
-	public void setAssessmentStage(int assessmentStage) {
+	public void setIsAssessmentStage(int assessmentStage) {
 		this.assessmentStage = assessmentStage;
 	}
 
-	public boolean isAssessmentCompleted() {
+	public boolean getIsAssessmentCompleted() {
 		return isAssessmentCompleted;
 	}
 

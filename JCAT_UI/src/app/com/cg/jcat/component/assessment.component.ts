@@ -21,6 +21,7 @@ import { TranslateService } from '@ngx-translate/core';
   //   styleUrls: ['./assesst-application.component.scss']
 })
 export class AssesstApplicationComponent implements OnInit {
+  option: string = " ";
   application: any;
   assessmentStage: number;
   appId: number;
@@ -44,12 +45,14 @@ export class AssesstApplicationComponent implements OnInit {
   single = 0;
   singlee = 0;
   result: any;
+  checkResultForButton:any;
   queId1 = 0;
   qid = 0;
   opId = 0;
+  count:number=0;
   submitEnabled: boolean;
 
-
+  ckeck:number=0;
   i = -1;
   All: any = [1, 2, 3, 4, 5, 6, 7];
   isChecked = false;
@@ -60,9 +63,12 @@ export class AssesstApplicationComponent implements OnInit {
   userType1: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   name: string;
-  constructor(private translate: TranslateService, private router: Router, private cloudableService: DTCloudableRuleService, private assessmentQuestionService: AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) { }
+  constructor(private translate: TranslateService, private router: Router, private cloudableService: DTCloudableRuleService, private assessmentQuestionService: AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) { 
+    const browserLang = this.translate.getBrowserLang();
+  }
 
   ngOnInit() {
+    
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -71,7 +77,7 @@ export class AssesstApplicationComponent implements OnInit {
       columnDefs: [{ orderable: false, targets: 3 }]
     };
 
-    this.submitEnabled = false;
+    //this.submitEnabled = false;
 
 
 
@@ -81,7 +87,6 @@ export class AssesstApplicationComponent implements OnInit {
       if (data != "default") {
         this.myStorage.setCurrentApplicationObject(data);
       }
-
       this.assessmentStage = this.myStorage.getCurrentApplicationObject().assessmentStage;
       this.appId = this.myStorage.getCurrentApplicationObject().aid;
       if (!this.myStorage.getCurrentUserObject().isAdmin && (this.myStorage.getCurrentUserObject().userId == this.myStorage.getCurrentApplicationObject().applicationUser)) {
@@ -108,16 +113,34 @@ export class AssesstApplicationComponent implements OnInit {
 
     this.assessmentService.getAnswers(this.appId, this.assessmentStage).subscribe(result => {
       this.AnswersData = result; //get answers from database 
-      this.result = this.validateAnswers(0);
-    if (this.result != 1) {
-      this.submitEnabled = true;
-    }
     });
+
+
+  }
+
+  setAnswerText(Answer: any): Observable<number> {
+    if (Answer.optionTextsEN = "option") {
+      Answer.optionTextsEN = ".";
+    }
+    return Answer;
   }
 
   setAssessmentData(AssessmentPage: any) {
     this.AssessmentPage = AssessmentPage;
+    this.checkResultForButton=0;
+    this.checkResultForButton = this.validateAnswers(0);
+    console.log(this.checkResultForButton)
+    if (this.checkResultForButton != 1) {
+      this.submitEnabled = true;
+    }
+    else
+    {
+      this.submitEnabled = false;
+    }
   }
+
+ 
+  
 
   submit() {
 
@@ -191,13 +214,6 @@ export class AssesstApplicationComponent implements OnInit {
         return -1;
       }
     });
-    //this.assessmentService.saveAnswers(this.AnswersData, this.application.aid).subscribe();
-    // if (this.myStorage.getCurrentUserObject().isAdmin) {
-    //   this.router.navigate(['/application']);
-    // } else {
-    //   location.reload();
-    //   this.router.navigate(['/user/user-role']);
-    // }
   }
 
   saveFlag() {
@@ -208,38 +224,47 @@ export class AssesstApplicationComponent implements OnInit {
   clickMethod(name: string) {
     const submitAlert = this.translate.instant('alertMessage');
     if (confirm(submitAlert)) {
+      location.reload();
       this.submit();
     }
     if (this.assessmentStage == 1) {
       this.router.navigate(['/application']);
     }
     location.reload();
+
   }
 
   onSubmit(formvalues) {
+    console.log(this.AnswersData)
     let result = 0;
+
     this.save();
     this.assessmentService.saveAnswers(this.AnswersData, this.appId).subscribe();
-    //location.reload();
-    this.result = this.validateAnswers(0);
-    if (this.result != 1) {
-      this.submitEnabled = true;
-    }
+
+    // this.result = this.validateAnswers(0);
+    // if (this.result != 1) {
+    //   this.submitEnabled = true;
+    // }
     location.reload();
+
   }
 
   validateAnswers(validateResult: any): Observable<number> {
-    let count = 0;
+     this.count = 0;
     for (let index = 0; index < this.AssessmentPage.length; index++) {
       for (let index1 = 0; index1 < this.AnswersData.length; index1++) {
 
-        if (this.AssessmentPage[index].questionId == this.AnswersData[index1].questionId && this.AnswersData[index1].optionIds != "option") {
-          count++;
+        if (this.AssessmentPage[index].questionId == this.AnswersData[index1].questionId && this.AnswersData[index1].optionIds != this.option) {
+          this.count++;
         }
+
+
+      }
+      if (this.AssessmentPage[index].questionId == this.AnswersData[index].questionId && this.AssessmentPage[index].questionType === "LONG_ANSWER" || this.AssessmentPage[index].questionType === "SHORT_ANSWER") {
+        this.count++;
       }
     }
-    if (count != this.AssessmentPage.length) {
-      //alert("Please select answer for all questions");
+    if (this.count != this.AssessmentPage.length) {
       validateResult = 1;
       return validateResult;
     }
@@ -269,7 +294,7 @@ export class AssesstApplicationComponent implements OnInit {
     if (event.target.checked) {
       for (let x = 0; x < this.AnswersData.length; x++) {
         if (this.AnswersData[x].questionId === question.questionId) {
-          if (this.AnswersData[x].optionIds == "option") {
+          if (this.AnswersData[x].optionIds == this.option) {
             this.AnswersData[x].optionIds = optionObject.optionId;
             this.AnswersData[x].questionTextEN = question.questionTextEN;
             this.AnswersData[x].optionTextsEN = optionObject.optionTextEN;

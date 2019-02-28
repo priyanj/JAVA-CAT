@@ -35,9 +35,9 @@
           <tr *ngFor =  "let app of applicationList">
             <td>{{app.applicationName }}{{app.isDeactivate}}</td>
             <td>{{app.applicationDescription}}</td>
-            <td>{{app.isCloudable}}</td>
-            <td>{{app.migrationPattern}}</td>
-            <td>{{app.cloudProvider}}</td>
+            <td>{{app.isDTCloudable}}</td>
+            <td>{{app.dtMigrationPattern}}</td>
+            <td>{{app.dtCloudProvider}}</td>
             <td width="24%">
               <!-- <button (click)="deactivate(app.applicationId)" title="Deactivate" style="size:16px" class="button button">
                 <i style="color:black;size:16px " class="fa fa-lock" aria-hidden="true"></i>
@@ -45,7 +45,10 @@
               <button (click)="ViewApplication(app)" title="Details" style="size:16px" class="button button">
                 <i style="color:black;size:16px " class="fa fa-info-circle"></i>
               </button>&nbsp;
-              <button (click)="assessApplication(app)" title="Assest" style="size:16px" class="button button">
+              <!-- <button (click)="assessApplication(app)" title="Assest" style="size:16px" class="button button">
+                <i style="color:black" class="fa fa-hourglass-start"></i>
+              </button>&nbsp; -->
+               <button (click)="assessApplication(app)" title="Assest" style="size:16px" class="button button" [disabled]="isAssessmentComplete(app.isAssessmentCompleted)">
                 <i style="color:black" class="fa fa-hourglass-start"></i>
               </button>&nbsp;
               <button (click)="editApplication(app)" title="Edit" style="size:16px" class="button button">

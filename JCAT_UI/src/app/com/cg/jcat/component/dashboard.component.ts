@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
 
 
     constructor(private translate: TranslateService,private userService: UserService, public router: Router, private myStorage: LocalStorageService) {
+        const browserLang = this.translate.getBrowserLang();
     }
 
     download() {

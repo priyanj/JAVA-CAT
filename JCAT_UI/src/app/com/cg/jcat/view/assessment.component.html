@@ -33,6 +33,9 @@
               <div>
                 <input type="text" [(ngModel)]="AnswersData[i].optionTextsEN" name="{{i}}" size="45" />
               </div>
+              <!-- <div>
+                  <input type="text" size="45" />
+                </div> -->
             </ng-template>
           </tr>
         </tbody>
@@ -48,7 +51,9 @@
     <div *ngIf="this.assessmentStage == 1">
       <button type="submit" class="btn btn-info" title="saving application" (click)="onSubmit(add.value)">Save</button>&nbsp;
       <!-- <button type=button class="btn btn-info" (click)="clickMethod('finalize')">finalize</button>&nbsp; -->
-      <button type=button class="btn btn-info" (click)="clickMethod('finalize')">finalize</button>&nbsp;
+      <!-- <button type=button class="btn btn-info" (click)="clickMethod('finalize')">finalize</button>&nbsp; -->
+      <button type=button class="btn btn-info" [disabled]="!submitEnabled" title="please select all answer then submit button will enable"
+        (click)="clickMethod('finalize')">finalize</button>&nbsp;
     </div>
     <div *ngIf="this.assessmentStage >1">
       <button type=button class="btn btn-info" disabled (click)="clickMethod('finalize')">finalized</button>&nbsp;

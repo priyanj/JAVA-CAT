@@ -7,6 +7,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
 import { Application } from '../entity/application';
 import { ApplicationService } from '../service/application.service';
 
+
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -21,9 +22,11 @@ class DataTablesResponse {
 })
 export class ApplicationComponent implements OnInit {
 
+  submitEnabled: boolean;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   message = '';
+  assessmentComplete:boolean;
   clientIdValue : number;
   application:Array<Application>=[];
   applicationTemplate:Array<Application>=[];
@@ -33,6 +36,9 @@ export class ApplicationComponent implements OnInit {
   constructor(public router:Router, private applicationService:ApplicationService,private logger: NGXLogger,private myStorage:LocalStorageService) { }
   
   ngOnInit() {
+
+    this.assessmentComplete=true;
+
     this.dtOptions = {
       pagingType: 'first_last_numbers',
       pageLength: 10,
@@ -133,6 +139,15 @@ headers:["Application Name","Application Description","UserId"]
      this.logger.log(formvalues);
     this.router.navigate(['/application/view-application']);
    }
+
+   isAssessmentComplete(isAssessmentCompleted:boolean)
+   {
+     if(isAssessmentCompleted===true)
+     {
+       this.assessmentComplete=true;
+     return this.assessmentComplete;
+     }
+   }	
 
 
    assessApplication(app){

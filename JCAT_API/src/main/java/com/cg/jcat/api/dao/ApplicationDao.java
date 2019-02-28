@@ -71,12 +71,14 @@ public class ApplicationDao {
 		appLicationModel.setApplicationUser(application.getApplicationUser());
 		appLicationModel.setDtCloudProvider(application.getDtCloudProvider());
 		appLicationModel.setDtMigrationPattern(application.getDtMigrationPattern());
+		appLicationModel.setDTCloudable(application.isDTCloudable());
 		appLicationModel.setPriority(application.getPriority());
 		appLicationModel.setReCloudProvider(application.getReCloudProvider());
 		appLicationModel.setReMigrationPattern(application.getReMigrationPattern());
 		appLicationModel.setAssessmentStage(application.getAssessmentStage());
 		appLicationModel.setCreatedBy(application.getCreatedBy());
 		appLicationModel.setModifiedBy(application.getModifiedBy());
+		appLicationModel.setIsAssessmentCompleted(application.getIsAssessmentCompleted());
 		return appLicationModel;
 	}
 
@@ -112,7 +114,7 @@ public class ApplicationDao {
 		application.setApplicationDepartment(applicationModel.getApplicationDepartment());
 		application.setPriority(applicationModel.getPriority());
 		application.setApplicationUser(applicationModel.getApplicationUser());
-		application.setAssessmentStage(applicationModel.getAssessmentStage());
+		application.setIsAssessmentStage(applicationModel.getAssessmentStage());
 		application.setReCloudable(applicationModel.isRECloudable());
 		application.setReCloudProvider(applicationModel.getReCloudProvider());
 		application.setReMigrationPattern(applicationModel.getReMigrationPattern());
@@ -215,7 +217,7 @@ public class ApplicationDao {
 		applicationsHistory.setDeleted(application.isDeleted());
 		applicationsHistory.setActivate(application.isActivate());
 		applicationsHistory.setAssessmentStage(application.getAssessmentStage());
-		applicationsHistory.setAssessmentCompleted(application.isAssessmentCompleted());
+		applicationsHistory.setAssessmentCompleted(application.getIsAssessmentCompleted());
 		applicationsHistory.setAssessmentDoneTime(application.getAssessmentCompletionTime());
 		applicationsHistory.setDtCloudable(application.isDTCloudable());
 		applicationsHistory.setReCloudable(application.isDTCloudable());

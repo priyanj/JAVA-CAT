@@ -25,6 +25,7 @@ public class AssessmentController implements IAssessmentController {
 	@Override
 	public boolean saveAnswers(List<AnswerModel> answerModels, int applicationId)
 			throws SystemExceptions, OptionTextNotNullException, CountMissMatchException {
+		System.out.println(answerModels);
 		return answerService.saveAnswers(answerModels, applicationId);
 	}
 

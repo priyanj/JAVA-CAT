@@ -9,6 +9,7 @@ export class Application{
     assessmentStage:number;
     isDTCloudable:boolean;
     isRECloudable:boolean;
+    isAssessmentCompleted:boolean;
     dtMigrationPattern:string;
     reMigrationPattern:string;
     dtCloudProvider:string;

@@ -76,7 +76,7 @@ public class TestUserService {
 		userModel.setUsername("sam");
 		userModel.setUserEmail("abcdef@gmail.com");
 		userModel.setCompany("byarclay");
-		userModel.setAdmin(true);
+		//userModel.setAdmin(true);
 		userModel.setPassword("mnbv@123");
 		return userModel;
 	}

@@ -19,6 +19,10 @@ import { FooterComponent } from './component/footer.component';
     NgbDropdownModule,
     FormsModule
   ],
+  exports: [
+    CommonModule,
+    TranslateModule
+  ],
   declarations: [JcatComponent, SidebarComponent, HeaderComponent, FooterComponent]
 })
 export class JcatModule { }

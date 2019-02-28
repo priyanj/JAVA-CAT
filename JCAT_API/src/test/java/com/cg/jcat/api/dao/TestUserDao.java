@@ -89,7 +89,7 @@ public class TestUserDao {
 		userModel.setUsername("samfasdjdgfas");
 		userModel.setUserEmail("abc@gmail.com");
 		userModel.setCompany("goldman");
-		userModel.setAdmin(true);
+		//userModel.setAdmin(true);
 		userModel.setPassword("asd@123");
 		userModel.setCreatedBy("Admin");
 		return userModel;

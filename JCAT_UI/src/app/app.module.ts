@@ -29,7 +29,7 @@ export const createTranslateLoader = (http: HttpClient) => {
         BrowserAnimationsModule,
         HttpClientModule,
         NgbModule.forRoot(),
-RouterModule.forRoot([]), 
+        RouterModule.forRoot([]), 
  
 
         TranslateModule.forRoot({

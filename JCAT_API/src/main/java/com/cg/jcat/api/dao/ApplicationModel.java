@@ -12,6 +12,7 @@ public class ApplicationModel {
 	private int assessmentStage;
 	private boolean isDTCloudable;
 	private boolean isRECloudable;
+	private boolean isAssessmentCompleted;
 	private String dtMigrationPattern;
 	private String reMigrationPattern;
 	private String dtCloudProvider;
@@ -83,7 +84,7 @@ public class ApplicationModel {
 		this.assessmentStage = assessmentStage;
 	}
 
-	public boolean isDTCloudable() {
+	public boolean getIsDTCloudable() {
 		return isDTCloudable;
 	}
 
@@ -97,6 +98,15 @@ public class ApplicationModel {
 
 	public void setRECloudable(boolean isRECloudable) {
 		this.isRECloudable = isRECloudable;
+	}
+	
+
+	public boolean getIsAssessmentCompleted() {
+		return isAssessmentCompleted;
+	}
+
+	public void setIsAssessmentCompleted(boolean isAssessmentCompleted) {
+		this.isAssessmentCompleted = isAssessmentCompleted;
 	}
 
 	public String getDtMigrationPattern() {
@@ -153,9 +163,10 @@ public class ApplicationModel {
 				+ applicationName + ", applicationDescription=" + applicationDescription + ", applicationDepartment="
 				+ applicationDepartment + ", priority=" + priority + ", applicationUser=" + applicationUser
 				+ ", assessmentStage=" + assessmentStage + ", isDTCloudable=" + isDTCloudable + ", isRECloudable="
-				+ isRECloudable + ", dtMigrationPattern=" + dtMigrationPattern + ", reMigrationPattern="
-				+ reMigrationPattern + ", dtCloudProvider=" + dtCloudProvider + ", reCloudProvider=" + reCloudProvider
-				+ "]";
+				+ isRECloudable + ", isAssessmentCompleted=" + isAssessmentCompleted + ", dtMigrationPattern="
+				+ dtMigrationPattern + ", reMigrationPattern=" + reMigrationPattern + ", dtCloudProvider="
+				+ dtCloudProvider + ", reCloudProvider=" + reCloudProvider + ", createdBy=" + createdBy
+				+ ", modifiedBy=" + modifiedBy + "]";
 	}
 
 }

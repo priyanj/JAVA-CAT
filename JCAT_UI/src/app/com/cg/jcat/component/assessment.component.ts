@@ -32,6 +32,7 @@ export class AssesstApplicationComponent implements OnInit {
   count: number = 0;
   submitEnabled: boolean;
   i = -1;
+  title:any;
   AnswersData: any = [];
   constructor(private translate: TranslateService, private router: Router, private cloudableService: DTCloudableRuleService, private assessmentQuestionService: AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) {
     const browserLang = this.translate.getBrowserLang();
@@ -39,6 +40,7 @@ export class AssesstApplicationComponent implements OnInit {
 
   ngOnInit() {
 
+    this.title=this.translate.instant('title');
 
     this.dtOptions = {
       pagingType: 'full_numbers',

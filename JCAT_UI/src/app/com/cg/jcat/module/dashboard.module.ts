@@ -21,14 +21,6 @@ import { JcatModule } from '../jcat.module';
         NgbCarouselModule.forRoot(),
         NgbAlertModule.forRoot(),
         TranslateModule.forChild(),
-    //    TranslateModule.forChild({
-    //     loader: {
-    //       provide: TranslateLoader,
-    //       useFactory: (AdminTranslateLoader),
-    //       deps: [HttpClient]
-    //     },
-    //     isolate: true
-    //   }),
         DashboardRoutingModule,
         StatModule,
         YoutubePlayerModule,

@@ -3,7 +3,7 @@
           <html lang="en">
                   <body>
                   <div class="jumbotron text-center">
-                      <h2  class="text-capitalize">{{'WelcomeMsg' | translate}}
+                      <h2  class="text-capitalize">{{'WelcomeMsg' | translate}}llll
                         </h2>
                            <br>
                               <vg-player>
@@ -69,11 +69,11 @@
   </div>
   <ng-template #notShow>
       <div [@routerTransition]>
-          <h2 class="text-muted">Dashboard <small>Statistics Overview</small></h2>
+          <h2 class="text-muted">Dashboard <small>{{'Statistics Overview' | translate}}</small></h2>
           <html lang="en">
                   <body>
                   <div class="jumbotron text-center"> 
-                    <h1  class="text-capitalize">Welcome <div *ngIf="firstName!='null'">{{firstName}}&ngsp;{{lastName}}</div></h1> 
+                    <h1  class="text-capitalize">{{'WelcomeMsg' | translate}}<div *ngIf="firstName!='null'">{{firstName}}&ngsp;{{lastName}}</div></h1> 
                     <br>
                     <vg-player>
                         <vg-controls>
@@ -98,9 +98,8 @@
                     <div class="col">
                       <div class="card">
                         <div class="card-block">
-                          <h1 class="card-title">About</h1>
-                          <p class="card-text"><strong>Cloud Assessment Tool</strong> can calculate if a application is cloudable or not
-                          ,and it can decide the migration pattern and clpouprovider for the application</p>
+                          <h1 class="card-title">{{'About' | translate}}</h1>
+                          <p class="card-text">{{'AboutTool' | translate}}</p>
                         </div>
                       </div>
                     </div>

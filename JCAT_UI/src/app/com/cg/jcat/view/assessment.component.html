@@ -1,15 +1,14 @@
-<!-- <span>{{"Users" | translate}}</span> -->
 <div>
   <form #add="ngForm">
     <div class="form-group">
-      <h2 class="text-muted">Detailed Assessment</h2>
+      <h2 class="text-muted">{{'Detailed Assessment' | translate}}</h2>
     </div>
     <div>
       <table class="table table-bordered table-striped table-hover">
         <thead>
           <tr>
-            <th>Question</th>
-            <th>Answer</th>
+            <th>{{'Question' | translate}}</th>
+            <th>{{'Answer' | translate}}</th>
           </tr>
         </thead>
         <tbody>
@@ -47,22 +46,21 @@
     </div>
     <div *ngIf="this.assessmentStage == 0">
       <button type="submit" class="btn btn-info" title="saving application"
-        (click)="onSubmit()">Save</button>&nbsp;
+        (click)="onSubmit()">{{'Save' | translate}}</button>&nbsp;
       <button type=button class="btn btn-info" [disabled]="!submitEnabled"
-        title="please select all answer then submit button will enable" (click)="clickMethod('submit')">submit and
-        Next</button>&nbsp;
-      <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">back</button>&nbsp;
+        title="please select all answer then submit button will enable" (click)="clickMethod('submit')">{{'Submit and Next' | translate}}</button>&nbsp;
+      <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">{{'back' | translate}}</button>&nbsp;
     </div>
     <div *ngIf="this.assessmentStage == 1">
       <button type="submit" class="btn btn-info" title="saving application"
-        (click)="onSubmit()">Save</button>&nbsp;
+        (click)="onSubmit()">{{'Save' | translate}}</button>&nbsp;
       <button type=button class="btn btn-info" [disabled]="!submitEnabled"
         title="please select all answer then submit button will enable"
         (click)="clickMethod('finalize')">finalize</button>&nbsp;
     </div>
     <div *ngIf="this.assessmentStage >1">
       <button type=button class="btn btn-info" disabled (click)="clickMethod('finalize')">finalized</button>&nbsp;
-      <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">back</button>&nbsp;
+      <button type="submit" class="btn btn-info" title="Go to application" (click)="back()">{{'back' | translate}}</button>&nbsp;
     </div>
   </form>
 </div>

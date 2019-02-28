@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 import { NGXLogger } from 'ngx-logger';
 import { Subject } from 'rxjs';
 import { LocalStorageService } from '../utility/localStorage.service';
@@ -33,7 +33,7 @@ export class ApplicationComponent implements OnInit {
   applicationList: any = [];
   public show:boolean = false;
   public buttonName:any = 'Help';
-  constructor(public router:Router, private applicationService:ApplicationService,private logger: NGXLogger,private myStorage:LocalStorageService) { }
+  constructor(private translate: TranslateService,public router:Router, private applicationService:ApplicationService,private logger: NGXLogger,private myStorage:LocalStorageService) { }
   
   ngOnInit() {
 

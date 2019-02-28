@@ -1,7 +1,7 @@
 <div>
     <div>
-      <h2 class="text-muted">Application
-        <small>List of applications</small>&nbsp;
+      <h2 class="text-muted">{{'Applications' | translate}}
+        <small>{{'List of applications' | translate }}</small>&nbsp;
         <button style="background:white" type="button" class="btn btn-default" (click)="toggle()"  id="bt" title="This page shows all applications.On the top of table there are four buttons. Add Application button is to add new application. Import Application button is to import one or more applications for specified user. To import application you have to choose CSV file with required data. If you don't have csv file format you can download it by clicking on Export Dummy Template. Third button is Export Application. It will download a CSV file of all application. In Action column of table there are six buttons. First button is to deactivate application. Second button shows detail information of application. Third button is to assest application.Forth button is to edit application. Fifth button is to delete application and sixth button is to reset application.">
           <i class="fa fa-info-circle fa-lg" style="color:blue;" aria-hidden="true"></i>
         </button>
@@ -10,10 +10,10 @@
     <br>
     <div>
       <nav>
-        <input type="button" class="btn  btn-info" title="Add new application " value="Add Application" (click)="form()">&nbsp;
-        <input type="button" class="btn btn-info" title="Import one or more applications" value="Import Application" (click)="myFunction()">&nbsp;
-        <input type="button"  class="btn btn-info"  title="Download applicaion template"  value="Application Template"  (click)="exportTemplate()"> &nbsp;
-        <input type="button" class="btn btn-info" title="Export all applications" value="Export Application" (click)="exportCsv()">
+        <input type="button" class="btn  btn-info" title="Add new application " value="{{'Add' | translate}} {{'Applications' | translate}}" (click)="form()">&nbsp;
+        <input type="button" class="btn btn-info" title="Import one or more applications" value="Import {{'Applications' | translate}}" (click)="myFunction()">&nbsp;
+        <input type="button"  class="btn btn-info"  title="Download applicaion template"  value="{{'Applications' | translate}} Template"  (click)="exportTemplate()"> &nbsp;
+        <input type="button" class="btn btn-info" title="Export all applications" value="Export {{'Applications' | translate}}" (click)="exportCsv()">
       </nav>
   
     </div>
@@ -23,12 +23,12 @@
   
         <thead bgcolor="#E0E0E0">
           <tr>
-            <th width="15%" style="vertical-align:text-top">Application Name</th>
-            <th width="15%" style="vertical-align:text-top">Application Description</th>
-            <th width="10%" style="vertical-align:text-top">Cloudable</th>
-            <th width="10%" style="vertical-align:text-top">Migration Method</th>
-            <th width="10%" style="vertical-align:text-top">Cloud Provider</th>
-            <th width="24%" style="vertical-align:text-top">Action</th>
+            <th width="15%" style="vertical-align:text-top">{{'Applications' | translate}} {{'Name' | translate}}</th>
+            <th width="15%" style="vertical-align:text-top">{{'Applications' | translate}} {{'Description' | translate}}</th>
+            <th width="10%" style="vertical-align:text-top">{{'Applications' | translate}} {{'Cloudable' | translate}}</th>
+            <th width="10%" style="vertical-align:text-top">Migration {{'Method' | translate}}</th>
+            <th width="10%" style="vertical-align:text-top">{{'Cloud Provider' | translate}}</th>
+            <th width="24%" style="vertical-align:text-top">{{'Action' | translate}}</th>
           </tr>
         </thead>
         <tbody>

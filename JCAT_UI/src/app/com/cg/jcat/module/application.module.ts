@@ -6,14 +6,18 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { ApplicationRoutingModule } from '../router/application-routing.module';
 import { ApplicationComponent } from '../component/application.component';
 import { AssesstApplicationComponent } from '../component/assessment.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
-    imports: [CommonModule, ApplicationRoutingModule,DataTablesModule,FormsModule
-    ,LoggerModule.forRoot({level: NgxLoggerLevel.LOG,disableConsoleLogging:false,serverLogLevel: NgxLoggerLevel.LOG})],
+    imports: [CommonModule,
+        TranslateModule.forChild(),
+         ApplicationRoutingModule,
+          DataTablesModule, FormsModule
+        , LoggerModule.forRoot({ level: NgxLoggerLevel.LOG, disableConsoleLogging: false, serverLogLevel: NgxLoggerLevel.LOG })],
     declarations: [
-        ApplicationComponent,AssesstApplicationComponent
-        ]
+        ApplicationComponent, AssesstApplicationComponent
+    ]
 })
 
-export class ApplicationModule {}
+export class ApplicationModule { }

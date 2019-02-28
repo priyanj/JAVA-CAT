@@ -88,7 +88,10 @@ public class DTMigrationRuleModel {
 	public String toString() {
 		return "DTMigrationRuleModel [migrationRuleId=" + migrationRuleId + ", migrationId=" + migrationId
 				+ ", executionOrder=" + executionOrder + ", questionId=" + questionId + ", questiontextEN="
-				+ questiontextEN + ", ruleOptionIds=" + ruleOptionIds + ", ruleOptionTextEN=" + ruleOptionTextEN + "]";
+				+ questiontextEN + ", ruleOptionIds=" + ruleOptionIds + ", ruleOptionTextEN=" + ruleOptionTextEN
+				+ ", createdBy=" + createdBy + ", modifiedBy=" + modifiedBy + "]";
 	}
+
+	
 
 }

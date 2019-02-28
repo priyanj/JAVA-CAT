@@ -154,6 +154,7 @@ export class DTCloudProviderComponentRule implements OnInit {
         if (this.allProviderRules[index].questionId == qid) {
           this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN + "," + optionObject.optionTextEN;
           this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds + "," + optionObject.optionId;
+          this.allProviderRules[index].modifiedBy = this.myStorage.getCurrentUserObject().username;
           flag++;
         }
       }
@@ -165,6 +166,7 @@ export class DTCloudProviderComponentRule implements OnInit {
         providerRuleNewObject.evaluationOrder = 0;
         providerRuleNewObject.questiontextEN = qtext;
         providerRuleNewObject.ruleOptionIds = String(optionObject.optionId);
+        providerRuleNewObject.createdBy = this.myStorage.getCurrentUserObject().username;
         this.allProviderRules[this.allProviderRules.length] = providerRuleNewObject;
       }
       for (let index = 0; index < this.unAnswered.length; index++) {

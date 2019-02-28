@@ -128,6 +128,8 @@ public class DTProviderRuleDao {
 		cloudProviderRuleModel.setQuestiontextEN(cloudProviderRule.getQuestiontextEN());
 		cloudProviderRuleModel.setRuleOptionIds(cloudProviderRule.getRuleOptionIds());
 		cloudProviderRuleModel.setRuleOptionTextEN(cloudProviderRule.getRuleOptionTextEN());
+		cloudProviderRuleModel.setCreatedBy(cloudProviderRule.getCreatedBy());
+		cloudProviderRuleModel.setModifiedBy(cloudProviderRule.getModifiedBy());
 		return cloudProviderRuleModel;
 	}
 
@@ -270,8 +272,8 @@ public class DTProviderRuleDao {
 		cloudProviderRule.setQuestiontextEN(cloudProviderRuleModel.getQuestiontextEN());
 		cloudProviderRule.setRuleOptionIds(cloudProviderRuleModel.getRuleOptionIds());
 		cloudProviderRule.setRuleOptionTextEN(cloudProviderRuleModel.getRuleOptionTextEN());
-		cloudProviderRule.setCreatedBy("Admin");
-		cloudProviderRule.setModifiedBy("Admin");
+		cloudProviderRule.setCreatedBy(cloudProviderRuleModel.getCreatedBy());
+		cloudProviderRule.setModifiedBy(cloudProviderRuleModel.getModifiedBy());
 		return cloudProviderRule;
 	}
 

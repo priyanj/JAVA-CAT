@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
@@ -46,10 +47,12 @@ public class DTProviderRule {
 	private String ruleOptionTextEN;
 
 	@CreatedBy
+	@NotNull
 	@Column(name = "created_by")
 	private String createdBy;
 
 	@CreatedDate
+	@NotNull
 	@Column(name = "created_time")
 	private Date createdTime;
 
@@ -137,6 +140,22 @@ public class DTProviderRule {
 
 	public void setAssessmentQuestion(AssessmentQuestion assessmentQuestion) {
 		this.assessmentQuestion = assessmentQuestion;
+	}
+
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public Date getModifiedTime() {
+		return modifiedTime;
+	}
+
+	public void setModifiedTime(Date modifiedTime) {
+		this.modifiedTime = modifiedTime;
 	}
 
 	@Override

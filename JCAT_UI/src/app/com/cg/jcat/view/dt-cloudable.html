@@ -42,14 +42,12 @@
                 <table style="display: inline-block" class="table-striped table-bordered">
                   <thead></thead>
                   <tbody>
-                    <tr *ngFor="let rule of questionSaved;let i = index" (click)="onClickRule(rule,rule.questionId,i)">
+                    <tr *ngFor="let rule of questionSaved;let i = index" (click)="onClickRule(rule,i)">
       
                       <td style="width: 500px;margin:auto" >
                         <div style="width: 100%">
                             <i class="fa fa-exclamation-circle" *ngIf="rule.questionId===checkValid(rule.questionId)" style="font-size:15px;color:blue" title="unanswered Question" ></i>&nbsp;
-                          <!-- <i class="fa fa-question-circle" *ngIf=" l && rule.questionId===checkValid(rule.questionId)" style="font-size:15px;color:blue"></i>&nbsp; -->
                           <span name="questionText"  style="word-wrap: break-word;">{{questionSaved[i].questionTextEN}}</span>
-                         
                         </div>
                       
                       <br>
@@ -58,11 +56,11 @@
                       <span *ngFor="let option of questionSaved[i]['questionOptionModel'] ; let op = index" name="optionText">
                           <div *ngIf="RuleChecked(option,questionSaved[i].questionId); else Notchecked">
                        
-                            <input type="checkbox" checked (change)="selectChangeHandler(option,$event,questionSaved[i].questionId,questionSaved[i].questionTextEN)">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
+                            <input type="checkbox" checked (change)="selectChangeHandler(option,$event,questionSaved[i])">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
                           <br>
                           </div>
                           <ng-template #Notchecked>
-                              <input type="checkbox" (change)="selectChangeHandler(option,$event,questionSaved[i].questionId,questionSaved[i].questionTextEN)">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
+                              <input type="checkbox" (change)="selectChangeHandler(option,$event,questionSaved[i])">{{questionSaved[i].questionOptionModel[op]['optionTextEN']}}
                               <br>
                             </ng-template>
                             
@@ -79,7 +77,6 @@
           </div>
         </div>
         <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>&nbsp;
-        <!-- <button type="submit" class="btn btn-sm btn-info div-button" style="position: fixed;bottom: 30px;left: 260px">Submit</button>&nbsp; -->
         <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" style="position: fixed;bottom: 30px" (click)="Cancel()">Cancel</button> -->
       </div>
     </form>

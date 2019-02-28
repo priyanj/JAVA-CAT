@@ -139,7 +139,6 @@ public class DTMigrationRuleDao {
 	 */
 
 	public void saveMigrationRuleHistory(List<DTMigrationRule> dtMigrationRuleList) {
-		System.out.println(dtMigrationRuleList);
 		for (DTMigrationRule dtMigrationRule : dtMigrationRuleList) {
 			dtMigrationRuleHistoryRepository.save(toGetMigrationRuleHistory(dtMigrationRule));
 		}
@@ -148,7 +147,7 @@ public class DTMigrationRuleDao {
 	public DTMigrationRuleHistory toGetMigrationRuleHistory(DTMigrationRule dtMigrationRule) {
 		Date date = new Date();
 		DTMigrationRuleHistory dtMigrationRuleHistory = new DTMigrationRuleHistory();
-		dtMigrationRuleHistory.setCreatedBy("Admin");
+		dtMigrationRuleHistory.setCreatedBy(dtMigrationRule.getCreatedBy());
 		dtMigrationRuleHistory.setCreatedTime(date);
 		dtMigrationRuleHistory.setExecutionOrder(dtMigrationRule.getExecutionOrder());
 		dtMigrationRuleHistory.setDtMigration(dtMigrationRule.getDtMigration());
@@ -173,6 +172,8 @@ public class DTMigrationRuleDao {
 		dtMigrationRuleModel.setQuestiontextEN(dtMigrationRule.getQuestiontextEN());
 		dtMigrationRuleModel.setRuleOptionIds(dtMigrationRule.getRuleOptionIds());
 		dtMigrationRuleModel.setRuleOptionTextEN(dtMigrationRule.getRuleOptionTextEN());
+		dtMigrationRuleModel.setCreatedBy(dtMigrationRule.getCreatedBy());
+		dtMigrationRuleModel.setModifiedBy(dtMigrationRule.getModifiedBy());
 		return dtMigrationRuleModel;
 	}
 
@@ -202,7 +203,8 @@ public class DTMigrationRuleDao {
 		dtMigrationRule.setQuestiontextEN(dtMigrationRuleModel.getQuestiontextEN());
 		dtMigrationRule.setRuleOptionIds(dtMigrationRuleModel.getRuleOptionIds());
 		dtMigrationRule.setRuleOptionTextEN(dtMigrationRuleModel.getRuleOptionTextEN());
-		dtMigrationRule.setCreatedBy("Admin");
+//		dtMigrationRule.setCreatedBy("Admin");
+		dtMigrationRule.setCreatedBy(dtMigrationRuleModel.getCreatedBy());
 		return dtMigrationRule;
 	}
 

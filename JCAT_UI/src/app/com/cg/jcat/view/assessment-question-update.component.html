@@ -96,10 +96,11 @@
           <div *ngIf="first ; else notfirst">
           </div>
           <ng-template #notfirst>
-            <label for="answers">Option Text English{{i}}</label>
+              <br>
+            <label for="answers">Option Text {{i}}</label>
             <br>
             <!-- <input type="text" class="form-control" name="jk{{i}}" [(ngModel)]="optionText[i-1]"  /> -->
-            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="{{i-1}}" #answer="ngModel" /> &nbsp;
+            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="{{i-1}}" #answer="ngModel" placeholder="Option in english" /> &nbsp;
             <span *ngIf="prevNumberOfOptions<numberOfOptions && i>prevNumberOfOptions">
             <button type="button" class="close" aria-label="Close"(click)="deleteTextField(i-1)" >
               <span aria-hidden="true">&times;</span>
@@ -109,10 +110,10 @@
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div> -->
             <br>
-            <label for="answers">Option Text German{{i}}</label>
-            <br>
+            <!-- <label for="answers">Option Text German{{i}}</label> -->
+            <!-- <br> -->
             <!-- <input type="text" class="form-control" name="{{i}}" [(ngModel)]="optionTextl2[size-1]"  /> -->
-            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="{{i-1}}" #answer="ngModel" /> &nbsp;
+            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="{{i-1}}" #answer="ngModel" placeholder="Option in language2"/> &nbsp;
             <!-- <button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button> -->

@@ -92,16 +92,17 @@
           <div *ngIf="first ; else notfirst">
           </div>
           <ng-template #notfirst>
-            <label for="answers">Answer Text English{{size}}</label>
+              <br>
+            <label for="answers">Option Text {{size}}</label>
             <br>
-            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="optionText[i-1]" required #answer="ngModel" />
+            <input type="text" class="form-control" [(ngModel)]="optionText[i-1]" name="optionText[i-1]" required #answer="ngModel" placeholder="Option in english" />
             <br>
             <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div>
-            <label for="answers">Answer Text German{{size}}</label>
-            <br>
-            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="optionTextl2[i-1]" required #answer="ngModel" />
+            <!-- <label for="answers">Answer Text German{{size}}</label> -->
+            <!-- <br> -->
+            <input type="text" class="form-control" [(ngModel)]="optionTextl2[i-1]" name="optionTextl2[i-1]" required #answer="ngModel" placeholder="Option in language2"/>
             <div *ngIf="answer?.touched">
               <div *ngIf="answer.errors?.required" class="color">*answer can't be empty</div>
             </div>

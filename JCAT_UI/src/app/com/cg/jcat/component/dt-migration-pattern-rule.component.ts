@@ -157,6 +157,8 @@ export class DTMigrationPatternComponentRule implements OnInit {
         if (this.allMigrationRules[index].questionId == qid) {
           this.allMigrationRules[index].ruleOptionTextEN = this.allMigrationRules[index].ruleOptionTextEN + "," + optionObject.optionTextEN;
           this.allMigrationRules[index].ruleOptionIds = this.allMigrationRules[index].ruleOptionIds + "," + optionObject.optionId;
+          // this.allMigrationRules[index].createdBy = this.myStorage.getCurrentUserObject().username;
+          this.allMigrationRules[index].modifiedBy = this.myStorage.getCurrentUserObject().username;
           flag++;
         }
       }
@@ -168,6 +170,7 @@ export class DTMigrationPatternComponentRule implements OnInit {
         migrationRuleNewObject.executionOrder = 0;
         migrationRuleNewObject.questiontextEN = qtext;
         migrationRuleNewObject.ruleOptionIds = String(optionObject.optionId);
+        migrationRuleNewObject.createdBy = this.myStorage.getCurrentUserObject().username;
         this.allMigrationRules[this.allMigrationRules.length] = migrationRuleNewObject;
       }
       for (let index = 0; index < this.unAnswered.length; index++) {

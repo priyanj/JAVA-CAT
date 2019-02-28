@@ -19,46 +19,29 @@ export class DTCloudProviderComponentRule implements OnInit {
   expand:boolean=false;
   unAnswered:any=[];
   flag2:number=0;
-
-  shiftToFirstTable: boolean = false;
   allProviderRules: any = [];
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
   providerAllData: any = [];
   originalQuestions: any = [];
-  // rulesQuestion: any = [];
   providerQuestionLength: number;
-  index: number = 0;
-  value: boolean = false;
-  idvalue: boolean = false;
   id: number;
-  RuleId = 0;
-  checked: boolean = false;
-  constructor(private dtProviderRuleService: DTProviderRuleService, public router: Router, private http: HttpClient, private myStorage: LocalStorageService) { }
   providerIdValue: any;
   clickedValue: boolean = false;
   eventValue: number;
   rule: DTProviderRule = new DTProviderRule();
   clickedReversedValue: boolean = false;
 
+  constructor(private dtProviderRuleService: DTProviderRuleService, public router: Router, private myStorage: LocalStorageService) { }
+ 
+
   ngOnInit() {
-    this.shiftToFirstTable = false;
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      responsive: true
-    };
     this.providerIdValue= this.myStorage.getProviderId();
-    console.log(this.providerIdValue);
     // this.dtProviderRuleService.providerId.subscribe(data => { this.providerIdValue = data; });
     this.dtProviderRuleService.getProviderQuestions().subscribe(result => {
       this.providerAllData = result ;
       this.originalQuestions = result ;
       this.providerQuestionLength = this.providerAllData.length;
-      console.log(this.providerAllData);
       
-      this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data,
-        console.log(this.allProviderRules);
+      this.dtProviderRuleService.getCloudProviderRules(this.providerIdValue).subscribe(data => { this.allProviderRules = data
       
         for (let index1 = 0; index1 <this.allProviderRules.length; index1++) {
         for (let index = 0; index < this.providerAllData.length; index++) {
@@ -73,56 +56,44 @@ export class DTCloudProviderComponentRule implements OnInit {
         }
       });
     });
-    
-
   }
 
   Cancel() {
     this.router.navigate(['/dt-cloud-provider']);
   }
 
-  addQuestions() {
-    this.router.navigate(['/assessment-questions/add-assessment-question']);
-  }
-  setClickedRow(event: any) {
-    this.originalQuestions.splice(event, 1);
-  }
-  onClickAddrule(event: any, event1: number) {
+  // setClickedRow(event: any) {
+  //   this.originalQuestions.splice(event, 1);
+  // }
+
+  onClickAddrule(questionObj: any, index: number) {
     this.clickedValue = true;
-    this.rule = event;
-    this.eventValue = event1;
+    this.rule = questionObj;
+    this.eventValue = index;
   }
 
   clicked() {
-    this.value = true;
     if(this.clickedValue){
     var ins = this.savedProviderRule.length;
     this.savedProviderRule[ins] = this.rule;
     this.originalQuestions.splice(this.eventValue, 1);
 
     this.unAnswered[this.unAnswered.length]=this.savedProviderRule[ins].questionId;
-
   }
   this.clickedValue=false;
   }
 
-  onClickRule(event2: any, event: any, event1: number) {
-    this.idvalue = true;
-    this.id = event;
+  onClickRule(questionObj: any, index: number) {
+    this.id = questionObj.questionId;
     this.clickedReversedValue = true;
-    this.rule = event2;
-    this.eventValue = event1;
+    this.rule = questionObj;
+    this.eventValue = index;
   }
 
   reverceClicked() {
     if(this.clickedReversedValue)
     {
-
-      
-
-    var x = this.originalQuestions.length;
-    this.originalQuestions[x] = this.rule;
-    console.log(this.rule);
+    this.originalQuestions[this.originalQuestions.length] = this.rule;
     this.savedProviderRule.splice(this.eventValue, 1);
     for (let index = 0; index < this.allProviderRules.length; index++) {
       if (this.allProviderRules[index].questionId === this.rule.questionId) {
@@ -130,7 +101,6 @@ export class DTCloudProviderComponentRule implements OnInit {
       }
     }
   }
-  console.log(this.allProviderRules);
     this.clickedReversedValue=false;
   }
 
@@ -147,11 +117,11 @@ export class DTCloudProviderComponentRule implements OnInit {
     }
   }
 
-  selectChangeHandler(optionObject, event, qid, qtext) {
+  selectChangeHandler(optionObject, event,questionObj) {
     let flag = 0;
     if (event.target.checked) {
       for (let index = 0; index < this.allProviderRules.length; index++) {
-        if (this.allProviderRules[index].questionId == qid) {
+        if (this.allProviderRules[index].questionId == questionObj.questionId) {
           this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN + "," + optionObject.optionTextEN;
           this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds + "," + optionObject.optionId;
           this.allProviderRules[index].modifiedBy = this.myStorage.getCurrentUserObject().username;
@@ -160,18 +130,18 @@ export class DTCloudProviderComponentRule implements OnInit {
       }
       if (flag == 0) {
         let providerRuleNewObject: DTProviderRule = new DTProviderRule();
-        providerRuleNewObject.questionId = qid;
+        providerRuleNewObject.questionId = questionObj.questionId;
         providerRuleNewObject.providerId = this.providerIdValue;
         providerRuleNewObject.ruleOptionTextEN = optionObject.optionTextEN;
         providerRuleNewObject.evaluationOrder = 0;
-        providerRuleNewObject.questiontextEN = qtext;
+        providerRuleNewObject.questiontextEN = questionObj.questiontextEN;
         providerRuleNewObject.ruleOptionIds = String(optionObject.optionId);
         providerRuleNewObject.createdBy = this.myStorage.getCurrentUserObject().username;
         this.allProviderRules[this.allProviderRules.length] = providerRuleNewObject;
       }
       for (let index = 0; index < this.unAnswered.length; index++) {
                   
-        if(this.unAnswered[index]===qid)
+        if(this.unAnswered[index]===questionObj.questionId)
         {
           this.unAnswered.splice(index,1);
         }
@@ -180,7 +150,7 @@ export class DTCloudProviderComponentRule implements OnInit {
     else {
       for (let index = 0; index < this.allProviderRules.length; index++) {
 
-        if (this.allProviderRules[index].questionId === qid) {
+        if (this.allProviderRules[index].questionId === questionObj.questionId) {
           this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace(optionObject.optionId+",",'');
           this.allProviderRules[index].ruleOptionIds = this.allProviderRules[index].ruleOptionIds.replace("," + optionObject.optionId,'');
           this.allProviderRules[index].ruleOptionTextEN = this.allProviderRules[index].ruleOptionTextEN.replace(optionObject.optionTextEN + ",",'');
@@ -196,11 +166,10 @@ export class DTCloudProviderComponentRule implements OnInit {
       }
       if(this.flag2===1)
               {
-              this.unAnswered[this.unAnswered.length]=qid;
+              this.unAnswered[this.unAnswered.length]=questionObj.questionId;
               this.flag2=0;
             }
     }
-
   }
 
   RuleChecked(opnObject, qid) {
@@ -223,8 +192,7 @@ export class DTCloudProviderComponentRule implements OnInit {
     location.reload();
   }else{
     alert("Some questions are unanswered");
-  }
-  
+  } 
   }
 
   checkValid(qid)

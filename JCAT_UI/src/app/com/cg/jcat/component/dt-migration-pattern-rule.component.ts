@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DTMigrationRuleService } from '../service/dt-migration-rule.service';
 import { LocalStorageService } from '../utility/localStorage.service';
 import { DTMigrationRule } from '../entity/DTMigrationRule';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-migration-patterns',
@@ -25,12 +26,16 @@ export class DTMigrationPatternComponentRule implements OnInit {
   rulesQuestion: any = [];
   id: number;
   migrationIdValue: any;
-  constructor(private forMigrationPatternService: DTMigrationRuleService, public router: Router, private myStorage: LocalStorageService) { }
+  constructor(private translate: TranslateService,private forMigrationPatternService: DTMigrationRuleService, public router: Router, private myStorage: LocalStorageService) { }
  
 
   ngOnInit() {
-    this.migrationIdValue = this.myStorage.getMigrationId();
-    // this.forMigrationPatternService.migrationId.subscribe(data => { this.migrationIdValue = data; });
+    this.forMigrationPatternService.migrationId.subscribe(data => { 
+      if (data != "default") {
+        this.myStorage.setMigrationId(data);
+      }
+      });
+      this.migrationIdValue = this.myStorage.getMigrationId();
     this.forMigrationPatternService.getMigrationQuestions().subscribe(result => {
       this.migrationAllData = result ;
       this.originalQuestions = result ;
@@ -50,7 +55,7 @@ export class DTMigrationPatternComponentRule implements OnInit {
   }
 
   Cancel() {
-    this.router.navigate(['/for-migration-pattern']);
+    this.router.navigate(['/dt-migration-pattern']);
   }
  
   onClickAddrule(questionObj: any, index: number) {
@@ -173,7 +178,7 @@ export class DTMigrationPatternComponentRule implements OnInit {
     );
     location.reload();
   }else{
-    alert("Some questions are unanswered");
+    alert(this.translate.instant('Message'));
   }
   }
 

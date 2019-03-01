@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
 import { LocalStorageService } from '../utility/localStorage.service';
 import { DTProviderRuleService } from '../service/dt-provider-rule.service';
 import { DTProviderRule } from '../entity/DTProviderRule';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -30,12 +29,16 @@ export class DTCloudProviderComponentRule implements OnInit {
   rule: DTProviderRule = new DTProviderRule();
   clickedReversedValue: boolean = false;
 
-  constructor(private dtProviderRuleService: DTProviderRuleService, public router: Router, private myStorage: LocalStorageService) { }
+  constructor(private translate: TranslateService,private dtProviderRuleService: DTProviderRuleService, public router: Router, private myStorage: LocalStorageService) { }
  
 
   ngOnInit() {
-    this.providerIdValue= this.myStorage.getProviderId();
-    // this.dtProviderRuleService.providerId.subscribe(data => { this.providerIdValue = data; });
+    this.dtProviderRuleService.providerId.subscribe(data => {  
+    if (data != "default") {
+      this.myStorage.setProviderId(data);
+    }
+  });
+  this.providerIdValue = this.myStorage.getProviderId();
     this.dtProviderRuleService.getProviderQuestions().subscribe(result => {
       this.providerAllData = result ;
       this.originalQuestions = result ;
@@ -61,10 +64,6 @@ export class DTCloudProviderComponentRule implements OnInit {
   Cancel() {
     this.router.navigate(['/dt-cloud-provider']);
   }
-
-  // setClickedRow(event: any) {
-  //   this.originalQuestions.splice(event, 1);
-  // }
 
   onClickAddrule(questionObj: any, index: number) {
     this.clickedValue = true;
@@ -191,7 +190,7 @@ export class DTCloudProviderComponentRule implements OnInit {
     );
     location.reload();
   }else{
-    alert("Some questions are unanswered");
+    alert(this.translate.instant('Message'));
   } 
   }
 

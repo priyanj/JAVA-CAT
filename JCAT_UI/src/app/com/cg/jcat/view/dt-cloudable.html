@@ -1,11 +1,11 @@
 <div>
-  <h2 class="text-muted">Cloudability Decision
-    <button style="background-color: white; border: aliceblue"  title="Page shows all questions which decide cloudability so here we can set rules for cloudability"
+  <h2 class="text-muted">{{'Cloudability Decision' | translate}}
+    <button style="background-color: white; border: aliceblue"  title="{{'titleCloudableRule'|translate}}"
        class="btn btn-light"  >
       <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
     </button>&nbsp;
-    <button class="btn btn-info btn-sm" (click)="expandall()" style="position: absolute;right: 180px" title="On button click it will show options of all questions,if answer is given then the check box will be checked otherwise unchecked">ExpandAll</button>
-    <button class="btn btn-info btn-sm" (click)="hideall()" style="position: absolute;right: 100px" title="On button click it will hide options of all questions">HideAll</button>
+    <button class="btn btn-info btn-sm" (click)="expandall()" style="width: 120px;position: absolute;right: 230px;" title="{{'expandButtonTitle'|translate}}">{{'ExpandAll' | translate}}</button>
+    <button class="btn btn-info btn-sm" (click)="hideall()" style="width: 120px;position: absolute;right: 100px" title="{{'hideButtonTitle'|translate}}">{{'HideAll' | translate}}</button>
   </h2>
 </div>
 
@@ -76,7 +76,7 @@
 
           </div>
         </div>
-        <button type="submit" class="btn btn-sm btn-info div-button">Submit</button>&nbsp;
-        <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" style="position: fixed;bottom: 30px" (click)="Cancel()">Cancel</button> -->
+        <button type="submit" class="btn btn-sm btn-info div-button">{{'Submit' | translate}}</button>&nbsp;
+        <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">{{'Cancel' | translate}}</button>
       </div>
     </form>

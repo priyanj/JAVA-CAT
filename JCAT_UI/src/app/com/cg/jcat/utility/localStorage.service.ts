@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../entity/user';
 import { AssessmentQuestions } from '../entity/AssessmentQuestion';
 import { Application } from '../entity/application';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -75,16 +76,16 @@ export class LocalStorageService {
   clearCurrentUser(){
     return localStorage.removeItem('user');
   }
-  setMigrationId(id:number){
-    localStorage.setItem('migrationId',String(id));
+  setMigrationId(id:any){
+    localStorage.setItem('migrationId',id);
   }
 
   getMigrationId(){
     return localStorage.getItem('migrationId');
   }
 
-  setProviderId(id:number){
-    localStorage.setItem('providerId',String(id));
+  setProviderId(id:any){
+    localStorage.setItem('providerId',id);
   }
 
   getProviderId(){

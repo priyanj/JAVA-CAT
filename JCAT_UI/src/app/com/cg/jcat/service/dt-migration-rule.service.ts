@@ -34,7 +34,7 @@ export class DTMigrationRuleService {
     return this.http.get(this.myStorage.getdomainURL() + `/migration/get/questions`);
   }
 
-  private  comptransfer  =  new  BehaviorSubject("Wrong Migration Id!!");
+  private  comptransfer  =  new  BehaviorSubject("default");
   migrationId  =  this.comptransfer.asObservable();
 
   sendMsgtoOtherComponent(messsage) {

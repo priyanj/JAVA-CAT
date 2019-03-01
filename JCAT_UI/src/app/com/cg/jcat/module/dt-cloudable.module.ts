@@ -4,9 +4,10 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule } from '@angular/forms';
 import { DtCloudableComponent } from '../component/dt-cloudable.component';
 import { DtCloudableRoutingModule } from '../router/dt-cloudable-routing.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-    imports: [CommonModule,FormsModule,DataTablesModule,DtCloudableRoutingModule],
+    imports: [CommonModule,FormsModule,DataTablesModule,DtCloudableRoutingModule,TranslateModule.forChild()],
     declarations: [DtCloudableComponent]
 })
 

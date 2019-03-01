@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DTCloudableRule } from '../entity/DTCloudableRule';
 import { DTCloudableRuleService } from '../service/dt-cloudable-rule.service';
 import { LocalStorageService } from '../utility/localStorage.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-dt-cloudable',
@@ -24,7 +25,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
     expand:boolean=false;
     unAnswered:any=[];
     flag2:number=0;
-    constructor(private dtCloudableRuleService: DTCloudableRuleService, private router: Router, private myStorage: LocalStorageService) {
+    constructor(private translate: TranslateService,private dtCloudableRuleService: DTCloudableRuleService, private router: Router, private myStorage: LocalStorageService) {
     }
   
     ngOnInit() {
@@ -62,9 +63,9 @@ import { LocalStorageService } from '../utility/localStorage.service';
 
     this.id=questionObj.questionId;
   }
-    // Cancle() {
-    //   this.router.navigate(['/decision-tree']);
-    // }
+    Cancle() {
+      this.router.navigate(['/decision-tree']);
+    }
     selectChangeHandler(optionObject,event,question)
     {
       let flag=0;
@@ -155,7 +156,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
       this.dtCloudableRuleService.saveCloudableRule(this.cloudableRule).subscribe();
       location.reload();
     }else{
-      alert("Some questions are unanswered");
+      alert(this.translate.instant('Message'));
     }
     }
 

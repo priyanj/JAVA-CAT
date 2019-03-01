@@ -1,13 +1,13 @@
 <div>
   <h2 class="text-muted">
-    <strong>Migration Pattern </strong>
-    <small>Rule</small>
-    <button style="background-color: white; border: aliceblue"  title="Page shows all the Migration Pattern Questions, for which you have to set Rule"
+    <strong>{{'Migration Pattern' | translate}} </strong>
+    <small>{{'Rule' | translate}}</small>
+    <button style="background-color: white; border: aliceblue"  title="{{'titlePatternRule'|translate}}"
        class="btn btn-light"  >
       <i class="fa fa-question-circle"  style="font-size:25px;color:blue"></i>
     </button>
-    <button class="btn btn-info btn-sm" (click)="expandall()" style="position: absolute;right: 180px" title="On button click it will show options of all questions,if answer is given then the check box will be checked otherwise unchecked">ExpandAll</button>
-    <button class="btn btn-info btn-sm" (click)="hideall()" style="position: absolute;right: 100px" title="On button click it will hide options of all questions">HideAll</button>
+    <button class="btn btn-info btn-sm" (click)="expandall()" style="width: 120px;position: absolute;right: 230px;" title="{{'expandButtonTitle'|translate}}">{{'ExpandAll' | translate}}</button>
+    <button class="btn btn-info btn-sm" (click)="hideall()" style="width: 120px;position: absolute;right: 100px" title="{{'hideButtonTitle'|translate}}">{{'HideAll' | translate}}</button>
   </h2>
 </div>
 <form #productForm="ngForm">
@@ -75,7 +75,7 @@
 
       </div>
     </div>
-    <button type="submit" class="btn btn-sm btn-info div-button" (click)="saveRule()">Submit</button>
-    <!-- <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">Cancel</button> -->
+    <button type="submit" class="btn btn-sm btn-info div-button" (click)="saveRule()">{{'Submit' | translate}}</button>
+    <button type="cancel" class="btn btn-sm btn-info" value="Cancel" (click)="Cancel()">{{'Cancel' | translate}}</button>
   </div>
 </form>

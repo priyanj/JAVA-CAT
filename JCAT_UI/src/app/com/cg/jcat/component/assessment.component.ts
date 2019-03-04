@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { Answer } from '../entity/Answer';
 import { AssessmentService } from '../service/assessment.service';
 import { ApplicationService } from '../service/application.service';
@@ -8,7 +7,7 @@ import { LocalStorageService } from '../utility/localStorage.service';
 import { UserService } from '../service/user.service';
 import { DTCloudableRuleService } from '../service/dt-cloudable-rule.service';
 import { AssessmentQuestionsService } from '../service/assessment-questions.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 
@@ -19,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AssesstApplicationComponent implements OnInit {
   option: string = " ";
+  multiSelectOption: string = "delete";
   application: any;
   assessmentStage: number;
   appId: number;
@@ -32,15 +32,12 @@ export class AssesstApplicationComponent implements OnInit {
   count: number = 0;
   submitEnabled: boolean;
   i = -1;
-  title:any;
   AnswersData: any = [];
+  
   constructor(private translate: TranslateService, private router: Router, private cloudableService: DTCloudableRuleService, private assessmentQuestionService: AssessmentQuestionsService, private assessmentService: AssessmentService, private applicationService: ApplicationService, private myStorage: LocalStorageService, private userService: UserService) {
-    const browserLang = this.translate.getBrowserLang();
   }
 
   ngOnInit() {
-
-    this.title=this.translate.instant('title');
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -49,15 +46,14 @@ export class AssesstApplicationComponent implements OnInit {
       columnDefs: [{ orderable: false, targets: 3 }]
     };
 
-    //this.submitEnabled = false;
-    // To get application id from application list page
     this.applicationService.applicationData.subscribe(data => {
-      //this.application = data;
       if (data != "default") {
         this.myStorage.setCurrentApplicationObject(data);
       }
+
       this.assessmentStage = this.myStorage.getCurrentApplicationObject().assessmentStage;
       this.appId = this.myStorage.getCurrentApplicationObject().aid;
+
       if (!this.myStorage.getCurrentUserObject().isAdmin && (this.myStorage.getCurrentUserObject().userId == this.myStorage.getCurrentApplicationObject().applicationUser)) {
         this.router.navigate(['/login']);
       }
@@ -90,8 +86,8 @@ export class AssesstApplicationComponent implements OnInit {
   setAssessmentData(AssessmentPage: any) {
     this.AssessmentPage = AssessmentPage;
     this.checkResultForButton = 0;
+
     this.checkResultForButton = this.validateAnswers(0);
-    console.log(this.checkResultForButton)
     if (this.checkResultForButton != 1) {
       this.submitEnabled = true;
     }
@@ -191,8 +187,6 @@ export class AssesstApplicationComponent implements OnInit {
         if (this.AssessmentPage[index].questionId == this.AnswersData[index1].questionId && this.AnswersData[index1].optionIds != this.option) {
           this.count++;
         }
-
-
       }
       if (this.AssessmentPage[index].questionId == this.AnswersData[index].questionId && this.AssessmentPage[index].questionType === "LONG_ANSWER" || this.AssessmentPage[index].questionType === "SHORT_ANSWER") {
         this.count++;
@@ -209,7 +203,6 @@ export class AssesstApplicationComponent implements OnInit {
   }
 
   selectChangeHandler(optionObject, event, question) {
-    let flag = 0;
     if (event.target.checked) {
       for (let x = 0; x < this.AnswersData.length; x++) {
         if (this.AnswersData[x].questionId === question.questionId) {
@@ -217,36 +210,49 @@ export class AssesstApplicationComponent implements OnInit {
             this.AnswersData[x].optionIds = optionObject.optionId;
             this.AnswersData[x].questionTextEN = question.questionTextEN;
             this.AnswersData[x].optionTextsEN = optionObject.optionTextEN;
-            flag = 1;
           }
           else {
             this.AnswersData[x].optionIds = this.AnswersData[x].optionIds + "," + optionObject.optionId;
             this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN + "," + optionObject.optionTextEN;
-            flag = 1;
           }
 
         }
       }
-      if (flag == 0) {
-        let answer: Answer = new Answer();
-        answer.applicationId = this.appId;
-        answer.questionId = question.questionId;
-        answer.optionIds = optionObject.optionId;
-        answer.optionTextsEN = optionObject.optionTextEN;
-        this.AnswersData[this.opId] = answer;
-        this.opId++;
-      }
-
-
     } else {
       for (let x = 0; x < this.AnswersData.length; x++) {
         if (this.AnswersData[x].questionId === question.questionId) {
-          this.AnswersData[x].questionTextEN = question.questionTextEN;
-          this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN + ",", '');
-          if (this.AnswersData[x].optionTextsEN == optionObject.optionTextEN) {
-            this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN, '');
+          var lastAnswerText = this.AnswersData[x].optionTextsEN;
+          var lastAnswerId = this.AnswersData[x].optionIds;
+
+          if (lastAnswerText.search(",") == -1 && lastAnswerId.search(",") == -1) {
+            this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN, this.multiSelectOption);
+            this.AnswersData[x].optionIds = this.AnswersData[x].optionIds.replace(optionObject.optionId, this.multiSelectOption);
           }
-          this.AnswersData[x].optionIds = this.AnswersData[x].optionIds.replace(optionObject.optionId + ",", '');
+          else {
+
+            var answerOptionText = this.AnswersData[x].optionTextsEN;
+            var answerOptionId = this.AnswersData[x].optionIds;
+            var lastIndex = answerOptionText.lastIndexOf(",");
+            var lastIndex1 = answerOptionId.lastIndexOf(",");
+
+            answerOptionText = answerOptionText.substring((lastIndex + 1), answerOptionText.length); //4.value
+            answerOptionId = answerOptionId.substring((lastIndex1 + 1), answerOptionId.length); //4.value
+
+            if (answerOptionText == optionObject.optionTextEN && answerOptionId == optionObject.optionId) {
+              this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace("," + optionObject.optionTextEN, '');
+              this.AnswersData[x].optionIds = this.AnswersData[x].optionIds.replace("," + optionObject.optionId, '');
+            }
+            else {
+              this.AnswersData[x].questionTextEN = question.questionTextEN;
+              this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN + ",", '');
+              if (this.AnswersData[x].optionTextsEN == optionObject.optionTextEN) {
+                this.AnswersData[x].optionTextsEN = this.AnswersData[x].optionTextsEN.replace(optionObject.optionTextEN, '');
+                this.AnswersData[x].optionIds = this.AnswersData[x].optionTextsEN.replace(optionObject.optionId, '');
+              }
+              this.AnswersData[x].optionIds = this.AnswersData[x].optionIds.replace(optionObject.optionId + ",", '');
+            }
+          }
+
         }
       }
 

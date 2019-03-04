@@ -1,12 +1,9 @@
 package com.cg.jcat.api.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,94 +39,98 @@ public class AssessmentDao {
 
 	Date date = new Date();
 	String option = " ";
-	boolean isDeleted=false, assessmentTypeForCloudable=true, assessmentTypeForCloudProvider=true, assessmentTypeForMigration=true;
+	String multiSelectOption = "delete";
+	boolean isDeleted = false;
+	boolean assessmentTypeForCloudable = true;
+	boolean assessmentTypeForCloudProvider = true;
+	boolean assessmentTypeForMigration = true;
 
-	public List<AnswerModel> getAnswers(int applicationId,int assessmentStage) {
+	public List<AnswerModel> getAnswers(int applicationId, int assessmentStage) {
 
 		List<AnswerModel> answerModelListNew = new ArrayList<>();
 		List<AssessmentQuestion> assessmentQuestionList = new ArrayList<>();
-		if(assessmentStage==0)
-		{
-			assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudable(isDeleted,
-					assessmentTypeForCloudable);
+		if (assessmentStage == 0) {
+			assessmentQuestionList = assessmentQuestionRepository
+					.findAllByIsDeletedAndAssessmentTypeForCloudable(isDeleted, assessmentTypeForCloudable);
+		} else {
+			assessmentQuestionList = assessmentQuestionRepository
+					.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigrationAndAssessmentTypeForCloudable(
+							isDeleted, assessmentTypeForCloudProvider, assessmentTypeForMigration,
+							!assessmentTypeForCloudable);
 		}
-		else
-		{
-			assessmentQuestionList = assessmentQuestionRepository.findAllByIsDeletedAndAssessmentTypeForCloudProviderOrAssessmentTypeForMigrationAndAssessmentTypeForCloudable(isDeleted,
-					assessmentTypeForCloudProvider,assessmentTypeForMigration,!assessmentTypeForCloudable);
-		}
-		
+
 		List<Answer> answerList = answerRepository.findByApplicationId(applicationId);
-		
-		for(AssessmentQuestion assessmentQuestion:assessmentQuestionList)
-		{
-			int count=0;
-			for(Answer answerObject:answerList)
-			{
-				if(assessmentQuestion.getQuestionId()==answerObject.getQuestionId())
-				{
+
+		for (AssessmentQuestion assessmentQuestion : assessmentQuestionList) {
+			int count = 0;
+			for (Answer answerObject : answerList) {
+				if (assessmentQuestion.getQuestionId() == answerObject.getQuestionId()) {
 					answerModelListNew.add(toAnswerModel(answerObject));
 					count++;
 				}
 			}
-			if(count==0)
-			{
-				Answer answerObj=new Answer();
+			if (count == 0) {
+				Answer answerObj = new Answer();
 				answerObj.setOptionIds(option);
 				answerObj.setOptionTextsEN(option);
 				answerObj.setQuestionId(assessmentQuestion.getQuestionId());
 				answerModelListNew.add(toAnswerModel(answerObj));
 			}
-			
+
 		}
-		
-		System.out.println(answerModelListNew);
+
+		// System.out.println(answerModelListNew);
 		return answerModelListNew;
 	}
+
 	public boolean saveAnswers(List<AnswerModel> answerModels, int applicationId) throws SystemExceptions {
 		boolean saveResult = false;
-		List<Answer> answerList = new ArrayList<>(); 
-		
-		try {
-			
-			for(AnswerModel answerModel:answerModels)
-			{
-				if (!answerModel.getOptionIds().equals(option)|| assessmentQuestionRepository.findByQuestionId(answerModel.getQuestionId()).getQuestionType()==QuestionTypeEnum.SHORT_ANSWER||
-						assessmentQuestionRepository.findByQuestionId(answerModel.getQuestionId()).getQuestionType()==QuestionTypeEnum.LONG_ANSWER) {
-				Answer answer=new Answer();
-				AssessmentQuestion assessmentQuestionObject=assessmentQuestionRepository.findByQuestionId(answerModel.getQuestionId());
-				answer = answerRepository.findByQuestionIdAndApplicationId(answerModel.getQuestionId(),applicationId);
+		List<Answer> answerList = new ArrayList<>();
 
-				try {
-					
-				if(answer!=null && (!answer.getOptionIds().equals(answerModel.getOptionIds()))
-						&& (answer.getQuestionId()==answerModel.getQuestionId())&&((!answer.getOptionTextsEN().equals(answerModel.getOptionTextsEN()))))
-				{
+		try {
+
+			for (AnswerModel answerModel : answerModels) {
+				Answer answer = new Answer();
+				answer = answerRepository.findByQuestionIdAndApplicationId(answerModel.getQuestionId(), applicationId);
+				AssessmentQuestion assessmentQuestionForAnswer = assessmentQuestionRepository
+						.findByQuestionId(answerModel.getQuestionId());
+				if (answerModel.getOptionIds().equals(multiSelectOption) && assessmentQuestionForAnswer
+						.getQuestionType() == QuestionTypeEnum.MULTIPLE_CHOICE_MULTIPLE_ANSWER) {
 					answerHistoryRepository.save(toGetAnswerHistory(answer));
+					answerRepository.deleteById(answer.getAnswerId());
+					break;
 				}
-				else if(answer!=null && assessmentQuestionRepository.findByQuestionId(answerModel.getQuestionId()).getQuestionType()==QuestionTypeEnum.SHORT_ANSWER||
-						assessmentQuestionRepository.findByQuestionId(answerModel.getQuestionId()).getQuestionType()==QuestionTypeEnum.LONG_ANSWER)
-				{
-					if(!answerModel.getOptionTextsEN().equals(option)&&(!answer.getOptionTextsEN().equals(option)))
-					{
-						if(!answer.getOptionTextsEN().equals(answerModel.getOptionTextsEN()))
-						{
+				if (!answerModel.getOptionIds().equals(option)
+						|| assessmentQuestionForAnswer.getQuestionType() == QuestionTypeEnum.SHORT_ANSWER
+						|| assessmentQuestionForAnswer.getQuestionType() == QuestionTypeEnum.LONG_ANSWER) {
+
+					try {
+
+						if (answer != null && (!answer.getOptionIds().equals(answerModel.getOptionIds()))
+								&& (answer.getQuestionId() == answerModel.getQuestionId())
+								&& ((!answer.getOptionTextsEN().equals(answerModel.getOptionTextsEN())))) {
 							answerHistoryRepository.save(toGetAnswerHistory(answer));
+						} else if (answer != null
+								&& assessmentQuestionForAnswer.getQuestionType() == QuestionTypeEnum.SHORT_ANSWER
+								|| assessmentQuestionForAnswer.getQuestionType() == QuestionTypeEnum.LONG_ANSWER) {
+							if (!answerModel.getOptionTextsEN().equals(option)
+									&& (!answer.getOptionTextsEN().equals(option))) {
+								if (!answer.getOptionTextsEN().equals(answerModel.getOptionTextsEN())) {
+									answerHistoryRepository.save(toGetAnswerHistory(answer));
+								}
+
+							}
 						}
-						
+					} catch (Exception e) {
+						logger.error("cannot save history saveHistory(): " + e.getMessage() + " ", e);
+
 					}
-				}
-				} catch (Exception e) {
-					logger.error("cannot save history saveHistory(): " + e.getMessage() + " ", e);
-					
-				}
-				
-				if(!answerModel.getOptionTextsEN().equals(option))
-				{
-					answerModel.setApplicationId(applicationId);
-					answerList.add(toAnswer(answerModel));
-				}
-				
+
+					if (!answerModel.getOptionTextsEN().equals(option)) {
+						answerModel.setApplicationId(applicationId);
+						answerList.add(toAnswer(answerModel));
+					}
+
 				}
 			}
 
@@ -199,7 +200,7 @@ public class AssessmentDao {
 		answer.setDtCloudableRuleResult(answerModel.isDtCloudableRuleResult());
 		answer.setDtMigrationRuleResult(answerModel.isDtMigrationRuleResult());
 		answer.setDtProviderRuleResult(answerModel.isDtProviderRuleResult());
-		answer.setModifiedBy("Admin");
+		answer.setModifiedBy(answerModel.getModifiedBy());
 		answer.setOptionIds(answerModel.getOptionIds());
 		answer.setOptionTextsEN(answerModel.getOptionTextsEN());
 		answer.setQuestionId(answerModel.getQuestionId());
@@ -214,7 +215,7 @@ public class AssessmentDao {
 		answerModel.setDtCloudableRuleResult(answer.isDtCloudableRuleResult());
 		answerModel.setDtMigrationRuleResult(answer.isDtMigrationRuleResult());
 		answerModel.setDtProviderRuleResult(answer.isDtProviderRuleResult());
-		answerModel.setModifiedBy("Admin");
+		answerModel.setModifiedBy(answer.getModifiedBy());
 		answerModel.setOptionIds(answer.getOptionIds());
 		answerModel.setOptionTextsEN(answer.getOptionTextsEN());
 		answerModel.setQuestionId(answer.getQuestionId());

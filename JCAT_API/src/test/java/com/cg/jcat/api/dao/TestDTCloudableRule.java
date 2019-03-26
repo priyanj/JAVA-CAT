@@ -40,6 +40,7 @@ public class TestDTCloudableRule {
 		dtCloudableRuleModel.setQuestionId(1);
 		dtCloudableRuleModel.setQuestionTextEN("Question Text");
 		dtCloudableRuleModel.setExecutionOrder(1);
+		dtCloudableRuleModel.setCreatedBy("Admin");
 		dtCloudableRuleModelist.add(dtCloudableRuleModel);
 		return dtCloudableRuleModelist;
 	}

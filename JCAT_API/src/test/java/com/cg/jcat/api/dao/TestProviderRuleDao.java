@@ -104,6 +104,7 @@ public class TestProviderRuleDao {
 		DTProviderRuleModel.setQuestiontextEN("1");
 		DTProviderRuleModel.setRuleOptionIds("1");
 		DTProviderRuleModel.setRuleOptionTextEN("1");
+		DTProviderRuleModel.setCreatedBy("Admin");
 
 		return DTProviderRuleModel;
 	}

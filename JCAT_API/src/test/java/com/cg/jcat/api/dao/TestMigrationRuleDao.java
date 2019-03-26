@@ -95,6 +95,7 @@ public class TestMigrationRuleDao {
 		dtMigrationRuleModel.setQuestiontextEN("11");
 		dtMigrationRuleModel.setRuleOptionIds("11");
 		dtMigrationRuleModel.setRuleOptionTextEN("11");
+		dtMigrationRuleModel.setCreatedBy("Admin");
 		return dtMigrationRuleModel;
 	}
 

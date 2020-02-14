@@ -44,7 +44,7 @@
         "npm": "^6.8.0",
         "rxjs": "6.3.3",
         "videogular2": "^6.3.0",
-        "yarn": "^1.14.0",
+        "yarn": "^1.22.0",
         "zone.js": "^0.8.26"
     },
     "devDependencies": {
